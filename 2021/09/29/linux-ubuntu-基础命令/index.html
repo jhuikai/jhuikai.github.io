@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="yanm1ng&#39;s blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      linux ubuntu 基础命令 | Hexo
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+  
+    
+<script src="/js/local-search.js"></script>
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Hexo</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/series/" class="item-link">Series</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+      
+        <li class="menu-item menu-item-search right-list">
+    <a role="button" class="popup-trigger">
+        <i class="fa fa-search fa-fw"></i>
+    </a>
+</li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/series/" class="menu-link">Series</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+      <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+            <span class="search-icon">
+                <i class="fa fa-search"></i>
+            </span>
+            <div class="search-input-container">
+                <input autocomplete="off" autocapitalize="off"
+                    placeholder="Please enter your keyword(s) to search." spellcheck="false"
+                    type="search" class="search-input">
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa fa-times-circle"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>linux ubuntu 基础命令</h2>
+  <p class="post-date">2021-09-29</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>Ubuntu是一个以桌面应用为主的 <strong>Linux 操作系统</strong>，以下信息主要关于使用ubuntu的基础命令。</p>
+<p>仅供参考！</p>
+<span id="more"></span>
+<h3 id="一、文件及文件夹管理">一、文件及文件夹管理</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">ls</th>
+<th style="text-align:center">查看当前目录文件（不包含隐含文件）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">ls -a</td>
+<td style="text-align:center">列出当前目录文件（包含隐含文件）</td>
+</tr>
+<tr>
+<td style="text-align:center">ls -l</td>
+<td style="text-align:center">查看当前文件以列表形式显示（不包含隐含文件）</td>
+</tr>
+<tr>
+<td style="text-align:center">ls -al</td>
+<td style="text-align:center">以列表形式查看当前所有的隐含文件</td>
+</tr>
+<tr>
+<td style="text-align:center">ls -hl</td>
+<td style="text-align:center">更加人性化显示文件</td>
+</tr>
+<tr>
+<td style="text-align:center">cd 文件名</td>
+<td style="text-align:center">进入文件夹</td>
+</tr>
+<tr>
+<td style="text-align:center">cd ~</td>
+<td style="text-align:center">回到自己的home文件夹</td>
+</tr>
+<tr>
+<td style="text-align:center">cd  .</td>
+<td style="text-align:center">当前目录</td>
+</tr>
+<tr>
+<td style="text-align:center">cd …</td>
+<td style="text-align:center">回当前目录的上一级目录</td>
+</tr>
+<tr>
+<td style="text-align:center">cd -</td>
+<td style="text-align:center">回上一次所在的目录</td>
+</tr>
+</tbody>
+</table>
+<p><strong>pwd 查看自己当前所在文件夹路径</strong></p>
+<p><img src="/2021/09/29/linux-ubuntu-%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/pwd.png" alt></p>
+<h4 id="mkdir-创建文件夹">mkdir 创建文件夹</h4>
+<p><strong>mkdir 文件夹名</strong></p>
+<p><img src="/2021/09/29/linux-ubuntu-%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/mkdir1.png" alt></p>
+<p><strong>mkdir 文件夹名/文件夹名/…在一个文件夹下创建文件夹</strong></p>
+<p><img src="/2021/09/29/linux-ubuntu-%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/mkdir2.png" alt></p>
+<p><strong>mkdir  文件夹名/文件夹名/…-p 新文件夹加-p可以直接创建所有文件夹</strong></p>
+<p><img src="/2021/09/29/linux-ubuntu-%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/mkdir3.png" alt></p>
+<h4 id="touch-创建文件"><strong>touch  创建文件</strong></h4>
+<p><strong>touch 文件名.文件后缀</strong></p>
+<p><img src="/2021/09/29/linux-ubuntu-%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/touch.png" alt></p>
+<h4 id="rm-删除命令"><strong>rm 删除命令</strong></h4>
+<p><strong>rm -i 文件名.文件后缀    询问是否删除 yes / no</strong></p>
+<p>![](linux-ubuntu-基础命令/rm -i.png)</p>
+<p><strong>rm -f 文件名.文件后缀   不询问直接删除</strong></p>
+<p>![](linux-ubuntu-基础命令/rm -f.png)</p>
+<p><strong>rm -r 文件名.文件后缀  递归删除文件夹  删除所有文件和文件夹  不询问</strong></p>
+<p>![](linux-ubuntu-基础命令/rm -r.png)</p>
+<p><strong>rm -ri 文件名.文件后缀  递归删除文件夹  删除所有文件  询问是否删除  yes / no</strong></p>
+<p>![](linux-ubuntu-基础命令/rm -ri.png)</p>
+<h4 id="mv-移动文件"><strong>mv  移动文件</strong></h4>
+<p><strong>mv 路径/文件 /经/文件移动相对路径下的文件到绝对路径下</strong></p>
+<p><img src="/2021/09/29/linux-ubuntu-%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/mv1.png" alt></p>
+<p><strong>mv 文件名 新名称  在当前目录下改名</strong></p>
+<p><img src="/2021/09/29/linux-ubuntu-%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/mv2.png" alt></p>
+<h4 id="find-查找文件"><strong>find 查找文件</strong></h4>
+<p><strong>find -name ‘文件名’  搜索所有</strong></p>
+<p><strong>find ./文件夹 -size -2M  搜索所有小于2M的文件  +2表示大于</strong></p>
+<p><img src="/2021/09/29/linux-ubuntu-%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/size.png" alt></p>
+<h4 id="cp-复制文件"><strong>cp 复制文件</strong></h4>
+<p><strong>cp 文件夹/文件名 ./移动的地址</strong></p>
+<p><img src="/2021/09/29/linux-ubuntu-%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/cp.png" alt></p>
+<p><img src="/2021/09/29/linux-ubuntu-%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/%E5%A4%8D%E5%88%B6.png" alt></p>
+<h4 id="tar-打包文件"><strong>tar 打包文件</strong></h4>
+<p><strong>tar -cvf 打包文件名.tar  要打包的文件或文件夹1.txt 2.txt</strong></p>
+<p><strong>ar xvf打包文件名.tar  解开打包文件</strong></p>
+<p><strong>tar -cvf 打包文件名.tar.gz  压缩要打包的文件或文件夹1.txt</strong></p>
+<p><strong>ar -zxvf 打包文件名.tar.gz  解开压缩包文件</strong></p>
+<h3 id="二、系统管理">二、系统管理</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1  Useradd     #创建一个新用户</span><br><span class="line">2  Groupadd 组名     #创建一个新的组</span><br><span class="line">3  Passwd 用户名     #为用户创建密码</span><br><span class="line">4  Passwd -d用户名     #删除用户密码也能登录</span><br><span class="line">5  Passwd -s用户名     #查询账号密码</span><br><span class="line">6  Usemod -1 新用户名 老用户名     #为用户改名</span><br><span class="line">7  Userdel-r 用户名     #删除用户一切</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">1  uname -a     #查看内核版本</span><br><span class="line">2  cat /etc/issue     #查看ubuntu版本</span><br><span class="line">3  lsusb     #查看usb设备</span><br><span class="line">4  sudo ethtool eth0     #查看网页状态</span><br><span class="line">5  cat /proc/cpuinfo     #查看cpu信息</span><br><span class="line">6  lshw     #查看当前硬件信息</span><br><span class="line">7  sudo fdisk -1     #查看磁盘信息</span><br><span class="line">8  df -h     #查看硬盘剩余空间</span><br><span class="line">9  free -m     #查看当前的内存使用情况</span><br><span class="line">10 ps -A     #查看当前有哪些进程</span><br><span class="line">11 kill 进程号（就是ps -A中的第一列的数字）或者killall进程名（杀死一个进程）</span><br><span class="line">12 kill -9 进程号     #强制杀死一个进程</span><br></pre></td></tr></table></figure>
+<p>reboot lnit 6  重启LINUX系统</p>
+<p>Halt lnit 0 Shutdown -h now  关闭LINUX系统</p>
+<h3 id="三、apt命令">三、apt命令</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">apt-cache search package</th>
+<th style="text-align:center">搜索包</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">apt-cache show package</td>
+<td style="text-align:center">获取包的相关信息，如说明、大小、版本等</td>
+</tr>
+<tr>
+<td style="text-align:center">sudo apt-get install package</td>
+<td style="text-align:center">安装包</td>
+</tr>
+<tr>
+<td style="text-align:center">sudo apt-get install package - - reinstall</td>
+<td style="text-align:center">重新安装包</td>
+</tr>
+<tr>
+<td style="text-align:center">sudo apt-get -f install</td>
+<td style="text-align:center">修复安装&quot;-f = -fix-missing&quot;</td>
+</tr>
+<tr>
+<td style="text-align:center">sudo apt-get remove package</td>
+<td style="text-align:center">删除包</td>
+</tr>
+<tr>
+<td style="text-align:center">sudo apt-get remove package - - purge</td>
+<td style="text-align:center">删除包，包括删除配置文件等</td>
+</tr>
+<tr>
+<td style="text-align:center">sudo apt-get update</td>
+<td style="text-align:center">更新源</td>
+</tr>
+<tr>
+<td style="text-align:center">sudo apt-get upgrade</td>
+<td style="text-align:center">更新已安装的包</td>
+</tr>
+<tr>
+<td style="text-align:center">sudo apt-get dist-upgrade</td>
+<td style="text-align:center">升级系统</td>
+</tr>
+<tr>
+<td style="text-align:center">sudo apt-get dselect-upgrade</td>
+<td style="text-align:center">使用dselect升级</td>
+</tr>
+<tr>
+<td style="text-align:center">apt-cache depends package</td>
+<td style="text-align:center">了解使用依赖</td>
+</tr>
+<tr>
+<td style="text-align:center">apt-cache rdepends package</td>
+<td style="text-align:center">是查看改包被哪些包依赖</td>
+</tr>
+<tr>
+<td style="text-align:center">sudo apt-get build-dep package</td>
+<td style="text-align:center">安装相关的编译环境</td>
+</tr>
+<tr>
+<td style="text-align:center">apt-get source package</td>
+<td style="text-align:center">下载改包的源代码</td>
+</tr>
+<tr>
+<td style="text-align:center">sudo apt-get clean &amp;&amp; sudo apt-get autoclean</td>
+<td style="text-align:center">清理无用的包</td>
+</tr>
+<tr>
+<td style="text-align:center">sudo apt-get check</td>
+<td style="text-align:center">检查是否有损坏的依赖</td>
+</tr>
+<tr>
+<td style="text-align:center">sudo apt-get clean</td>
+<td style="text-align:center">清理所有软件缓存（即缓存在/var/cache/apt/archives目录里面的deb包）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="四、vi编辑器的一些操作指令">四、vi编辑器的一些操作指令</h3>
+<p><img src="/2021/09/29/linux-ubuntu-%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/vi.png" alt></p>
+<p><strong>运行C语言文件：gcc 文件名.c &amp;&amp; ./a.out</strong></p>
+<h3 id="五、more分屏显示">五、more分屏显示</h3>
+<p>当出现信息过多快速滚屏时，用户会出现无法看清文件的问题，此时可以使用more命令，每次只显示一页，按下空格键可以显示下一页，按下q键退出显示，按下h键可以获取帮助。</p>
+<p><strong>命令：more 文件名.文件后缀</strong></p>
+<p>ctrl + b   返回上一屏</p>
+<p>ctrl + f   下一屏</p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/09/23/meta/">
+        <span class="nav-arrow">← </span>
+        
+          meta的应用
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Utterances START -->
+      <div id="utterances"></div>
+      <script src="https://utteranc.es/client.js"
+        repo=""
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async></script>    
+      <!-- Utterances END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%B8%80%E3%80%81%E6%96%87%E4%BB%B6%E5%8F%8A%E6%96%87%E4%BB%B6%E5%A4%B9%E7%AE%A1%E7%90%86"><span class="toc-nav-text">一、文件及文件夹管理</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#mkdir-%E5%88%9B%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="toc-nav-text">mkdir 创建文件夹</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#touch-%E5%88%9B%E5%BB%BA%E6%96%87%E4%BB%B6"><span class="toc-nav-text">touch  创建文件</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#rm-%E5%88%A0%E9%99%A4%E5%91%BD%E4%BB%A4"><span class="toc-nav-text">rm 删除命令</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#mv-%E7%A7%BB%E5%8A%A8%E6%96%87%E4%BB%B6"><span class="toc-nav-text">mv  移动文件</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#find-%E6%9F%A5%E6%89%BE%E6%96%87%E4%BB%B6"><span class="toc-nav-text">find 查找文件</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#cp-%E5%A4%8D%E5%88%B6%E6%96%87%E4%BB%B6"><span class="toc-nav-text">cp 复制文件</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#tar-%E6%89%93%E5%8C%85%E6%96%87%E4%BB%B6"><span class="toc-nav-text">tar 打包文件</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BA%8C%E3%80%81%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86"><span class="toc-nav-text">二、系统管理</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%B8%89%E3%80%81apt%E5%91%BD%E4%BB%A4"><span class="toc-nav-text">三、apt命令</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%9B%9B%E3%80%81vi%E7%BC%96%E8%BE%91%E5%99%A8%E7%9A%84%E4%B8%80%E4%BA%9B%E6%93%8D%E4%BD%9C%E6%8C%87%E4%BB%A4"><span class="toc-nav-text">四、vi编辑器的一些操作指令</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BA%94%E3%80%81more%E5%88%86%E5%B1%8F%E6%98%BE%E7%A4%BA"><span class="toc-nav-text">五、more分屏显示</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2021/09/29/linux-ubuntu-基础命令/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>
