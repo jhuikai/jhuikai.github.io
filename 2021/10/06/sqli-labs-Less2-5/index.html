@@ -203,26 +203,26 @@
   <article class="post-article">
     <section class="markdown-content"><p>通过反复的学习和尝试Less1-4的课程，我们对SQL注入有了更深刻的了解，这篇博客我们分为两个内容，一是整理sql注入的几种方法，二是介绍Less5的学习过程。</p>
 <span id="more"></span>
-<h5 id="SQL注入问题">SQL注入问题</h5>
-<p>Less1我们通过注入**?id=1’**回显出用户名和密码，但是当用同样的方法注入Less2时，却出现报错–<img src="/2021/10/06/sqli-labs-Less2-5/less%E5%88%86%E5%8F%B7%E9%97%AE%E9%A2%98.png" alt></p>
+<h3 id="SQL注入问题">SQL注入问题</h3>
+<p>Less1我们通过注入?id=1’回显出用户名和密码，但是当用同样的方法注入Less2时，却出现报错–<img src="/2021/10/06/sqli-labs-Less2-5/less%E5%88%86%E5%8F%B7%E9%97%AE%E9%A2%98.png" alt></p>
 <p>说明Less2的注入方法有别于Less1，通过提示，去掉分号之后回显正常，其余的操作就和Less1大致相同。</p>
-<p>接着学习Less3，当我们分别尝试Less1和Less2的注入方法之后，发现都不会回显，说明注入的方式又有所改变，这时候的注入为**?id=1’)**，需要加上括号，发现回显成功。</p>
+<p>接着学习Less3，当我们分别尝试Less1和Less2的注入方法之后，发现都不会回显，说明注入的方式又有所改变，这时候的注入为?id=1’)，需要加上括号，发现回显成功。</p>
 <p><img src="/2021/10/06/sqli-labs-Less2-5/sql%E6%B3%A8%E5%85%A52.png" alt></p>
-<p>Less4的注入为**?id=1&quot;)**，通过提示和试错便可得出，这里不过多赘述，需要注意的是，大多数情况中我们输入?<strong>id=1</strong>回显成功后却无法进一步查列等，就如下面这组图片所示。</p>
+<p>Less4的注入为?id=1&quot;)，通过提示和试错便可得出，这里不过多赘述，需要注意的是，大多数情况中我们输入?id=1回显成功后却无法进一步查列等，就如下面这组图片所示。</p>
 <p><img src="/2021/10/06/sqli-labs-Less2-5/sql%E4%B8%AD%E5%9B%9E%E6%98%BE4.1.png" alt></p>
 <p><img src="/2021/10/06/sqli-labs-Less2-5/sql%E4%B8%AD%E5%9B%9E%E6%98%BE4.2.png" alt></p>
 <p>仔细对比发现，区别就在于SQL注入，所以我们要学会根据sql的提示判断。</p>
 <p>补充一点，插入sql语句的方法，在index.php中插入如下语句</p>
 <p><img src="/2021/10/06/sqli-labs-Less2-5/QQ%E6%88%AA%E5%9B%BE20211006193127.png" alt></p>
 <p><strong>br</strong>起到换行的左右，参考HTML语法，使用时注意格式</p>
-<p>**–+**为GET请求用来注释后面的部分代码，帮助回显信息</p>
-<h5 id="Less5的学习">Less5的学习</h5>
+<p>–+为GET请求用来注释后面的部分代码，帮助回显信息</p>
+<h3 id="Less5的学习">Less5的学习</h3>
 <p>首先我们根据往常的经验照常注入**?id=1**之类的，发现没有报错，并回显出You are in…</p>
 <p><img src="/2021/10/06/sqli-labs-Less2-5/Bool.png" alt></p>
 <p>这里我们会产生疑惑，为什么会是You are in… 而不是像之前的回显出名称和密码，带着这个疑惑我们接着进入查列步骤。</p>
 <p>继而发现查第三列及以下回显You are in… ，而第四列及以上则出现报错。这时候我们不难理解，You are in… 说明我们查询的数据是正确的，并且知道Less5就是通过只回显You are in… 来执行操作。所以以下的步骤就是奥通过是否回显出You are in… 来证明我们的操作判断正确与否。</p>
 <p>下一步就是查库，假设我们现在不知道数据库是<strong>security</strong>，那我们要执行什么样的操作来正确查找呢。这里就要先介绍几个函数。</p>
-<h6 id="left函数">left函数</h6>
+<h4 id="left函数">left函数</h4>
 <p>left()函数：<strong>select left(database(),1)=‘’；</strong> // left(a,b)从左侧截取a的前b位，正确则返回1，错误则返回会0 ——这是在mysql终端中，举个例子：</p>
 <p><img src="/2021/10/06/sqli-labs-Less2-5/QQ%E6%88%AA%E5%9B%BE20211009000602.png" alt></p>
 <p>当然，前面需要先选择数据库，这里是**use security；**除此之外，left函数也可以用于查询其他方面。</p>
@@ -231,11 +231,11 @@
 <p>代码是：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localhost/sqil-labs-master/Less-5/?id=1&#x27;and left((select database()),2)=&#x27;se&#x27;</span><br></pre></td></tr></table></figure>
 <p>这里列举查询前两位，You are in…说明正确，也可以借助left函数查询字符的任意位置及字母数。</p>
-<h6 id="length函数">length函数</h6>
+<h4 id="length函数">length函数</h4>
 <p>length()函数：用来判断所要找的数据的字符串长度。比如我现在查询数据库的长度为8时回显出You are in… 证明该数据库长度为8（符合<strong>security</strong>）。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localhost/sqil-labs-master/Less-5/?id=1&#x27;and length(database())=&#x27;8&#x27;--+</span><br></pre></td></tr></table></figure>
 <p><img src="/2021/10/06/sqli-labs-Less2-5/%E9%95%BF%E5%BA%A6.png" alt></p>
-<h6 id="substr函数">substr函数</h6>
+<h4 id="substr函数">substr函数</h4>
 <p>substr(str,pos,len):从pos位置开始，截取len个字符。</p>
 <p>有分割的意思，上面举例都是查库，这里我们用substr查表试试。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localhost/sqli-labs-master/Less-5/?id=1&#x27; and substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1)=&#x27;e&#x27;--+</span><br></pre></td></tr></table></figure>
@@ -255,6 +255,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localhost/sqli-labs-master/Less-5/?id=1&#x27; and (select password from users where id=1)=&#x27;dumb&#x27;--+</span><br></pre></td></tr></table></figure>
 <p>这里密码和账号一样，都是<strong>dumb</strong>。</p>
 <p>以上的步骤，是我们在已知库名等条件下做的，可以看出，即使是在知道的前提下，都这么的繁琐，那要是在一无所知猜测的情况，工作得繁琐到什么程度，所以，以上的方法要会，但不建议用。</p>
+<h4 id="BurpSuite">BurpSuite</h4>
 <p>下面，我们采用<strong>BurpSuite</strong>爆破的形式，下载和代理浏览器的方法百度。</p>
 <p>我们率先爆破数据库。</p>
 <p>代理浏览器选择<strong>拦截请求（intercept is on）</strong>，截断数据后右键选择</p>
@@ -334,7 +335,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#SQL%E6%B3%A8%E5%85%A5%E9%97%AE%E9%A2%98"><span class="toc-nav-text">SQL注入问题</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#Less5%E7%9A%84%E5%AD%A6%E4%B9%A0"><span class="toc-nav-text">Less5的学习</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#left%E5%87%BD%E6%95%B0"><span class="toc-nav-text">left函数</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#length%E5%87%BD%E6%95%B0"><span class="toc-nav-text">length函数</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#substr%E5%87%BD%E6%95%B0"><span class="toc-nav-text">substr函数</span></a></li></ol></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#SQL%E6%B3%A8%E5%85%A5%E9%97%AE%E9%A2%98"><span class="toc-nav-text">SQL注入问题</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Less5%E7%9A%84%E5%AD%A6%E4%B9%A0"><span class="toc-nav-text">Less5的学习</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#left%E5%87%BD%E6%95%B0"><span class="toc-nav-text">left函数</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#length%E5%87%BD%E6%95%B0"><span class="toc-nav-text">length函数</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#substr%E5%87%BD%E6%95%B0"><span class="toc-nav-text">substr函数</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#BurpSuite"><span class="toc-nav-text">BurpSuite</span></a></li></ol></li></ol>
     
   </div>
 </aside>
