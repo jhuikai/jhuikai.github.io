@@ -42,18 +42,10 @@
     <link href="http://example.com/2021/10/17/Bugku-web%E7%BB%83%E4%B9%A0-2/"/>
     <id>http://example.com/2021/10/17/Bugku-web%E7%BB%83%E4%B9%A0-2/</id>
     <published>2021-10-17T14:33:51.000Z</published>
-    <updated>2021-10-20T15:15:16.868Z</updated>
+    <updated>2021-10-20T16:12:40.231Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html">&lt;h4 id=&quot;管理员系统&quot;&gt;管理员系统&lt;/h4&gt;
-&lt;p&gt;启动场景后我们发现这很像sqli注入POST方式，所以我们随便猜测账号密码后在user上注入，但是通过查列数等其他步骤他都只会回复，IP禁止访问…&lt;/p&gt;
-&lt;p&gt;&lt;img</summary>
-        
-      
+    <summary type="html">&lt;p&gt;这次练习了四道题，现在的水平要完全独立得到flag还是较为困难的，所以大都采取边做边练，详细记录每一个步骤，方便后续复习和参考，强调多练多记，不断动手实操，不要操之过急。&lt;/p&gt;</summary>
     
     
     

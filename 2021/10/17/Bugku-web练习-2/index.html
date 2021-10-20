@@ -202,7 +202,9 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h4 id="管理员系统">管理员系统</h4>
+    <section class="markdown-content"><p>这次练习了四道题，现在的水平要完全独立得到flag还是较为困难的，所以大都采取边做边练，详细记录每一个步骤，方便后续复习和参考，强调多练多记，不断动手实操，不要操之过急。</p>
+<span id="more"></span>
+<h4 id="管理员系统">管理员系统</h4>
 <p>启动场景后我们发现这很像sqli注入POST方式，所以我们随便猜测账号密码后在user上注入，但是通过查列数等其他步骤他都只会回复，IP禁止访问…</p>
 <p><img src="/2021/10/17/Bugku-web%E7%BB%83%E4%B9%A0-2/%E7%AE%A1%E7%90%86%E5%91%98%E7%B3%BB%E7%BB%9F.png" alt></p>
 <p>打开源码后在无数个n后找到一串奇奇怪怪的东西，怀疑应该是密文之类的东西，我们开始解码，至于是什么类型咱也不知道，就一个一个尝试，最后总算是在Base64发现好东西。</p>
