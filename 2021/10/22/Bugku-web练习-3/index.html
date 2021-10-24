@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="yanm1ng&#39;s blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Bugku-web练习-3 | Hexo
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+  
+    
+<script src="/js/local-search.js"></script>
+
+
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Hexo</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/series/" class="item-link">Series</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+      
+        <li class="menu-item menu-item-search right-list">
+    <a role="button" class="popup-trigger">
+        <i class="fa fa-search fa-fw"></i>
+    </a>
+</li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/series/" class="menu-link">Series</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+      <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+            <span class="search-icon">
+                <i class="fa fa-search"></i>
+            </span>
+            <div class="search-input-container">
+                <input autocomplete="off" autocapitalize="off"
+                    placeholder="Please enter your keyword(s) to search." spellcheck="false"
+                    type="search" class="search-input">
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa fa-times-circle"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Bugku-web练习-3</h2>
+  <p class="post-date">2021-10-22</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>这次的练习题目就比较好上手，难度也不大，不过还是很有参考性的。</p>
+<span id="more"></span>
+<h4 id="社工-伪造">社工-伪造</h4>
+<p>启动场景后出现一个qq登陆，那我们肯定是不能输入真实信息的，随便输了个就进来了，可见这是任意的。然后跟小美唠嗑，关键在于，他只把flag给他的男友，注意到男友qq也给我们了，那我们试试用他的男友账号登陆。</p>
+<p><img src="/2021/10/22/Bugku-web%E7%BB%83%E4%B9%A0-3/z1.png" alt></p>
+<p>发现登陆不了，并夸了我一手，说明我们大体思路还是在轨道上的。</p>
+<p>后面我就常规抓包，扫描，可惜都没获得什么信息，然后我们在回到和小美的聊天，看看他的空间。</p>
+<p><img src="/2021/10/22/Bugku-web%E7%BB%83%E4%B9%A0-3/z3.png" alt></p>
+<p>内容非常的真实哈，本关的关键字是伪造，并且他又说了只把flag给男友，那我们是不是想办法伪装他的男友呢？这就要想小美是如何识别究竟是不是男友的，然后我突发奇想，在qq上搜了一下这个qq，结果还真有，并且一看这qq就是荒废的。</p>
+<p><img src="/2021/10/22/Bugku-web%E7%BB%83%E4%B9%A0-3/1111.png" alt></p>
+<p>此时要伪装，就需要在找个qq修改和上面头像，昵称等，让小美错付！</p>
+<p><img src="/2021/10/22/Bugku-web%E7%BB%83%E4%B9%A0-3/QQ%E6%88%AA%E5%9B%BE20211022191755.png" alt></p>
+<p><img src="/2021/10/22/Bugku-web%E7%BB%83%E4%B9%A0-3/QQ%E6%88%AA%E5%9B%BE20211022191838.png" alt></p>
+<p>这里需要特别注意的是，昵称不是指尖上的旋律，而要看小美空间，修改为小bug。</p>
+<h4 id="源代码">源代码</h4>
+<p>很明显了吧，看源代码就好了。</p>
+<p><img src="/2021/10/22/Bugku-web%E7%BB%83%E4%B9%A0-3/4.png" alt></p>
+<p>script中应该是密文，根据最后一句的指示我们就能拼接出第一个flag了</p>
+<p><img src="/2021/10/22/Bugku-web%E7%BB%83%E4%B9%A0-3/5.png" alt></p>
+<p>接着submit就能得到flag了。</p>
+<p><img src="/2021/10/22/Bugku-web%E7%BB%83%E4%B9%A0-3/3...png" alt></p>
+<h4 id="cookies">cookies</h4>
+<p>页面和源码都是很长的乱语句，源码也是一样，没有实际意义。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://114.67.246.176:17085/index.php?line=&amp;filename=a2V5cy50eHQ=</span><br></pre></td></tr></table></figure>
+<p>但是这个url一看就是隐藏着什么信息，并且自我感觉有点像post方式，我们先对filename后面的字符串解码，结果是<strong>keys.txt</strong>，是一个文档文件，可是这个是一个php文件，明显不符合，这也是为什么源码里啥也没有的原因。所以我们尝试对index.php编码后替换，但是刷新后是空页面，原来是对于line我们没有选择行数。</p>
+<p><img src="/2021/10/22/Bugku-web%E7%BB%83%E4%B9%A0-3/q1.png" alt></p>
+<p>选择后就出现了php源码的指定行数的内容，所以我们只有一行一行的拼接起来，就可以得到源码了，然后我们展开拼接，得到以下结果。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">error_reporting(0);</span><br><span class="line">$file=base64_decode(isset($_GET[&#x27;filename&#x27;])?$_GET[&#x27;filename&#x27;]:&quot;&quot;); </span><br><span class="line">$line=isset($_GET[&#x27;line&#x27;])?intval($_GET[&#x27;line&#x27;]):0; </span><br><span class="line">if($file==&#x27;&#x27;) header(&quot;location:index.php?line=&amp;filename=a2V5cy50eHQ=&quot;); </span><br><span class="line">$file_list = array( </span><br><span class="line">&#x27;0&#x27; =&gt;&#x27;keys.txt&#x27;, </span><br><span class="line">&#x27;1&#x27; =&gt;&#x27;index.php&#x27;, </span><br><span class="line">); </span><br><span class="line"></span><br><span class="line">if(isset($_COOKIE[&#x27;margin&#x27;]) &amp;&amp; $_COOKIE[&#x27;margin&#x27;]==&#x27;margin&#x27;)&#123; </span><br><span class="line">$file_list[2]=&#x27;keys.php&#x27;; </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line">if(in_array($file, $file_list))&#123; </span><br><span class="line">$fa = file($file); </span><br><span class="line">echo $fa[$line]; </span><br><span class="line">&#125; </span><br><span class="line">?&gt; </span><br></pre></td></tr></table></figure>
+<p>如果发现返回的是空界面，不要急于终止，往下多试两个。看到cookie赋值就明白了。</p>
+<p><strong>‘=&gt;’就是定义数组键名让它指向数组末一个元素， 跟指针很相似</strong>——所以不将乱码修改为php的，会返回0，无意义。</p>
+<p>接下来只需要在cookie中满足margin=margin就可以拿到flag了。</p>
+<h4 id="成绩查询-sql注入">成绩查询(sql注入)</h4>
+<p>这就是一道sqli注入的题目，通过源码知道是post方式，name=id，先用id=1，回显出现龙龙龙的成绩，然后id=1‘#注释后仍然回显成绩，所以这就找到了注释的方式，下面我们就开始查库等步骤。</p>
+<h5 id="查库">查库</h5>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=-1&#x27;union select 1,2,3,group_concat(schema_name) from information_schema.schemata#</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/22/Bugku-web%E7%BB%83%E4%B9%A0-3/aa1.png" alt></p>
+<h5 id="查表">查表</h5>
+<p>查库后显示有四个库，不难理解skctf是我们需要的那一个。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=-1&#x27;union select 1,2,3,group_concat(table_name) from information_schema.tables where table_schema=&#x27;skctf&#x27;#</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/22/Bugku-web%E7%BB%83%E4%B9%A0-3/aa2.png" alt></p>
+<h5 id="查列">查列</h5>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=-1&#x27;union select 1,2,3,group_concat(column_name) from information_schema.columns where table_name=&#x27;fl4g&#x27;#</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/22/Bugku-web%E7%BB%83%E4%B9%A0-3/aa3.png" alt></p>
+<h5 id="flag">flag</h5>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=-1&#x27; union select 1,2,3,group_concat(skctf_flag) from fl4g #</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/22/Bugku-web%E7%BB%83%E4%B9%A0-3/aa4.png" alt></p>
+<h4 id="文件包含-php伪协议">文件包含(php伪协议)</h4>
+<p><img src="/2021/10/22/Bugku-web%E7%BB%83%E4%B9%A0-3/php.png" alt></p>
+<p>注意到url上的?file=show.php，我们先尝试将show改为画面上的index看看，发现无法连接。</p>
+<p><img src="/2021/10/22/Bugku-web%E7%BB%83%E4%B9%A0-3/aaa.png" alt></p>
+<p>?file=XXX.php等是典型的文件包含，处理这一方面主要用到<strong>php伪协议</strong>的方法，php://filter可以获取指定文件源码。当它与包含函数结合时，php://filter流会被当作php文件执行。所以我们一般对其进行编码，让其不执行。从而导致 任意文件读取。</p>
+<h5 id="php伪协议知识点"><strong>php伪协议知识点</strong></h5>
+<p>[]: <a target="_blank" rel="noopener" href="https://www.php.cn/php-weizijiaocheng-481803.html">https://www.php.cn/php-weizijiaocheng-481803.html</a>	“php伪协议知识点大全”</p>
+<p>这里我们主要是用到<strong>转换过滤器</strong>的知识点</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">第一种用法:</span><br><span class="line">?file=php://filter/convert.base64-encode/resouce=xxx.php</span><br><span class="line">第二种用法:</span><br><span class="line">?file=php://filter/read=convert.base64-encode/resource=xxx.php</span><br></pre></td></tr></table></figure>
+<p>可以读取目标文件的内容，由于读取时，一些代码不能显示，通常使用Base64加密后读取再解密。</p>
+<p>所以我们就根据以上方法在url上修改为 ?file=php://filter/read=convert.base64-encode/resource=index.php ，就会拿到base64加密的字符串，解码后就会得到flag。</p>
+<p><img src="/2021/10/22/Bugku-web%E7%BB%83%E4%B9%A0-3/QQ%E6%88%AA%E5%9B%BE20211024185001.png" alt></p>
+<p>如果是转换过滤的是show.php，得到的是index.php。</p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/10/19/sqli-labs-Less18-22/">
+        <span class="nav-arrow">← </span>
+        
+          sqli-labs-Less18-22
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Utterances START -->
+      <div id="utterances"></div>
+      <script src="https://utteranc.es/client.js"
+        repo=""
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async></script>    
+      <!-- Utterances END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%A4%BE%E5%B7%A5-%E4%BC%AA%E9%80%A0"><span class="toc-nav-text">社工-伪造</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%BA%90%E4%BB%A3%E7%A0%81"><span class="toc-nav-text">源代码</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#cookies"><span class="toc-nav-text">cookies</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%88%90%E7%BB%A9%E6%9F%A5%E8%AF%A2-sql%E6%B3%A8%E5%85%A5"><span class="toc-nav-text">成绩查询(sql注入)</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%9F%A5%E5%BA%93"><span class="toc-nav-text">查库</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%9F%A5%E8%A1%A8"><span class="toc-nav-text">查表</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%9F%A5%E5%88%97"><span class="toc-nav-text">查列</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#flag"><span class="toc-nav-text">flag</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB-php%E4%BC%AA%E5%8D%8F%E8%AE%AE"><span class="toc-nav-text">文件包含(php伪协议)</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#php%E4%BC%AA%E5%8D%8F%E8%AE%AE%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="toc-nav-text">php伪协议知识点</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2021/10/22/Bugku-web练习-3/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>

@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-10-21T09:19:10.074Z</updated>
+  <updated>2021-10-24T11:20:27.397Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,21 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Bugku-web练习-3</title>
+    <link href="http://example.com/2021/10/22/Bugku-web%E7%BB%83%E4%B9%A0-3/"/>
+    <id>http://example.com/2021/10/22/Bugku-web%E7%BB%83%E4%B9%A0-3/</id>
+    <published>2021-10-22T10:40:34.000Z</published>
+    <updated>2021-10-24T11:20:27.397Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;这次的练习题目就比较好上手，难度也不大，不过还是很有参考性的。&lt;/p&gt;</summary>
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>sqli-labs-Less18-22</title>
