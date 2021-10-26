@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="yanm1ng&#39;s blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      sqli-labs-Less23-25a | Hexo
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+  
+    
+<script src="/js/local-search.js"></script>
+
+
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Hexo</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/series/" class="item-link">Series</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+      
+        <li class="menu-item menu-item-search right-list">
+    <a role="button" class="popup-trigger">
+        <i class="fa fa-search fa-fw"></i>
+    </a>
+</li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/series/" class="menu-link">Series</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+      <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+            <span class="search-icon">
+                <i class="fa fa-search"></i>
+            </span>
+            <div class="search-input-container">
+                <input autocomplete="off" autocapitalize="off"
+                    placeholder="Please enter your keyword(s) to search." spellcheck="false"
+                    type="search" class="search-input">
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa fa-times-circle"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>sqli-labs-Less23-25a</h2>
+  <p class="post-date">2021-10-26</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>23关开始后几关，主要是学习当某些字符被过滤时如何绕过。</p>
+<span id="more"></span>
+<h4 id="Less23">Less23</h4>
+<p>又回到GET方式下的注入，用?id=1’确定存在注入后，我们用–+注释，试过多种注入方式都报错，由于之前在Bugku做过sql注入，猜测这里可能是因为某些字符被过滤了，打开源码证实了我们的猜想。</p>
+<p><img src="/2021/10/26/sqli-labs-Less23-25a/%E8%BF%87%E6%BB%A4.png" alt></p>
+<p>这里#和–被替换成空字符串了，也就是被过滤，意味着–+的注释方式已不可取，所以我们必须要寻找可以替换的注释方法,这里总结两种：</p>
+<h5 id="替换–-的注入方式">替换–+的注入方式</h5>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">or &#x27;1 // 总返回真，有问题</span><br><span class="line">;%00</span><br></pre></td></tr></table></figure>
+<p>但是用第一种注释方法判断列数时，总返回为真，这是由MySQL的解析顺序引起的。所以我们只用第二种爆库，后面的步骤就很常规了。</p>
+<h4 id="解析or-‘1问题">解析or ‘1问题</h4>
+<p>当我们采用这种闭合（注释）方式时，发现可以回显，但总返回为真，这是由于MySQL的解析顺序引起的，在这种情况下使用order by语句时，where=…会将他看作一个整体，所以1=1让他总返回为真，那我们有什么处理方法吗？（具体可以参考 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/annsshadow/p/5037667.html%EF%BC%89">https://www.cnblogs.com/annsshadow/p/5037667.html）</a></p>
+<p>首先，order by查询列数得考虑用union联合查询替代，并且，要划分为两部分才能让他不总是1=1始终为真,这就采用and的性质，可以理解为逻辑与，前一个and先判断，再判断后一个and。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&#x27;and &#x27;1&#x27;=&#x27;1&#x27;union select 1,2,3 and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+<p>不过要注意的是，输入有别于之前，这里举例一个查库就看明白了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&#x27; and &#x27;1&#x27;=&#x27;1&#x27; union select 1,(select group_concat(schema_name) from information_schema.schemata),3 and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+<p>加()是2中的看作整体，图文说明：</p>
+<p><img src="/2021/10/26/sqli-labs-Less23-25a/123.png" alt></p>
+<h5 id="updatexml方法">updatexml方法</h5>
+<p>如果文档中有可以改变的节点的值，就可以使用updatexml，当xpath_string格式出现错误，mysql则会爆出xpath语法错误（xpath syntax）</p>
+<p>例如：select * from text where ide = 1 and (updatexml(1,0x7e,3))；由于0x7e是~，不符合xpath语法格式，因此报出xpath语法错误，从而得到我们想要的结果。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27;) and updatexml(1,concat(0x7e,(select table_name from information_schema.tables where table_schema=&#x27;security&#x27; limit 3, 1),0x7e),1);%00</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/26/sqli-labs-Less23-25a/1.png" alt></p>
+<h4 id="Less24">Less24</h4>
+<p>首先，我们需要理解学习二次注入的意思，下面是简单的摘要。</p>
+<h5 id="二次注入">二次注入</h5>
+<p><strong>二次注入可以理解为</strong>：攻击者构造的恶意数据存储在数据库后，恶意数据被读取并进入到SQL查询语句所导致的注入。防御者可能在用户输入恶意数据时对其中的特殊字符进行了转义处理，但在恶意数据插入到数据库时被处理数据又被还原并储存在数据库中，当web程序调用数据库中的恶意数据并执行SQL查询时，就发生了二次注入。（简单来说，就是第一次注入数据，第二次引用数据）</p>
+<p>二次注入，可以概括为以下两步：</p>
+<p><strong>第一步：插入恶意数据</strong></p>
+<p>进入数据库插入数据时，对其中的特殊字符进行了转义处理，在写入数据库的时候又保留了原来的数据。</p>
+<p><strong>第二步：引用恶意数据</strong></p>
+<p>开发者默认存入数据库的数据都是安全的，在进行查询时，直接从数据库取出恶意数据，没有进行下一步的检验处理。</p>
+<p>**例如：**输入参数id=1’ — 传输转移id=1\ ’ — 此时转义之后无法注入 — 存入数据库为1’ — 再次取出直接闭合</p>
+<h5 id="Less24-解">Less24-解</h5>
+<p>先看一下我们现在字段值的情况，admin的密码为hello，可以看到15行和16行是我们实行二次注入的替换账号，我们就是通过注册新账号来修改admin的密码。<img src="/2021/10/26/sqli-labs-Less23-25a/a.png" alt></p>
+<p>ok，我们先重置以下数据，免得太混乱，假设我们现在不知道admin的密码，我现在要实现将密码改为less24。</p>
+<p>一、注册一个账号为admin‘#，密码为less24，注册成功会显示下面的画面</p>
+<p><img src="/2021/10/26/sqli-labs-Less23-25a/1234.png" alt></p>
+<p>二、点击home回到首页，登陆刚才注册的账号</p>
+<p><img src="/2021/10/26/sqli-labs-Less23-25a/mima1.png" alt></p>
+<p>告诉你可以修改密码，我们修改为less24，成功。</p>
+<p><img src="/2021/10/26/sqli-labs-Less23-25a/zx.png" alt></p>
+<p>三、回到首页，就可以以less24登陆admin账号，登陆成功的界面是这样的，是不是就实现了在不知道真正的密码黑进了数据库？</p>
+<p><img src="/2021/10/26/sqli-labs-Less23-25a/p.png" alt></p>
+<p>四、上帝视角下的字段值是这样的。</p>
+<p><img src="/2021/10/26/sqli-labs-Less23-25a/k.png" alt></p>
+<p>jhuikai是admin’#的注册密码，我们对其修改为less24，然后修改的密码不改变原账号的密码，修改的是admin的密码。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">原理：</span><br><span class="line">（1）后端（PHP）代码对语句进行了转义</span><br><span class="line">（2）保存进数据库（mysql）时没有转义，是原语句</span><br></pre></td></tr></table></figure>
+<h4 id="Less25-25a">Less25&amp;25a</h4>
+<p>学习第25关之前，需要先大概了解<strong>SQL注入绕过waf的姿势</strong>，百度就有很详细的讲解。</p>
+<p>[]: <a target="_blank" rel="noopener" href="https://www.cnblogs.com/cute-puli/p/11146625.html">https://www.cnblogs.com/cute-puli/p/11146625.html</a>	“SQL注入绕过waf的一万种姿势”</p>
+<p>打开源码发现这一次被过滤的是or和and。</p>
+<p><img src="/2021/10/26/sqli-labs-Less23-25a/po.png" alt></p>
+<p>所以我们需要找到可以绕过or和and的方法，这里整理了三种方法。</p>
+<h5 id="绕过or和and">绕过or和and</h5>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">大小写绕过 // Or aNd</span><br><span class="line">关键字重复 // OORr</span><br><span class="line">关键字替换 // and=&amp;&amp;；or=||</span><br></pre></td></tr></table></figure>
+<p>方法不局限于这三种，还有很多，不过要特别注意的是，由于mysql对大小写并不敏感，大小写绕过不适用。</p>
+<p>所以我们只要在爆库是重复or和and就可以了，通过这里就可以知道自己输入的回显出的语句了。</p>
+<p><img src="/2021/10/26/sqli-labs-Less23-25a/7.png" alt></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/10/22/Bugku-web%E7%BB%83%E4%B9%A0-3/">
+        <span class="nav-arrow">← </span>
+        
+          Bugku-web练习-3
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Utterances START -->
+      <div id="utterances"></div>
+      <script src="https://utteranc.es/client.js"
+        repo=""
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async></script>    
+      <!-- Utterances END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less23"><span class="toc-nav-text">Less23</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%9B%BF%E6%8D%A2%E2%80%93-%E7%9A%84%E6%B3%A8%E5%85%A5%E6%96%B9%E5%BC%8F"><span class="toc-nav-text">替换–+的注入方式</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%A7%A3%E6%9E%90or-%E2%80%981%E9%97%AE%E9%A2%98"><span class="toc-nav-text">解析or ‘1问题</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#updatexml%E6%96%B9%E6%B3%95"><span class="toc-nav-text">updatexml方法</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less24"><span class="toc-nav-text">Less24</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5"><span class="toc-nav-text">二次注入</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#Less24-%E8%A7%A3"><span class="toc-nav-text">Less24-解</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less25-25a"><span class="toc-nav-text">Less25&amp;25a</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E7%BB%95%E8%BF%87or%E5%92%8Cand"><span class="toc-nav-text">绕过or和and</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2021/10/26/sqli-labs-Less23-25a/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>
