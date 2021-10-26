@@ -238,7 +238,7 @@
 <p>先看一下我们现在字段值的情况，admin的密码为hello，可以看到15行和16行是我们实行二次注入的替换账号，我们就是通过注册新账号来修改admin的密码。<img src="/2021/10/26/sqli-labs-Less23-25a/a.png" alt></p>
 <p>ok，我们先重置以下数据，免得太混乱，假设我们现在不知道admin的密码，我现在要实现将密码改为less24。</p>
 <p>一、注册一个账号为admin‘#，密码为less24，注册成功会显示下面的画面</p>
-<p><img src="/2021/10/26/sqli-labs-Less23-25a/1234.png" alt></p>
+<p><img src="/2021/10/26/sqli-labs-Less23-25a/1234-16352256213932.png" alt></p>
 <p>二、点击home回到首页，登陆刚才注册的账号</p>
 <p><img src="/2021/10/26/sqli-labs-Less23-25a/mima1.png" alt></p>
 <p>告诉你可以修改密码，我们修改为less24，成功。</p>
@@ -259,7 +259,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">大小写绕过 // Or aNd</span><br><span class="line">关键字重复 // OORr</span><br><span class="line">关键字替换 // and=&amp;&amp;；or=||</span><br></pre></td></tr></table></figure>
 <p>方法不局限于这三种，还有很多，不过要特别注意的是，由于mysql对大小写并不敏感，大小写绕过不适用。</p>
 <p>所以我们只要在爆库是重复or和and就可以了，通过这里就可以知道自己输入的回显出的语句了。</p>
-<p><img src="/2021/10/26/sqli-labs-Less23-25a/7.png" alt></p>
+<p><img src="/2021/10/26/sqli-labs-Less23-25a/7-16352255990381.png" alt></p>
 </section>
     <!-- Tags START -->
     
