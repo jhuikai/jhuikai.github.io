@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-10-29T16:52:22.343Z</updated>
+  <updated>2021-11-01T13:37:31.731Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,21 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>sqli-labs-Less29-32</title>
+    <link href="http://example.com/2021/11/01/sqli-labs-Less29-32/"/>
+    <id>http://example.com/2021/11/01/sqli-labs-Less29-32/</id>
+    <published>2021-11-01T13:28:17.000Z</published>
+    <updated>2021-11-01T13:37:31.731Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;我们继续sqli的学习，由于Less29-31需要搭建tomcat的环境，这里也是出了点小问题，所以耽误了学习时间。&lt;/p&gt;</summary>
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>sqli-labs-Less26-28a</title>

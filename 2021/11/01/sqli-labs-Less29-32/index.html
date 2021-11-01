@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="yanm1ng&#39;s blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      sqli-labs-Less29-32 | Hexo
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+  
+    
+<script src="/js/local-search.js"></script>
+
+
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Hexo</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/series/" class="item-link">Series</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+      
+        <li class="menu-item menu-item-search right-list">
+    <a role="button" class="popup-trigger">
+        <i class="fa fa-search fa-fw"></i>
+    </a>
+</li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/series/" class="menu-link">Series</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+      <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+            <span class="search-icon">
+                <i class="fa fa-search"></i>
+            </span>
+            <div class="search-input-container">
+                <input autocomplete="off" autocapitalize="off"
+                    placeholder="Please enter your keyword(s) to search." spellcheck="false"
+                    type="search" class="search-input">
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa fa-times-circle"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>sqli-labs-Less29-32</h2>
+  <p class="post-date">2021-11-01</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>我们继续sqli的学习，由于Less29-31需要搭建tomcat的环境，这里也是出了点小问题，所以耽误了学习时间。</p>
+<span id="more"></span>
+<h4 id="Less29-31">Less29-31</h4>
+<p>首先，我们需要知道这三关是有两层服务器架构的，所以就要求我们要先搭建以tomcat为引擎的jsp服务器，如果不搭建只是php服务器上操作，那就跟Less1没什么区别了，我们先简单了解一下服务器两层架构的原理：</p>
+<h5 id="服务器两层架构">服务器两层架构</h5>
+<p>（以下内容摘自浏览器）</p>
+<p><img src="/2021/11/01/sqli-labs-Less29-32/85-16357733806391.png" alt></p>
+<p>服务器端有两个部分：第一部分为 tomcat 为引擎的 jsp 型服务器，第二部分为 apache 为引擎的 php 服务器，真正提供 web 服务的是 php 服务器。</p>
+<p>工作流程为：client 访问服务器，能直接访问到 tomcat 服务器，然后 tomcat 服务器再向 apache 服务器请求数据。数据返回路径则相反。</p>
+<p>这就是为什么我们在payload的时候需要用到两个参数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8080/sqli-labs/Less-29/index.jsp?id=1&amp;id=3</span><br></pre></td></tr></table></figure>
+<p>tomcat (jsp) 解析第一个参数，即回显<code>id=1</code>;apache (php) 解析最后一个参数，即回显<code>id=3</code>.</p>
+<p>并且客户端最后反应的是<code>id=3</code>这个参数，因为实际上提供服务的是 apache 服务器，返回的数据也应该是 apache 处理的数据。</p>
+<p>而在我们实际应用中，也是有两层服务器的情况，那为什么要这么做？是因为我们往往在 tomcat 服务器处做数据过滤和处理，功能类似为一个 <a target="_blank" rel="noopener" href="https://blog.csdn.net/jpshangdexiaofeixia/article/details/78999887">WAF</a>。</p>
+<p>而正因为解析参数的不同，我们此处可以利用该原理绕过 WAF 的检测。如 payload：<code>index.jsp?id=1&amp;id=0 or 1=1--+</code>，tomcat 只检查第一个参数<code>id=1</code>，而对第二个参数<code>id=0 or 1=1--+</code>不做检查，直接传给了 apache，apache 恰好解析第二个参数，便达到了攻击的目的。</p>
+<p>该用法就是 HPP（HTTP Parameter Pollution）即 HTTP 参数污染攻击的一个应用。HPP 可对服务器和客户端都能够造成一定的威胁。</p>
+<p><strong>注入方法</strong></p>
+<p>所以，在tomcat环境配置好之后，注入的方法就和之前一样了，要注意的是，我们注入是基于php服务器，所以我们是在第二个id上注入，改变第一个（tomcat）id的值不会有变化，那我们还是按往常一样查看源码。</p>
+<p>这是来自login.php中的源码：</p>
+<p><img src="/2021/11/01/sqli-labs-Less29-32/pp-16357733806392.png" alt></p>
+<h5 id="SERVER-“”-函数"><a target="_blank" rel="noopener" href="https://www.cnblogs.com/thinksasa/archive/2012/11/11/2765141.html">$_SERVER[“”]函数</a></h5>
+<p>$_SERVER存储当前服务器信息，这里列举最常用的四个，就大概可以明白该函数的用法了。</p>
+<p>1，$_SERVER[“QUERY_STRING”]</p>
+<p>说明：查询(query)的字符串</p>
+<p>2，$_SERVER[“REQUEST_URI”]</p>
+<p>说明：访问此页面所需的URI</p>
+<p>3，$_SERVER[“SCRIPT_NAME”]</p>
+<p>说明：包含当前脚本的路径</p>
+<p>4，$_SERVER[“PHP_SELF”]</p>
+<p>说明：当前正在执行脚本的文件名</p>
+<h5 id="java-implimentation-函数">java_implimentation()函数</h5>
+<p>函数java_implimentation()的逻辑有严重错误： 一旦这个数组里的个数不止1个，并且每个组员都是id开头，那么返回只会返回第一个组员的 比如id=1&amp;id=sql_injection 传入java_implimentation函数会先被打散为：[“id=1”,”id=sql_injection”]，返回的是1，成功的通过了whitelist的检查。 但是$id=$_GET[‘id’]取的是最后一个id，所以我们只需要把payload放在后面的id就好。</p>
+<p>比如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&amp;id= &#x27;union select 1,version(),database() --+</span><br></pre></td></tr></table></figure>
+<p>这种绕过方法，就叫做http参数污染。</p>
+<h5 id="function-whitelist函数"><a target="_blank" rel="noopener" href="http://stylelint.cn/user-guide/rules/function-whitelist/"><code>function-whitelist</code></a>函数</h5>
+<p>指定一个允许的函数的白名单</p>
+<h5 id="foreach-函数"><a target="_blank" rel="noopener" href="http://c.biancheng.net/view/750.html">foreach()函数</a></h5>
+<p>foreach 循环语句是 <a target="_blank" rel="noopener" href="http://c.biancheng.net/java/">Java</a> 1.5 的新特征之一，在遍历数组、集合方面，foreach 为开发者提供了极大的方便。foreach 循环语句是 for 语句的特殊简化版本，主要用于执行遍历功能的循环。</p>
+<p>foreach 循环语句的语法格式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for(类型 变量名:集合) &#123;</span><br><span class="line">    语句块;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中，“类型”为集合元素的类型，“变量名”表示集合中的每一个元素，“集合”是被遍历的集合对象或数组。每执行一次循环语句，循环变量就读取集合中的一个元素，其执行流程如图所示.</p>
+<p><img src="/2021/11/01/sqli-labs-Less29-32/745-16357721264591-16357733806403.png" alt></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">foreach (array_expression as $value) // 每执行一次循环语句，循环变量就读取集合中的元素赋值给$value</span><br><span class="line">foreach($qs_array as $key =&gt; $value) // 每执行一次循环语句，循环变量就读取集合中的元素赋值给$value,同时读取集合中键名赋值给$key</span><br></pre></td></tr></table></figure>
+<hr>
+<p>Less30和Less31的解题步骤同Less29，前者为<code>''</code>，后者为<code>&quot;)</code>，其实就是2、3关的方式。</p>
+<hr>
+<h5 id="补充知识-宽字节注入"><strong>补充知识_宽字节注入</strong></h5>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/helloc0de/article/details/76180190">参考文章1</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42040292/article/details/90719507">参考文章2</a></p>
+<p>上面是百度的两篇简单的文章，了解完后才能开始Less32.</p>
+<h4 id="Less32">Less32</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function check_addslashes($string)</span><br><span class="line">&#123;</span><br><span class="line">    $string = preg_replace(&#x27;/&#x27;. preg_quote(&#x27;\\&#x27;) .&#x27;/&#x27;, &quot;\\\\\\&quot;, $string);          //escape any backslash</span><br><span class="line">    $string = preg_replace(&#x27;/\&#x27;/i&#x27;, &#x27;\\\&#x27;&#x27;, $string);                               //escape single quote with a backslash</span><br><span class="line">    $string = preg_replace(&#x27;/\&quot;/&#x27;, &quot;\\\&quot;&quot;, $string);                                //escape double quote with a backslash</span><br></pre></td></tr></table></figure>
+<p>以上就是转义的源码，可以看出，单双引号以及右划线被<code>\</code>注释掉了，这就是导致我们没办法正常注入的原因，所以就需要引用宽字节注入。在上面我们已经补充了关于宽字节注入的知识，这里做一个简单的解释：</p>
+<p>因为<code>\</code>的存在使<code>--+</code>无法注释，这就导致我们的单双引号等注入方式失效。在源码中可以看到有gbk的编码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql_query(&quot;SET NAMES gbk&quot;);</span><br></pre></td></tr></table></figure>
+<p>GBK的中文编码及符号是双字节来表示的，英文编码是用ASCII码表示的，即用单字节表示。所以我们可以利用宽字节的方式用<code>%df</code>或<code>%aa</code>与<code>\</code>结合成一个字节（繁体汉字），从而剔除掉\的影响。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/sqli-labs-master/Less-32/?id=-1%df%27 union select 1,2,3--+</span><br></pre></td></tr></table></figure>
+<p>然后继续到后面的步骤，引库和引表需要使用单双引号，我们可以转化为16进制，就可以避免\的问题。</p>
+<p>再者，我们可以通过%5c进行转移处理，同样是将双字节转化为单字节（繁体）。<a target="_blank" rel="noopener" href="https://www.atool99.com/urlencode.php">解码网站</a></p>
+<p><img src="/2021/11/01/sqli-labs-Less29-32/895-16357733806404.png" alt></p>
+<h4 id="总结">总结</h4>
+<p>从现在起，我们将更多的时间放在对源码的学习，加强理解，培养独立分析源码的能力。</p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/10/26/sqli-labs-Less26-28a/">
+        <span class="nav-arrow">← </span>
+        
+          sqli-labs-Less26-28a
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Utterances START -->
+      <div id="utterances"></div>
+      <script src="https://utteranc.es/client.js"
+        repo=""
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async></script>    
+      <!-- Utterances END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less29-31"><span class="toc-nav-text">Less29-31</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%A4%E5%B1%82%E6%9E%B6%E6%9E%84"><span class="toc-nav-text">服务器两层架构</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#SERVER-%E2%80%9C%E2%80%9D-%E5%87%BD%E6%95%B0"><span class="toc-nav-text">$_SERVER[“”]函数</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#java-implimentation-%E5%87%BD%E6%95%B0"><span class="toc-nav-text">java_implimentation()函数</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#function-whitelist%E5%87%BD%E6%95%B0"><span class="toc-nav-text">function-whitelist函数</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#foreach-%E5%87%BD%E6%95%B0"><span class="toc-nav-text">foreach()函数</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E8%A1%A5%E5%85%85%E7%9F%A5%E8%AF%86-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5"><span class="toc-nav-text">补充知识_宽字节注入</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less32"><span class="toc-nav-text">Less32</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-nav-text">总结</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2021/11/01/sqli-labs-Less29-32/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>
