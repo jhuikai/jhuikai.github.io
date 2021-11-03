@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-11-01T13:37:31.731Z</updated>
+  <updated>2021-11-03T15:12:57.906Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,21 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>sqlmap基本使用</title>
+    <link href="http://example.com/2021/11/02/sqlmap%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/"/>
+    <id>http://example.com/2021/11/02/sqlmap%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</id>
+    <published>2021-11-02T12:51:01.000Z</published>
+    <updated>2021-11-03T15:12:57.906Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;SQLMap 是一个开源的SQL注入工具，可以用来进行自动化检测，甚至可以利用 SQL 注入漏洞直接获取目标数据库服务器的权限。&lt;/p&gt;</summary>
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>sqli-labs-Less29-32</title>

