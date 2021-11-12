@@ -206,7 +206,7 @@
 <span id="more"></span>
 <h4 id="LoveSQL">LoveSQL</h4>
 <p>首先是留的课后作业，极客大挑战LoveSQL，这个题目就和我们在sqli学习的模板题，而且并没有多大的改动，打开环境后，我们先任意输入账号密码，然后用burpsuite抓包。发现是GET方式，我们选择在username注入，注入步骤一步一步来，值得注意的是<code>#</code>被过滤了，可以选择用<code>%23</code>替代。由于我做的时候没有截下过程，这里就不在回去重做了，我们可以做一下其他的一些题目。</p>
-<p><img src="/2021/11/11/SQL%E6%97%A5%E5%BF%97/1.png" alt></p>
+<p><img src="/2021/11/11/SQL%E6%97%A5%E5%BF%97/1-16367249493531.png" alt></p>
 <h4 id="BabySQL">BabySQL</h4>
 <p>题型还是一样的，但当我们<code>order by</code>查列时回显告诉我们存在sql注入，但是order by 却不见了，很明显是被过滤了，这时候我们可选择关键字重复（尝试了大小写绕过发现行不通），以union为例，我们替换成<code>uunionnion</code>，这样中间的被过滤掉剩下的刚好组成union，这里过滤只执行一次，所以剩下的就被保留了。</p>
 <p><img src="/2021/11/11/SQL%E6%97%A5%E5%BF%97/88.png" alt></p>
