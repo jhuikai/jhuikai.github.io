@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="yanm1ng&#39;s blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      PHP字符串操作 | Hexo
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+  
+    
+<script src="/js/local-search.js"></script>
+
+
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Hexo</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/series/" class="item-link">Series</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+      
+        <li class="menu-item menu-item-search right-list">
+    <a role="button" class="popup-trigger">
+        <i class="fa fa-search fa-fw"></i>
+    </a>
+</li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/series/" class="menu-link">Series</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+      <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+            <span class="search-icon">
+                <i class="fa fa-search"></i>
+            </span>
+            <div class="search-input-container">
+                <input autocomplete="off" autocapitalize="off"
+                    placeholder="Please enter your keyword(s) to search." spellcheck="false"
+                    type="search" class="search-input">
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa fa-times-circle"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>PHP字符串操作</h2>
+  <p class="post-date">2021-11-21</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>对字符串函数的说明及应用。</p>
+<span id="more"></span>
+<p><a target="_blank" rel="noopener" href="http://c.biancheng.net/c/ascii/">ASCII码</a></p>
+<h4 id="字符串的格式化">字符串的格式化</h4>
+<p>PHP提供了<code>chop()</code>、<code>ltrim()</code>和<code>trim()</code>三个函数，用来删除各种各样的多余空格或者指定的内容。</p>
+<p><strong>chop()</strong></p>
+<p>chop()还有一个同义函数rtrim()，两者用法完全相同、作用完全一样。</p>
+<ul>
+<li>语法：chop(string,charlist)</li>
+</ul>
+<p>string：必需，规定要转换的字符串；  charlist：可选，规定从字符串删除哪些字符。</p>
+<ul>
+<li>
+<p>作用：去除字符串<strong>尾部</strong>的空格等特殊字符，如果有使用charlist指定特定字符，则去除指定的字符。</p>
+</li>
+<li>
+<p>例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">echo chop(&quot; I am a PHP programmer.  &quot;); // 输出 &quot; I am a PHP programmer.&quot;</span><br><span class="line">echo chop(&quot; I am a PHP programmer.&quot;,&quot;.&quot;); // 去除 &quot;.&quot;,输出 &quot; I am a PHP programmer&quot;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>ltrim()</strong></p>
+<ul>
+<li>
+<p>语法：ltrim(string,charlist)</p>
+</li>
+<li>
+<p>用法：去除字符串<strong>头部</strong>的空格等特殊字符，如果有使用charlist指定特定字符，则去除指定的字符。</p>
+</li>
+<li>
+<p>例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">echo chop(&quot; I am a PHP programmer.  &quot;); // 输出 &quot;I am a PHP programmer.  &quot;</span><br><span class="line">echo chop(&quot;. I am a PHP programmer.&quot;,&quot;.&quot;); // 去除 &quot;.&quot;,输出 &quot; I am a PHP programmer&quot;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>trim()</strong></p>
+<ul>
+<li>
+<p>语法：trim(string,charlist)</p>
+</li>
+<li>
+<p>用法：去除字符串<strong>头部和尾部</strong>的空格等特殊字符，如果有使用charlist指定特定字符，则去除指定的字符。</p>
+</li>
+<li>
+<p>例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">echo chop(&quot; I am a PHP programmer.  &quot;); // 输出 &quot;I am a PHP programmer.&quot;</span><br><span class="line">echo chop(&quot;&#x27; I am a PHP programmer.&#x27;&quot;,&quot;&#x27;&quot;); // 去除 &quot;.&quot;,输出 &quot; I am a PHP programmer&quot;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>对于以上三个函数，如果不指定第2个参数，去除的空格等特殊字符有以下这些：空格(chr(32))、Tab制表符(chr(9))、换行符(chr(10))、回车符(chr(13))、NULL(chr(0))、竖向Tab(chr(11))。</p>
+<p>我们用<code>chop()</code>、<code>ltrim()</code>和<code>trim()</code>三个函数分别可以去除字符串尾部、头部、两端的空格或者指定的字符，那么，对于字符串中间的字符我们应该如何处理呢？这就需要用到函数<code>str_replace()</code>，见下。</p>
+<p><strong>addslashes()</strong></p>
+<ul>
+<li>
+<p>语法：addslashes(string)</p>
+</li>
+<li>
+<p>用法：返回在预定义字符之前添加反斜杠的字符串。预定义字符：<code>'</code>、<code>&quot;</code>、<code>\</code>、<code>NULL</code></p>
+</li>
+<li>
+<p>例子：在每个双引号（&quot;）前添加反斜杠：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$str = addslashes(&#x27;Shanghai is the &quot;biggest&quot; city in China.&#x27;);</span><br><span class="line">echo($str);</span><br><span class="line">?&gt;</span><br><span class="line">输出：Shanghai is the \&quot;biggest\&quot; city in China.</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>stripslashes()</strong></p>
+<ul>
+<li>
+<p>语法：stripslashes(string)</p>
+</li>
+<li>
+<p>用法：stripslashes()函数与addslashes()相反，是把被addslashes()函数加上的转义符取消。</p>
+</li>
+<li>
+<p>例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">echo stripslashes(&quot;Who\&#x27;s Bill Gates?&quot;);</span><br><span class="line">?&gt;</span><br><span class="line">输出：Who&#x27;s Bill Gates?</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="字符串的大小写转换">字符串的大小写转换</h4>
+<p><strong>strtoupper()</strong></p>
+<ul>
+<li>
+<p>语法：strtoupper(string)</p>
+</li>
+<li>
+<p>用法：把字符串的字母全部转换为大写。</p>
+</li>
+<li>
+<p>例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">echo strtoupper(&quot;Hello WORLD!&quot;);</span><br><span class="line">?&gt;</span><br><span class="line">输出：HELLO WORLD.</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>strtolower()</strong></p>
+<ul>
+<li>
+<p>语法：strtolower(string)</p>
+</li>
+<li>
+<p>用法：把字符串的字母全部转换为小写。</p>
+</li>
+<li>
+<p>例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">echo strtolower(&quot;Hello WORLD.&quot;);</span><br><span class="line">?&gt;</span><br><span class="line">输出：hello world.</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://www.w3school.com.cn/php/func_string_lcfirst.asp">lcfirst()</a> - 把字符串中的首字符转换为小写</p>
+<p><a target="_blank" rel="noopener" href="https://www.w3school.com.cn/php/func_string_ucfirst.asp">ucfirst()</a> - 把字符串中的首字符转换为大写</p>
+<p><a target="_blank" rel="noopener" href="https://www.w3school.com.cn/php/func_string_ucwords.asp">ucwords()</a> - 把字符串中每个单词的首字符转换为大写</p>
+<h4 id="字符串的连接和分割">字符串的连接和分割</h4>
+<p><strong>explode()</strong></p>
+<ul>
+<li>
+<p>语法：explode(separator,string,limit)</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">separator</td>
+<td style="text-align:center">必需，规定在哪里分割字符串。</td>
+</tr>
+<tr>
+<td style="text-align:center">string</td>
+<td style="text-align:center">必需，要分割的字符串。</td>
+</tr>
+<tr>
+<td style="text-align:center">limit</td>
+<td style="text-align:center">可选，规定所返回的数组元素的数目。</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>用法：把字符串打散为数组。最常见的$separator是<code>||</code>、<code>,</code></p>
+</li>
+<li>
+<p>例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$str = &#x27;one,two,three,four&#x27;;</span><br><span class="line"></span><br><span class="line">// 零 limit</span><br><span class="line">print_r(explode(&#x27;,&#x27;,$str,0)); // Array ( [0] =&gt; one,two,three,four )</span><br><span class="line">// 正的 limit</span><br><span class="line">print_r(explode(&#x27;,&#x27;,$str,2)); // Array ( [0] =&gt; one [1] =&gt; two,three,four )</span><br><span class="line">// 负的 limit  比不带参数的少1个元素</span><br><span class="line">print_r(explode(&#x27;,&#x27;,$str,-1)); // Array ( [0] =&gt; one [1] =&gt; two [2] =&gt; three )</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>不带limit的参数的应用，则都会分割。</p>
+<p><strong>implode()和join()</strong></p>
+<p>这是一对同义函数，功能、用法完全相同，是explode()反功能的函数。</p>
+<ul>
+<li>
+<p>语法：implode(separator,array)</p>
+</li>
+<li>
+<p>用法：把数组元素组合成一个用$glue连接起来的字符串。</p>
+</li>
+<li>
+<p>例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$arr = array(&#x27;Hello&#x27;,&#x27;World!&#x27;,&#x27;I&#x27;,&#x27;love&#x27;,&#x27;Shanghai!&#x27;);</span><br><span class="line">echo implode(&quot; &quot;,$arr);</span><br><span class="line">?&gt;</span><br><span class="line">输出：Hello World! I love Shanghai!</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>strtok()</strong></p>
+<ul>
+<li>
+<p>语法：strtok(string,token)</p>
+</li>
+<li>
+<p>用法：用于分割字符串。</p>
+</li>
+<li>
+<p>例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$string = &quot;I like this game&quot;;</span><br><span class="line">$tok = strtok($string,&quot; &quot;);</span><br><span class="line">while($tok)&#123;</span><br><span class="line">    echo &quot;单词=$tok&lt;br&gt;&quot;;</span><br><span class="line">    $tok = strtok(&quot; &quot;); // 只有第一次调用strtok()函数时需要使用￥string参数</span><br><span class="line">&#125;</span><br><span class="line">/*</span><br><span class="line">输出：单词=I&lt;br&gt;单词=like&lt;br&gt;单词=this&lt;br&gt;单词=game&lt;br&gt;</span><br><span class="line">*/</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>substr()</strong></p>
+<ul>
+<li>
+<p>语法：substr(string,start,length)</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">start</td>
+<td style="text-align:center">必需，要抽取的字符串的起始下标。必须是数值。如果是负数，那么该参数声明从字符串的尾部开始算起的位置。也就是说，-1 指字符串中最后一个字符，-2 指倒数第二个字符，以此类推。</td>
+</tr>
+<tr>
+<td style="text-align:center">length</td>
+<td style="text-align:center">可选，子串中的字符数。必须是数值。如果省略了该参数，那么返回从 <em>stringObject</em> 的开始位置到结尾的字串。</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>用法：在字符串中抽取从 <em>start</em> 下标开始的指定数目的字符。</p>
+</li>
+<li>
+<p>例子：</p>
+</li>
+<li>
+<pre><code>&lt;?php
+echo substr('abcdef', 1); // bcdef
+echo substr('abcdef', 1, 3); // bcd
+echo substr('abcdef', 0, 4); // abcd
+echo substr('abcdef', -1, 1); // f
+echo substr('abcdef', -3, 1); // d
+echo substr('abcdef', 4, -4); // 空值
+echo substr('abcdef', 2, -1); // cde
+echo substr('abcdef', -3, -1); // de
+?&gt;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### 字符串的比较</span><br><span class="line"></span><br><span class="line">字符串的大小比较通常就是比较相应位置的ASCII码大小，大写字母较小写字母要小，小写字母较数字要小。</span><br><span class="line"></span><br><span class="line">**strcmp()**</span><br><span class="line"></span><br><span class="line">- 语法：strcmp(string $str1,string $str2)</span><br><span class="line"></span><br><span class="line">- 用法：本函数用来比较两个字符串的大小，返回正数表示str1大于str2，返回负数表示str1小于str2，返回0表示str1等于str2。</span><br><span class="line"></span><br><span class="line">- 例子：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+&lt;?php
+echo strcmp('a','A'); // 返回1
+echo strcmp('Hello','hello'); // 返回-1
+echo strcmp('a','2'); // 返回1
+echo strcmp('Bca',1); // 返回1
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">**strcasecmp()**</span><br><span class="line"></span><br><span class="line">strcmp()函数比较字符串大小是区分大小写的，而strcasecmp()函数则忽略字母大小写。</span><br><span class="line"></span><br><span class="line">- 语法：strcasecmp(string $str1,string $str2,len)</span><br><span class="line"></span><br><span class="line">- 用法：比较的规则同strcmp()相同，差别是比较时会自动忽略大小写的差异。</span><br><span class="line"></span><br><span class="line">- 例子：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+&lt;?php
+echo strcasecmp(&quot;hello&quot;,&quot;hello&quot;); // 返回0
+echo strcasecmp(&quot;abcdd&quot;,&quot;aBcde&quot;); // 返回1
+?&gt;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">**strnatcmp()**</span><br><span class="line"></span><br><span class="line">- 语法：strnatcmp(string $str1,string $str2)</span><br><span class="line"></span><br><span class="line">- 用法：按照自然规则比较两个字符串的大小，返回正数表示str1大于str2，返回负数表示str1小于str2，返回0表示str1等于str2。</span><br><span class="line"></span><br><span class="line">- 例子：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+&lt;?php
+echo strnatcmp(&quot;10.gif&quot;,&quot;5.gif&quot;); 返回1
+?&gt;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">**strlen()**</span><br><span class="line"></span><br><span class="line">- 语法：strlen(string)</span><br><span class="line"></span><br><span class="line">- 语法：返回字符串string的长度。</span><br><span class="line"></span><br><span class="line">- 例子：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+&lt;?php
+echo strlen(&quot;10.gif&quot;); // 返回6
+?&gt;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### 字符串的查找和替换</span><br><span class="line"></span><br><span class="line">php中用于查找或者匹配或者定位的函数非常多，它们都有不同的意义。这里只介绍用的比较多的strstr()、stristr()和strrchr()。</span><br><span class="line"></span><br><span class="line">**strstr()**</span><br><span class="line"></span><br><span class="line">- 语法：strstr(haystack,needle,bool $before_needle)</span><br><span class="line"></span><br><span class="line">- 用法：在字符串haystack中查找子字符串needle第一次出现的位置，并返回字符串haystack中从字符串needle开始到母字符串结束的部分。如果参数before_needle为true，则返回字符串haystack中从开始到字符串needle第一次出现位置之间的字符串；如果字符串haystack中查不到字符串needle。则返回false。</span><br><span class="line"></span><br><span class="line">  strchr()为本函数同义函数</span><br><span class="line"></span><br><span class="line">- 例子：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+&lt;?php
+echo strstr(&quot;abcdefeg&quot;,&quot;e&quot;); // 返回efeg
+?&gt;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">**stristr()**</span><br><span class="line"></span><br><span class="line">- 语法：stristr(haystack,needle,bool $before_needle)</span><br><span class="line"></span><br><span class="line">- 用法：同strstr()，不同之处在于本函数不区分大小写。</span><br><span class="line"></span><br><span class="line">- 例子：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+&lt;?php
+echo stristr(&quot;abcdEfeg&quot;,&quot;e&quot;); // 返回Efeg
+echo stristr(&quot;abcdefeg&quot;,&quot;e&quot;); // 返回efeg
+?&gt;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">**strrchr()**</span><br><span class="line"></span><br><span class="line">- 语法：strrchr(haystack,needle)</span><br><span class="line"></span><br><span class="line">- 用法：本函数用于寻找字符串haystack中字符needle最后一次出现的位置，并返回此位置起至字符串haystack结束之间的字符串。若没有找到needle则返回false。</span><br><span class="line"></span><br><span class="line">- 例子：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+&lt;?php
+echo strrchr(&quot;abcdedef&quot;,&quot;e&quot;); // 返回ef
+?&gt;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">strstr()、stristr()和strrchr()函数都返回从某个字符串出现的位置开始或者截至的字符串，那么它们出现的位置如何计算呢？PHP提供了strpos()、strrpos()两个函数来查找并返回字符串在另一个字符串中首次和最后一次出现的位置。</span><br><span class="line"></span><br><span class="line">**strpos()**</span><br><span class="line"></span><br><span class="line">- 语法：strpos(haystack,mixed $needle[,int $offset]) 或者 strpos(string,find,start)</span><br><span class="line"></span><br><span class="line">- 用法：寻找字符串haystack中字符needle最先出现的位置。值得注意的是needle只能是一个字符，中文字等就不行了。若找不到指定的字符，则返回false值。参数offset可省略，用来表示从offset位置处开始找。</span><br><span class="line"></span><br><span class="line">- 例子：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+&lt;?php
+echo strpos(&quot;abcdefeg&quot;,&quot;e&quot;); // 返回4
+?&gt;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">**stripos()**同strpos()，忽略大小写。</span><br><span class="line"></span><br><span class="line">**strrpos()**</span><br><span class="line"></span><br><span class="line">- 语法：strrpos(haystack,mixed $needle[,int $offset]) 或者 strrpos(string,find,start)</span><br><span class="line"></span><br><span class="line">- 用法：与strpos()略同，不同之处是查找并返回needle最后一次出现的位置。</span><br><span class="line"></span><br><span class="line">- 例子：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+&lt;?php
+echo strpos(&quot;abcdefeg&quot;,&quot;e&quot;); // 返回6
+?&gt;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">****</span><br><span class="line"></span><br><span class="line">**strripos()**同strrpos()，忽略大小写。</span><br><span class="line"></span><br><span class="line">替换的意义在于将一个字符串的一部分进行改变，使之成为另外一个新的字符串。</span><br><span class="line"></span><br><span class="line">**str_replace()**</span><br><span class="line"></span><br><span class="line">- 语法：str_replace(find,replace,string,count)</span><br><span class="line"></span><br><span class="line">  |  参数   |                描述                |</span><br><span class="line">  | :-----: | :--------------------------------: |</span><br><span class="line">  |  find   |       必需，规定要查找的值。       |</span><br><span class="line">  | replace | 必需，规定替换 *find* 中的值的值。 |</span><br><span class="line">  | string  |     必需，规定被搜索的字符串。     |</span><br><span class="line">  |  count  |   可选，对替换数进行计数的变量。   |</span><br><span class="line"></span><br><span class="line">- 用法：以其他字符替换字符串中的一些字符（区分大小写）。</span><br><span class="line"></span><br><span class="line">- 例子：使用带有数组和 *count* 变量的 str_ireplace() 函数：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+&lt;?php
+$arr = array(&quot;blue&quot;,&quot;red&quot;,&quot;green&quot;,&quot;yellow&quot;);
+print_r(str_ireplace(&quot;RED&quot;,&quot;pink&quot;,$arr,$i)); // 此函数对大小写不敏感
+echo &quot;替换数：$i&quot;;
+?&gt;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">**substr_replace()**</span><br><span class="line"></span><br><span class="line">substr_replace()则可以实现替换一部分的字符串。</span><br><span class="line"></span><br><span class="line">- 语法：substr_replace(string,replacement,start,length)</span><br><span class="line"></span><br><span class="line">  | 参数          | 描述                                                         |</span><br><span class="line">  | :------------ | :----------------------------------------------------------- |</span><br><span class="line">  | *string*      | 必需。规定要检查的字符串。                                   |</span><br><span class="line">  | *replacement* | 必需。规定要插入的字符串。                                   |</span><br><span class="line">  | *start*       | 必需。规定在字符串的何处开始替换。正数 - 在字符串中的指定位置开始替换负数 - 在从字符串结尾的指定位置开始替换0 - 在字符串中的第一个字符处开始替换 |</span><br><span class="line">  | *length*      | 可选。规定要替换多少个字符。默认是与字符串长度相同。正数 - 被替换的字符串长度负数 - 表示待替换的子字符串结尾处距离 *string* 末端的字符个数。0 - 插入而非替换 |</span><br><span class="line"></span><br><span class="line">- 用法：在原字符串string从start位置开始替换为replacement。开始替换的位置应小于原字符串的长度，可选参数length为要替换的长度。</span><br><span class="line"></span><br><span class="line">- 例子：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+&lt;?php
+echo substr_replace(&quot;abcdefgh&quot;,&quot;DEF&quot;,3); // 将输出“abcDEF”
+echo substr_replace(&quot;abcdefgh&quot;,&quot;DEF&quot;,3,2); // 将输出“abcDEFfgh”
+?&gt;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### 字符串的加密和编码</span><br><span class="line"></span><br><span class="line">**MD5加密**</span><br><span class="line"></span><br><span class="line">MD5加密是将一个字符串转换成一个长32位的唯一字符串。</span><br><span class="line"></span><br><span class="line">- 语法：md5(string)</span><br><span class="line"></span><br><span class="line">- 用法：返回字符串str的MD5散列值。</span><br><span class="line"></span><br><span class="line">- 例子：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+&lt;?php
+echo md5(&quot;a&quot;); //将返回“0cc175b9c0f1b6a831c399e269772661”
+echo md5(&quot;china&quot;) //将返回&quot;8a7d7ba288ca0f0ea1ecf975b026e8e1”
+?&gt;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">**urlencode()和urldecode()**</span><br><span class="line"></span><br><span class="line">- 语法：urlencode()为编码；urldecode()为解码</span><br><span class="line"></span><br><span class="line">- 用法：将字符串str按照URL方式编码，除了`-`、`_`和`.`之外的所有非字母数字字符都将被替换成%后跟两位十六进制数，空格则编码为+</span><br><span class="line"></span><br><span class="line">- 例子：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+&lt;?php
+echo urlencode(&quot;china中国&quot;)； //编码为“china%E4%B8%AD%E5%9B%BD”
+?&gt;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">**base64_encode()和base64_decode()**</span><br><span class="line"></span><br><span class="line">- 语法：base64_encode()为编码；base64_decode()为解码</span><br><span class="line"></span><br><span class="line">- 用法：base64_encode数据要比原始数据多占用33%左右的空间。</span><br><span class="line"></span><br><span class="line">- 例子：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+&lt;?php
+echo base64_encode(&quot;china中国&quot;)； //编码为“Y2hpbmHkuK3lm70=”
+?&gt;
+</code></pre>
+</li>
+</ul>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/11/11/SQL%E6%97%A5%E5%BF%97/">
+        <span class="nav-arrow">← </span>
+        
+          SQL日志
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Utterances START -->
+      <div id="utterances"></div>
+      <script src="https://utteranc.es/client.js"
+        repo=""
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async></script>    
+      <!-- Utterances END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%A0%BC%E5%BC%8F%E5%8C%96"><span class="toc-nav-text">字符串的格式化</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%BD%AC%E6%8D%A2"><span class="toc-nav-text">字符串的大小写转换</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E8%BF%9E%E6%8E%A5%E5%92%8C%E5%88%86%E5%89%B2"><span class="toc-nav-text">字符串的连接和分割</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2021/11/21/PHP字符串操作/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>

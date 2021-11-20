@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-11-12T13:49:12.233Z</updated>
+  <updated>2021-11-20T16:29:19.959Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,26 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>PHP字符串操作</title>
+    <link href="http://example.com/2021/11/21/PHP%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%93%8D%E4%BD%9C/"/>
+    <id>http://example.com/2021/11/21/PHP%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%93%8D%E4%BD%9C/</id>
+    <published>2021-11-20T16:24:05.000Z</published>
+    <updated>2021-11-20T16:29:19.959Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;对字符串函数的说明及应用。&lt;/p&gt;</summary>
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
     <title>SQL日志</title>
     <link href="http://example.com/2021/11/11/SQL%E6%97%A5%E5%BF%97/"/>
     <id>http://example.com/2021/11/11/SQL%E6%97%A5%E5%BF%97/</id>
     <published>2021-11-11T11:21:35.000Z</published>
-    <updated>2021-11-12T13:49:12.233Z</updated>
+    <updated>2021-11-18T13:25:46.544Z</updated>
     
     
     <summary type="html">&lt;p&gt;周四培训了sql注入和无列名注入，以下是练习题，来自&lt;a href=&quot;https://buuoj.cn/&quot;&gt;buu平台&lt;/a&gt;。&lt;/p&gt;</summary>
@@ -296,21 +311,6 @@
     
     
     <summary type="html">&lt;p&gt;“meta”是HTML5引入实现网页尺寸自适应的一个辅助性标签，可用于描述页面内容，关键词，作者，修订内容等元信息。&lt;/p&gt;</summary>
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>函数快查</title>
-    <link href="http://example.com/2021/09/18/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/"/>
-    <id>http://example.com/2021/09/18/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</id>
-    <published>2021-09-18T14:51:55.903Z</published>
-    <updated>2021-09-22T06:33:58.192Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;这是我的第一篇&amp;quot;hexo&amp;quot;博客，从这为起点，将展开个人漫长的程序员之路。&lt;/p&gt;</summary>
     
     
     
