@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-11-20T16:29:19.959Z</updated>
+  <updated>2021-11-24T16:03:28.657Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,21 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>sqli-labs-Less39-53</title>
+    <link href="http://example.com/2021/11/25/sqli-labs-Less39-53/"/>
+    <id>http://example.com/2021/11/25/sqli-labs-Less39-53/</id>
+    <published>2021-11-24T16:03:03.000Z</published>
+    <updated>2021-11-24T16:03:28.657Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;继续学习sqli注入，后面基本都是一样的。&lt;/p&gt;</summary>
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>PHP字符串操作</title>
@@ -296,21 +311,6 @@
     
     <summary type="html">&lt;p&gt;Ubuntu是一个以桌面应用为主的 &lt;strong&gt;Linux 操作系统&lt;/strong&gt;，以下信息主要关于使用ubuntu的基础命令。&lt;/p&gt;
 &lt;p&gt;仅供参考！&lt;/p&gt;</summary>
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>meta的应用</title>
-    <link href="http://example.com/2021/09/23/meta/"/>
-    <id>http://example.com/2021/09/23/meta/</id>
-    <published>2021-09-23T05:17:06.771Z</published>
-    <updated>2021-09-24T06:27:02.848Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;“meta”是HTML5引入实现网页尺寸自适应的一个辅助性标签，可用于描述页面内容，关键词，作者，修订内容等元信息。&lt;/p&gt;</summary>
     
     
     
