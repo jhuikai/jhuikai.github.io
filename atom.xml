@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-11-24T16:03:28.657Z</updated>
+  <updated>2021-11-25T13:52:48.678Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,21 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>sqli-labs-Less54-65</title>
+    <link href="http://example.com/2021/11/25/sqli-labs-Less54-65/"/>
+    <id>http://example.com/2021/11/25/sqli-labs-Less54-65/</id>
+    <published>2021-11-25T04:34:04.000Z</published>
+    <updated>2021-11-25T13:52:48.678Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;不出意外的话，这就是在sqli-labs学习的最后一篇博客了。&lt;/p&gt;</summary>
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>sqli-labs-Less39-53</title>
@@ -295,22 +310,6 @@
     
     
     <summary type="html">&lt;p&gt;基本掌握PHP语法后，逐步开始边学边练的过程，第一步便是SQL注入之sqli-labs，下面是less-1的相关学习内容。&lt;/p&gt;</summary>
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>linux ubuntu 基础命令</title>
-    <link href="http://example.com/2021/09/29/linux-ubuntu-%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/"/>
-    <id>http://example.com/2021/09/29/linux-ubuntu-%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/</id>
-    <published>2021-09-29T05:12:29.448Z</published>
-    <updated>2021-09-30T05:40:05.932Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;Ubuntu是一个以桌面应用为主的 &lt;strong&gt;Linux 操作系统&lt;/strong&gt;，以下信息主要关于使用ubuntu的基础命令。&lt;/p&gt;
-&lt;p&gt;仅供参考！&lt;/p&gt;</summary>
     
     
     

