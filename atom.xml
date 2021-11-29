@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-11-25T13:52:48.678Z</updated>
+  <updated>2021-11-29T04:08:59.474Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,21 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>upload-labs-Pass01-03</title>
+    <link href="http://example.com/2021/11/29/upload-labs-Pass01-03/"/>
+    <id>http://example.com/2021/11/29/upload-labs-Pass01-03/</id>
+    <published>2021-11-29T04:08:02.000Z</published>
+    <updated>2021-11-29T04:08:59.474Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;我们暂且进入第二个内容的学习，即渗透测试和上传漏洞，地址为upload-labs靶场。&lt;/p&gt;</summary>
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>sqli-labs-Less54-65</title>
@@ -295,21 +310,6 @@
     
     
     <summary type="html">&lt;p&gt;通过反复的学习和尝试Less1-4的课程，我们对SQL注入有了更深刻的了解，这篇博客我们分为两个内容，一是整理sql注入的几种方法，二是介绍Less5的学习过程。&lt;/p&gt;</summary>
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>sqli-labs_Less1</title>
-    <link href="http://example.com/2021/10/04/sqli-labs-Less1/"/>
-    <id>http://example.com/2021/10/04/sqli-labs-Less1/</id>
-    <published>2021-10-04T13:21:19.668Z</published>
-    <updated>2021-10-13T11:14:43.410Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;基本掌握PHP语法后，逐步开始边学边练的过程，第一步便是SQL注入之sqli-labs，下面是less-1的相关学习内容。&lt;/p&gt;</summary>
     
     
     

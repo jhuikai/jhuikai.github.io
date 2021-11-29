@@ -10,7 +10,7 @@
   
   <title>
     
-      sqli-labs-Less54-65 | Hexo
+      upload-labs-Pass01-03 | Hexo
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -193,8 +193,8 @@
 </header>
 
     <div id="article-banner">
-  <h2>sqli-labs-Less54-65</h2>
-  <p class="post-date">2021-11-25</p>
+  <h2>upload-labs-Pass01-03</h2>
+  <p class="post-date">2021-11-29</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>
@@ -202,36 +202,48 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><p>不出意外的话，这就是在sqli-labs学习的最后一篇博客了。</p>
+    <section class="markdown-content"><p>我们暂且进入第二个内容的学习，即渗透测试和上传漏洞，地址为upload-labs靶场。</p>
 <span id="more"></span>
-<h4 id="Less54-57">Less54-57</h4>
-<p><img src="/2021/11/25/sqli-labs-Less54-65/54a.png" alt></p>
-<p>进来的页面就大不相同，我们先认真看看给的信息，这应该是数字型的注入，并且告诉我们数据库名为<strong>CHALLENGES</strong>，只有十次的尝试机会，并且每一次重置数据都会生成随机的表明，这个我们在源码中也可以看到，随机数是由大小写字符和数据组成的，并且在源码中注意到是GET方式用<code>'</code>包裹id，已知这些信息，我们采用联合注入开始过关。</p>
-<p><img src="/2021/11/25/sqli-labs-Less54-65/54b.png" alt></p>
-<p>获取表名，这就跟我们之前的操作是一样的，接着获取列名。</p>
-<p><img src="/2021/11/25/sqli-labs-Less54-65/54c.png" alt></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id,sessid,secret_B1PR,tryy</span><br></pre></td></tr></table></figure>
-<p>查密码，拿到password提交就好了。</p>
-<p><img src="/2021/11/25/sqli-labs-Less54-65/54d.png" alt></p>
-<p>Less55与Less54的不同之处就是尝试次数由10次提升到14次，以及用<code>)</code>包裹id值，Less56则是用<code>')'</code>包裹id值，Less57是<code>&quot;</code>包裹。</p>
-<h4 id="Less58-61">Less58-61</h4>
-<p>Less58对输入的次数做了不超过5次的限制，因为在payload做包裹测试发现回显的数据总不发生变化，然后进一步使用联合语句查询也是同样的，说明联合注入不能使用，这也可以参考源码。</p>
-<p><img src="/2021/11/25/sqli-labs-Less54-65/58a.png" alt></p>
-<p>所以我们采用报错注入的方法试一下，在知道数据库的前提下直接查表。</p>
-<p><img src="/2021/11/25/sqli-labs-Less54-65/58b.png" alt></p>
-<p>查列</p>
-<p><img src="/2021/11/25/sqli-labs-Less54-65/58c.png" alt></p>
-<p>查密码</p>
-<p><img src="/2021/11/25/sqli-labs-Less54-65/58d.png" alt></p>
-<p>也是在差不多五步之内通关的。Less59没有对id进行包裹；Less60用<code>&quot;)</code>对id值进行包裹，并且没有报错回显信息；Less61id值用<code>'))</code>包裹</p>
-<h4 id="Less62-65">Less62-65</h4>
-<p>Less62发现联合注入和报错注入都是没有任何信息回显的，说明需要用到其他方法，所以我们采取布尔盲注和时间盲注，也可以通过他给的测试次数130就想到这里就是盲注的应用了。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27;) and substr((select table_name from information_schema.tables where table_schema=&#x27;challenges&#x27; limit 0,1),1,1)=&#x27; &#x27;--+</span><br><span class="line">?id=1&#x27;) and if(substr((select table_name from information_schema.tables where table_schema=&#x27;challenges&#x27; limit 0,1),1,1)=&#x27;0&#x27;,1,sleep(5))--+</span><br></pre></td></tr></table></figure>
-<p>这是查表使用的盲注，前一个可以用来抓包，毕竟手打很慢，后一个就是利用if函数和sleep在浏览器上测试，只不过比较麻烦，思路大概就是如此，就不一一展示了，抓包根据长度判断如下，这里只抓取首个表名字符，可根据情况选择抓取的字符数。</p>
-<p><img src="/2021/11/25/sqli-labs-Less54-65/62a.png" alt></p>
-<p>Less63用<code>'</code>包裹id值，Less64用<code>))</code>包裹id值，Less65则是用<code>&quot;)</code>包裹，其余的也都一样。</p>
-<h4 id="总结">总结</h4>
-<p>到这里就结束sqli-labs的学习，我们学了五种注入方式，分别是联合注入、报错注入、时间盲注、布尔盲注和堆叠注入，后面，我们需要在实践中做题，真正达到巩固和掌握，SQL注入是CTF中的常见题型，难度不易，是必须掌握的内容。</p>
+<h4 id="Pass-01-js检查">Pass-01-js检查</h4>
+<p><img src="/2021/11/29/upload-labs-Pass01-03/q.png" alt></p>
+<p>告诉我们要以图片的形式上传一个webshell到服务器，简单的说来，webshell就是一个asp或php木马后门，我们知道常见的图片文件有BMP、JPG、JPEG、PNG、GIF等几种格式，根据之前做题的经验，我们大概知道就是要把木马写在以这些文件格式的文件里，这些是我的猜想，可以选择帮助显示源码看一看。</p>
+<p><img src="/2021/11/29/upload-labs-Pass01-03/w.png" alt></p>
+<p>这里显示可以上传的文件类型为<code>.jpg</code>、<code>.png</code>、<code>.gif</code>三种，已知这些我们开始尝试上传，通过学习知道有以下方法：</p>
+<h5 id="法一">法一</h5>
+<p>上传一个后缀为.<code>jpg</code>等以上三种之一的文件，文件内容为一句话木马<code>&lt;?php phpinfo();?&gt;</code>，接着使用<code>burp</code>抓包并修改文件后缀为<code>php</code>。</p>
+<p><img src="/2021/11/29/upload-labs-Pass01-03/1b.png" alt></p>
+<p>然后我们放包，发现是可以成功上传的，页面出现了这么一个图片样式。</p>
+<p><img src="/2021/11/29/upload-labs-Pass01-03/dd.png" alt></p>
+<p>不过这能说明我们成功了嘛？我们尝试点击，并没有任何反应，这是我们应该打开f12在<strong>网络</strong>上打开上传的文件，如果出现php的版本就说明成功了。<img src="/2021/11/29/upload-labs-Pass01-03/z.png" alt></p>
+<h5 id="法二">法二</h5>
+<p><img src="/2021/11/29/upload-labs-Pass01-03/sc.png" alt></p>
+<p>如果我们强制要上传php文件会显示不允许，同时我们也知道这是前端验证，那我们是否可以通过在查看器修改代码来实现上传php文件呢？</p>
+<p>一是删除掉返回验证<code>return checkFile()</code>，这样他就不会管我们是什么类型的文件了。<img src="/2021/11/29/upload-labs-Pass01-03/ii.png" alt></p>
+<p>二是在<code>var allow_ext = &quot;.jpg|.png|.gif&quot;;</code>添加为<code>var allow_ext = &quot;.jpg|.png|.gif|.php&quot;;</code>，这是从源码复制下来的，在html的body没有找到，所以这里应该是不行的，不过这是一种思路。</p>
+<h5 id="法三">法三</h5>
+<p>第三种方法就是借用一些黑客工具，如中国菜刀或者蚁剑，这里我选择用蚁剑简单的操作一下。</p>
+<p>前面同法一一样，先以<code>.jpg</code>上传后抓包，然后修改后悔名为<code>.php</code>，不同之处在于一句话木马：<code>&lt;?php @eval($_POST[admin]);?&gt;</code>，然后放包打开该url，连接蚁剑。<img src="/2021/11/29/upload-labs-Pass01-03/opo.png" alt></p>
+<p>点击添加后如果能成功打开就说明获得了改文件的路径下的权限。</p>
+<p><img src="/2021/11/29/upload-labs-Pass01-03/opoa.png" alt></p>
+<p>这里只列举了三种常规的方法，随着学习的深入会逐渐补充。</p>
+<h4 id="Pass-02-MIME验证">Pass-02-MIME验证</h4>
+<p>法一和法三是可用的，但是按照法二的方法，却出现了一些不同，第一是提示上传错误的回显信息：</p>
+<p><img src="/2021/11/29/upload-labs-Pass01-03/las.png" alt></p>
+<p>第二则是即使我们修改<code>onsubmit=&quot;return checkFile()&quot;</code>，仍然是上传失败的。</p>
+<p>我们打开提示看一下，学习其他的方法：</p>
+<p><img src="/2021/11/29/upload-labs-Pass01-03/dfg.png" alt></p>
+<p>首先我们就需要理解一下什么是<strong>MIME</strong>，这是<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Basics_of_HTTP/MIME_types">参考文章</a>，简单来说，就是描述信息内容，能包含文本、图像、音频、视频以及其他应用程序专用的数据。所以，就采用类似法一的做法，修改request包的content-type字段声明文件类型为图片然后上传php文件。</p>
+<h4 id="Pass-03-黑名单绕过">Pass-03-黑名单绕过</h4>
+<p><img src="/2021/11/29/upload-labs-Pass01-03/qkl.png" alt></p>
+<p>对于源码，会涉及到一些函数的运用，包括不同语言的函数及其作者自定义的函数，之前我们有整理了一篇php字符串操作的博客，大部分都是有涉及到的。</p>
+<p>这里用黑名单不允许上传<code>.asp,.aspx,.php,.jsp</code>后缀的文件，这里我们需要理解一下何为黑名单，与白名单又有什么区别，首先我们知道上面的两关是白名单，就是针对白名单中有的后缀名才可以上传，整理如下：</p>
+<ul>
+<li>基于白名单验证：只针对白名单中有的后缀名，文件才能上传成功。</li>
+<li>基于黑名单验证：只针对黑名单中没有的后缀名，文件才能上传成功。</li>
+</ul>
+<p>所以当我们抓包修改后缀名会放包后会提示不允许上传该后缀名的文件，所以我们还是考虑换种思路来修改后缀名，可以尝试上传一些后缀名为php、php2、php3、php5、phtml等文件去绕过黑名单的,但由于我们搭建靶场是采用集合环境的，Apache的解析限制了一些后缀名，比如php1、php2就不能直接解析上传，php3则是可以的。</p>
+<p>再者，也可以尝试修改Apache的httpd.conf文件的配置代码：</p>
+<p><img src="/2021/11/29/upload-labs-Pass01-03/ad.png" alt></p>
 </section>
     <!-- Tags START -->
     
@@ -241,20 +253,13 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2021/11/25/sqli-labs-Less39-53/">
+      <a class="nav-left" href="/2021/11/25/sqli-labs-Less54-65/">
         <span class="nav-arrow">← </span>
         
-          sqli-labs-Less39-53
+          sqli-labs-Less54-65
         
       </a>
     
-    
-      <a class="nav-right" href="/2021/11/29/upload-labs-Pass01-03/">
-        
-          upload-labs-Pass01-03
-        
-        <span class="nav-arrow"> →</span>
-      </a>
     
   </div>
 
@@ -306,7 +311,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less54-57"><span class="toc-nav-text">Less54-57</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less58-61"><span class="toc-nav-text">Less58-61</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Less62-65"><span class="toc-nav-text">Less62-65</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-nav-text">总结</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Pass-01-js%E6%A3%80%E6%9F%A5"><span class="toc-nav-text">Pass-01-js检查</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%B3%95%E4%B8%80"><span class="toc-nav-text">法一</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%B3%95%E4%BA%8C"><span class="toc-nav-text">法二</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%B3%95%E4%B8%89"><span class="toc-nav-text">法三</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Pass-02-MIME%E9%AA%8C%E8%AF%81"><span class="toc-nav-text">Pass-02-MIME验证</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Pass-03-%E9%BB%91%E5%90%8D%E5%8D%95%E7%BB%95%E8%BF%87"><span class="toc-nav-text">Pass-03-黑名单绕过</span></a></li></ol>
     
   </div>
 </aside>
@@ -316,7 +321,7 @@
 
 <script>
   (function () {
-    var url = 'http://example.com/2021/11/25/sqli-labs-Less54-65/';
+    var url = 'http://example.com/2021/11/29/upload-labs-Pass01-03/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
