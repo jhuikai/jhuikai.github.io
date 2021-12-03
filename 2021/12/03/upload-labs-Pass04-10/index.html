@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="yanm1ng&#39;s blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      upload-labs-Pass04-10 | Hexo
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+  
+    
+<script src="/js/local-search.js"></script>
+
+
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Hexo</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/series/" class="item-link">Series</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+      
+        <li class="menu-item menu-item-search right-list">
+    <a role="button" class="popup-trigger">
+        <i class="fa fa-search fa-fw"></i>
+    </a>
+</li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/series/" class="menu-link">Series</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+      <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+            <span class="search-icon">
+                <i class="fa fa-search"></i>
+            </span>
+            <div class="search-input-container">
+                <input autocomplete="off" autocapitalize="off"
+                    placeholder="Please enter your keyword(s) to search." spellcheck="false"
+                    type="search" class="search-input">
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa fa-times-circle"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>upload-labs-Pass04-10</h2>
+  <p class="post-date">2021-12-03</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>本篇的主要内容就是理解黑名单，简单了解何为<code>.htaccess</code>和<code>.user.ini</code>，并学习绕过的方法。</p>
+<span id="more"></span>
+<h4 id="Pass-04-htaccess绕过">Pass-04-htaccess绕过</h4>
+<p>查看源码，发现很多常见的文件后缀都被禁用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$deny_ext = array(&quot;.php&quot;,&quot;.php5&quot;,&quot;.php4&quot;,&quot;.php3&quot;,&quot;.php2&quot;,&quot;.php1&quot;,&quot;.html&quot;,&quot;.htm&quot;,&quot;.phtml&quot;,&quot;.pht&quot;,&quot;.pHp&quot;,&quot;.pHp5&quot;,&quot;.pHp4&quot;,&quot;.pHp3&quot;,&quot;.pHp2&quot;,&quot;.pHp1&quot;,&quot;.Html&quot;,&quot;.Htm&quot;,&quot;.pHtml&quot;,&quot;.jsp&quot;,&quot;.jspa&quot;,&quot;.jspx&quot;,&quot;.jsw&quot;,&quot;.jsv&quot;,&quot;.jspf&quot;,&quot;.jtml&quot;,&quot;.jSp&quot;,&quot;.jSpx&quot;,&quot;.jSpa&quot;,&quot;.jSw&quot;,&quot;.jSv&quot;,&quot;.jSpf&quot;,&quot;.jHtml&quot;,&quot;.asp&quot;,&quot;.aspx&quot;,&quot;.asa&quot;,&quot;.asax&quot;,&quot;.ascx&quot;,&quot;.ashx&quot;,&quot;.asmx&quot;,&quot;.cer&quot;,&quot;.aSp&quot;,&quot;.aSpx&quot;,&quot;.aSa&quot;,&quot;.aSax&quot;,&quot;.aScx&quot;,&quot;.aShx&quot;,&quot;.aSmx&quot;,&quot;.cEr&quot;,&quot;.sWf&quot;,&quot;.swf&quot;,&quot;.ini&quot;);</span><br></pre></td></tr></table></figure>
+<p>可以考虑使用htaccess绕过。</p>
+<p><code>.htaccess文件</code>(或者&quot;分布式配置文件&quot;）,全称是Hypertext Access(超文本入口)。提供了针对目录改变配置的方法， 即，在一个特定的文档目录中放置一个包含一个或多个指令的文件， 以作用于此目录及其所有子目录。作为用户，所能使用的命令受到限制。管理员可以通过Apache的AllowOverride指令来设置。</p>
+<p>1.找出<code>http.conf</code>的位置<code>C:\wamp.64\bin\apache\apache2.4.46\conf</code>，配置文件<code>LoadMoudle rewrite_module module modules/mod_rewrite.so AllowOverride All</code>。</p>
+<p><img src="/2021/12/03/upload-labs-Pass04-10/145.png" alt></p>
+<p><a target="_blank" rel="noopener" href="https://www.jb51.net/article/31721.htm#:~:text=AllowOve,%E6%8C%87%E4%BB%A4%E9%83%BD%E5%B0%86%E8%A2%AB%E9%87%8D%E5%86%99%E3%80%82">apache的AllowOverride以及Options使用详解</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AllowOverride参数就是指明Apache服务器是否去找.htacess文件作为配置文件，如果设置为none,那么服务器将忽略.htacess文件，如果设置为All,那么所有在.htaccess文件里有的指令都将被重写,所有具有 “.htaccess” 作用域的指令都允许出现在 .htaccess 文件中。</span><br></pre></td></tr></table></figure>
+<p>2.先上传一个后缀为<code>htaccess</code>的文件，其中文件内容为<code>SetHandler application/x-httpd-php</code>，意思是把所有文件都解析为<code>php</code>文件来执行。上传时使用<code>burp</code>抓包修改文件名只有后缀。</p>
+<p>3.因为图片类型的文件后缀没有被禁用，所以可以上传一个png的内容为<code>&lt;?php phpinfo();?&gt;</code>文件，上传成功后拖拽点击图片，看到php配置页面即可说明上传成功。</p>
+<p>这个方法也适用于Pass-03。</p>
+<p>再者我们也可以通过蚁剑连接，1、2步骤不变，第三步我们选择上传一句话木马。<img src="/2021/12/03/upload-labs-Pass04-10/oo.png" alt></p>
+<p>注意这里的url地址，可以在查看器中选择复制上传的图片的地址，而不是<code>index.php</code>。</p>
+<p>这里我们需要做一个解释，如果我们上传的内容是<code>&lt;?php phpinfo();?&gt;</code>，那是可以直接获得关于php的信息的，这是基于phpinfo()函数的作用，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PHP中提供了PHPInfo ()函数，该函数返回 PHP 的所有信息，包括了 PHP 的编译选项及扩充配置、PHP 版本、服务器信息及环境变量、PHP 环境变量、操作系统版本信息、路径及环境变量配置、HTTP 标头、及版权宣告等信息。</span><br></pre></td></tr></table></figure>
+<p>但如果上传的是一句话木马，则还需要蚁剑等工具的连接，不过这可以获得目录级的权限，正常我们还是选择传马。</p>
+<h4 id="Pass-05-黑名单过滤（双写）">Pass-05-黑名单过滤（双写）</h4>
+<p>文件上传也和sqli注入一般，经常会过滤一些常用字符，在sqli中，针对过滤我们就有替换、双写、大小写绕过、宽字节注入等方法。</p>
+<h5 id="法一：">法一：</h5>
+<p>首先，查看源码，发现<code>.htaccess</code>被禁用了，并且大小写绕过、末尾加.或空格的方法都行不通，所以这里我们使用双写的方法。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">$is_upload = false;</span><br><span class="line">$msg = null;</span><br><span class="line">if (isset($_POST[&#x27;submit&#x27;])) &#123;</span><br><span class="line">    if (file_exists(UPLOAD_PATH)) &#123;</span><br><span class="line">        $deny_ext = array(&quot;.php&quot;,&quot;.php5&quot;,&quot;.php4&quot;,&quot;.php3&quot;,&quot;.php2&quot;,&quot;.html&quot;,&quot;.htm&quot;,&quot;.phtml&quot;,&quot;.pht&quot;,&quot;.pHp&quot;,&quot;.pHp5&quot;,&quot;.pHp4&quot;,&quot;.pHp3&quot;,&quot;.pHp2&quot;,&quot;.Html&quot;,&quot;.Htm&quot;,&quot;.pHtml&quot;,&quot;.jsp&quot;,&quot;.jspa&quot;,&quot;.jspx&quot;,&quot;.jsw&quot;,&quot;.jsv&quot;,&quot;.jspf&quot;,&quot;.jtml&quot;,&quot;.jSp&quot;,&quot;.jSpx&quot;,&quot;.jSpa&quot;,&quot;.jSw&quot;,&quot;.jSv&quot;,&quot;.jSpf&quot;,&quot;.jHtml&quot;,&quot;.asp&quot;,&quot;.aspx&quot;,&quot;.asa&quot;,&quot;.asax&quot;,&quot;.ascx&quot;,&quot;.ashx&quot;,&quot;.asmx&quot;,&quot;.cer&quot;,&quot;.aSp&quot;,&quot;.aSpx&quot;,&quot;.aSa&quot;,&quot;.aSax&quot;,&quot;.aScx&quot;,&quot;.aShx&quot;,&quot;.aSmx&quot;,&quot;.cEr&quot;,&quot;.sWf&quot;,&quot;.swf&quot;,&quot;.htaccess&quot;);</span><br><span class="line">        $file_name = trim($_FILES[&#x27;upload_file&#x27;][&#x27;name&#x27;]);</span><br><span class="line">        $file_name = deldot($file_name);//删除文件名末尾的点</span><br><span class="line">        $file_ext = strrchr($file_name, &#x27;.&#x27;);</span><br><span class="line">        $file_ext = strtolower($file_ext); //转换为小写</span><br><span class="line">        $file_ext = str_ireplace(&#x27;::$DATA&#x27;, &#x27;&#x27;, $file_ext);//去除字符串::$DATA</span><br><span class="line">        $file_ext = trim($file_ext); //首尾去空</span><br><span class="line">        </span><br><span class="line">        if (!in_array($file_ext, $deny_ext)) &#123;</span><br><span class="line">            $temp_file = $_FILES[&#x27;upload_file&#x27;][&#x27;tmp_name&#x27;];</span><br><span class="line">            $img_path = UPLOAD_PATH.&#x27;/&#x27;.$file_name;</span><br><span class="line">            if (move_uploaded_file($temp_file, $img_path)) &#123;</span><br><span class="line">                $is_upload = true;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                $msg = &#x27;上传出错！&#x27;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            $msg = &#x27;此文件类型不允许上传！&#x27;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        $msg = UPLOAD_PATH . &#x27;文件夹不存在,请手工创建！&#x27;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/12/03/upload-labs-Pass04-10/ui.png" alt></p>
+<p>成功上传。</p>
+<h5 id="法二-user-ini-：">法二(.user.ini)：</h5>
+<p>虽然<code>.htaccess</code>被禁用，但是<code>.user.ini</code>还是可以用的。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36374896/article/details/107005123">.user.ini文件构成的PHP后门</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.user.ini实际上就是一个可以由用户“自定义”的php.ini，获取权限修改php配置的。</span><br></pre></td></tr></table></figure>
+<p>1.先上传一个以<code>auto_propend_file=1.gif</code>为内容的.user.ini文件，让所有php文件都“自动”包含<code>.gif</code>文件，（这个文件可以是一个正常php文件，也可以是一个包含一句话的webshell）。</p>
+<p>2.上传一个后缀名为<code>.gif</code>的一句话木马。</p>
+<p><img src="/2021/12/03/upload-labs-Pass04-10/lad.png" alt></p>
+<p>3.复制图片链接，连接蚁剑，url地址为图片地址，但需要把图片文件名改为<code>readme.php</code>。</p>
+<h4 id="Pass-06-黑名单绕过（大小写）">Pass-06-黑名单绕过（大小写）</h4>
+<p>查看源码，发现没有转换小写，也就是说可以使用大小写绕过。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">$is_upload = false;</span><br><span class="line">$msg = null;</span><br><span class="line">if (isset($_POST[&#x27;submit&#x27;])) &#123;</span><br><span class="line">    if (file_exists(UPLOAD_PATH)) &#123;</span><br><span class="line">        $deny_ext = array(&quot;.php&quot;,&quot;.php5&quot;,&quot;.php4&quot;,&quot;.php3&quot;,&quot;.php2&quot;,&quot;.html&quot;,&quot;.htm&quot;,&quot;.phtml&quot;,&quot;.pht&quot;,&quot;.pHp&quot;,&quot;.pHp5&quot;,&quot;.pHp4&quot;,&quot;.pHp3&quot;,&quot;.pHp2&quot;,&quot;.Html&quot;,&quot;.Htm&quot;,&quot;.pHtml&quot;,&quot;.jsp&quot;,&quot;.jspa&quot;,&quot;.jspx&quot;,&quot;.jsw&quot;,&quot;.jsv&quot;,&quot;.jspf&quot;,&quot;.jtml&quot;,&quot;.jSp&quot;,&quot;.jSpx&quot;,&quot;.jSpa&quot;,&quot;.jSw&quot;,&quot;.jSv&quot;,&quot;.jSpf&quot;,&quot;.jHtml&quot;,&quot;.asp&quot;,&quot;.aspx&quot;,&quot;.asa&quot;,&quot;.asax&quot;,&quot;.ascx&quot;,&quot;.ashx&quot;,&quot;.asmx&quot;,&quot;.cer&quot;,&quot;.aSp&quot;,&quot;.aSpx&quot;,&quot;.aSa&quot;,&quot;.aSax&quot;,&quot;.aScx&quot;,&quot;.aShx&quot;,&quot;.aSmx&quot;,&quot;.cEr&quot;,&quot;.sWf&quot;,&quot;.swf&quot;,&quot;.htaccess&quot;,&quot;.ini&quot;);</span><br><span class="line">        $file_name = trim($_FILES[&#x27;upload_file&#x27;][&#x27;name&#x27;]);</span><br><span class="line">        $file_name = deldot($file_name);//删除文件名末尾的点</span><br><span class="line">        $file_ext = strrchr($file_name, &#x27;.&#x27;);</span><br><span class="line">        $file_ext = str_ireplace(&#x27;::$DATA&#x27;, &#x27;&#x27;, $file_ext);//去除字符串::$DATA</span><br><span class="line">        $file_ext = trim($file_ext); //首尾去空</span><br><span class="line"></span><br><span class="line">        if (!in_array($file_ext, $deny_ext)) &#123;</span><br><span class="line">            $temp_file = $_FILES[&#x27;upload_file&#x27;][&#x27;tmp_name&#x27;];</span><br><span class="line">            $img_path = UPLOAD_PATH.&#x27;/&#x27;.date(&quot;YmdHis&quot;).rand(1000,9999).$file_ext;</span><br><span class="line">            if (move_uploaded_file($temp_file, $img_path)) &#123;</span><br><span class="line">                $is_upload = true;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                $msg = &#x27;上传出错！&#x27;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            $msg = &#x27;此文件类型不允许上传！&#x27;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        $msg = UPLOAD_PATH . &#x27;文件夹不存在,请手工创建！&#x27;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/12/03/upload-labs-Pass04-10/as.png" alt></p>
+<p>但是我们注意到返回的信息的图片名被重命名了，说明路径被改变了，但是大小写绕过依然还是可行的。<img src="/2021/12/03/upload-labs-Pass04-10/h.png" alt></p>
+<p>一句话木马：<img src="/2021/12/03/upload-labs-Pass04-10/mu.png" alt></p>
+<h4 id="Pass-07-黑名单过滤（空格绕过）">Pass-07-黑名单过滤（空格绕过）</h4>
+<p>对比前面的源码，发现过滤首尾空格的函数不见了，而大小写、点、字符串都在，所以我们采用空格绕过的方法。</p>
+<p><img src="/2021/12/03/upload-labs-Pass04-10/pl.png" alt></p>
+<h4 id="Pass-08-黑名单过滤（点绕过）">Pass-08-黑名单过滤（点绕过）</h4>
+<p>点没有被禁用。<img src="/2021/12/03/upload-labs-Pass04-10/ai.png" alt></p>
+<h4 id="Pass-09-黑名单绕过（-DATA绕过）">Pass-09-黑名单绕过（::$DATA绕过）</h4>
+<p>又称流文件绕过。</p>
+<p>查看源码，与上一关相比，同样所有可以解析的后缀都被过滤，但缺少了过滤后缀名<code>::$DATA</code>的源码。</p>
+<p>在<code>php+windows</code>的情况下：如果文件名+<code>::$DATA</code>会把<code>::$DATA</code>之后的数据当成文件流处理,不会检测后缀名.且保持<code>::$DATA</code>之前的文件名。利用windows特性，可在后缀名中加<code>::$DATA</code>绕过，它的作用就是不检查后缀名，例如:“phpinfo.php::$DATA”，Windows会自动去掉末尾的::$DATA变成<code>phpinfo.php</code>。使用brup抓包修改文件后缀为::$DATA,且文件内容为<code>&lt;?php phpinfo();?&gt;</code>,点击上传。</p>
+<p><img src="/2021/12/03/upload-labs-Pass04-10/uu.png" alt></p>
+<p>直接放包再拖拽图片会出现403，应该要在url上删除<code>::$data</code>的后缀即可。</p>
+<h4 id="Pass-10-点-空格-点">Pass-10-点+空格+点</h4>
+<p>其实这和第五关的源码是一样的，在Pass5我们采用的是双写的办法，分析源码，先去末尾的点，再首位去空，则我们可以用点和空格交叉的方式留下其一或更多作为后缀，来过滤掉黑名单。</p>
+<p><img src="/2021/12/03/upload-labs-Pass04-10/ff.png" alt></p>
+<h4 id="Pass-11">Pass-11</h4>
+<p>其实都是一样的，这里可以上传没有被黑名单禁止的图片文件，也可以采用双写等方法。</p>
+<h4 id="总结">总结</h4>
+<p>主要都是对黑名单的理解和掌握不同情况下的过滤方法，不过基本都是常见的。</p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/11/29/upload-labs-Pass01-03/">
+        <span class="nav-arrow">← </span>
+        
+          upload-labs-Pass01-03
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Utterances START -->
+      <div id="utterances"></div>
+      <script src="https://utteranc.es/client.js"
+        repo=""
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async></script>    
+      <!-- Utterances END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Pass-04-htaccess%E7%BB%95%E8%BF%87"><span class="toc-nav-text">Pass-04-htaccess绕过</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Pass-05-%E9%BB%91%E5%90%8D%E5%8D%95%E8%BF%87%E6%BB%A4%EF%BC%88%E5%8F%8C%E5%86%99%EF%BC%89"><span class="toc-nav-text">Pass-05-黑名单过滤（双写）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%B3%95%E4%B8%80%EF%BC%9A"><span class="toc-nav-text">法一：</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%B3%95%E4%BA%8C-user-ini-%EF%BC%9A"><span class="toc-nav-text">法二(.user.ini)：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Pass-06-%E9%BB%91%E5%90%8D%E5%8D%95%E7%BB%95%E8%BF%87%EF%BC%88%E5%A4%A7%E5%B0%8F%E5%86%99%EF%BC%89"><span class="toc-nav-text">Pass-06-黑名单绕过（大小写）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Pass-07-%E9%BB%91%E5%90%8D%E5%8D%95%E8%BF%87%E6%BB%A4%EF%BC%88%E7%A9%BA%E6%A0%BC%E7%BB%95%E8%BF%87%EF%BC%89"><span class="toc-nav-text">Pass-07-黑名单过滤（空格绕过）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Pass-08-%E9%BB%91%E5%90%8D%E5%8D%95%E8%BF%87%E6%BB%A4%EF%BC%88%E7%82%B9%E7%BB%95%E8%BF%87%EF%BC%89"><span class="toc-nav-text">Pass-08-黑名单过滤（点绕过）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Pass-09-%E9%BB%91%E5%90%8D%E5%8D%95%E7%BB%95%E8%BF%87%EF%BC%88-DATA%E7%BB%95%E8%BF%87%EF%BC%89"><span class="toc-nav-text">Pass-09-黑名单绕过（::$DATA绕过）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Pass-10-%E7%82%B9-%E7%A9%BA%E6%A0%BC-%E7%82%B9"><span class="toc-nav-text">Pass-10-点+空格+点</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Pass-11"><span class="toc-nav-text">Pass-11</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-nav-text">总结</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2021/12/03/upload-labs-Pass04-10/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>
