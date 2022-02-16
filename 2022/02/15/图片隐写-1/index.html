@@ -10,7 +10,7 @@
   
   <title>
     
-      Bugku-web练习-2 | Hexo
+      图片隐写(1) | Hexo
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -193,8 +193,8 @@
 </header>
 
     <div id="article-banner">
-  <h2>Bugku-web练习-2</h2>
-  <p class="post-date">2021-10-17</p>
+  <h2>图片隐写(1)</h2>
+  <p class="post-date">2022-02-15</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>
@@ -202,59 +202,70 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><p>这次练习了四道题，现在的水平要完全独立得到flag还是较为困难的，所以大都采取边做边练，详细记录每一个步骤，方便后续复习和参考，强调多练多记，不断动手实操，不要操之过急。</p>
+    <section class="markdown-content"><p>简单记录misc的图片隐写的学习内容！</p>
 <span id="more"></span>
-<h4 id="管理员系统">管理员系统</h4>
-<p>启动场景后我们发现这很像sqli注入POST方式，所以我们随便猜测账号密码后在user上注入，但是通过查列数等其他步骤他都只会回复，IP禁止访问…</p>
-<p><img src="/2021/10/17/Bugku-web%E7%BB%83%E4%B9%A0-2/%E7%AE%A1%E7%90%86%E5%91%98%E7%B3%BB%E7%BB%9F.png" alt></p>
-<p>打开源码后在无数个n后找到一串奇奇怪怪的东西，怀疑应该是密文之类的东西，我们开始解码，至于是什么类型咱也不知道，就一个一个尝试，最后总算是在Base64发现好东西。</p>
-<p><img src="/2021/10/17/Bugku-web%E7%BB%83%E4%B9%A0-2/%E8%A7%A3%E7%A0%81.png" alt></p>
-<p>text123或许就是密码之类的，但我们回到界面输入后，还是一样的效果。</p>
-<p>没有思路后我借鉴一下评论，看到了X-Forwarded-For，百度一下。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">X-Forwarded-For // 用来表示 HTTP 请求端真实 IP</span><br><span class="line">X-Forwarded-For: IP0, IP1, IP2</span><br></pre></td></tr></table></figure>
-<p>账号admin 密码test123</p>
-<p>然后我们在repeater头名称中添加本地。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X-Forwarded-For  127.0.0.1</span><br></pre></td></tr></table></figure>
-<p>抓包，用它提交flag在抓包就会得到flag。</p>
-<p><img src="/2021/10/17/Bugku-web%E7%BB%83%E4%B9%A0-2/99.png" alt></p>
-<h4 id="变量1">变量1</h4>
-<p>打开后我们发现这一关于之前的<strong>eval</strong>有相似之处，首先知道这是php语言，args是变量，eval(&quot;var_dump($$args);表示动态变量，但这里却没有让args的赋值存在php中，所以可以考虑依次给args赋值php中的九大全局变量。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">preg_match 函数用于执行一个正则表达式匹配。</span><br><span class="line">PHP 中的许多预定义变量都是“超全局的”，这意味着它们在一个脚本的全部作用域中都可用。在函数或方法中无需执行 global $variable; 就可以访问它们。</span><br><span class="line"></span><br><span class="line">这些超全局变量是：</span><br><span class="line"></span><br><span class="line">$GLOBALS</span><br><span class="line">$_SERVER</span><br><span class="line">$_REQUEST</span><br><span class="line">$_POST</span><br><span class="line">$_GET</span><br><span class="line">$_FILES</span><br><span class="line">$_ENV</span><br><span class="line">$_COOKIE</span><br><span class="line">$_SESSION</span><br></pre></td></tr></table></figure>
-<p>最后用$GLOBALS便可。</p>
-<p><img src="/2021/10/17/Bugku-web%E7%BB%83%E4%B9%A0-2/%E5%8F%98%E9%87%8F.png" alt></p>
-<h4 id="game1">game1</h4>
-<p>启动场景后发现这是一个堆房子小游戏，还挺有意思的。常规步骤，看源码和抓包，发现有一个base.js很可疑，点开后觉得可能是密文啥的，然后我们尝试了多种解密。</p>
-<p><img src="/2021/10/17/Bugku-web%E7%BB%83%E4%B9%A0-2/game3.png" alt></p>
-<p>在这里没有收获，又去了burpsuite中试了一下，也是一样，这时候回过头再看这段冗长的文字，发觉好像没有密文的特征，此路不通。</p>
-<p>然后我们在一个一个翻数据包寻找线索，最后我们找到这个和分数相关的数据包。</p>
-<p><img src="/2021/10/17/Bugku-web%E7%BB%83%E4%B9%A0-2/game2.png" alt></p>
-<p>他这里显示失败了，这个堆房子是一个得分的小游戏，在URL上我们也有注意到score=125，不就是刚才玩的得分嘛，如果说这是一个得分游戏，那么是不是说我们分数达到一定程度就可以得到flag了呢，我们将得分往上修改，但是就算我输入亿级别的数字还是显示失败，这就很困惑了，肯定不是得分的问题了（在肝也不可能得这么多吧）</p>
-<p>此时注意到<strong>sign=zMMTI1==</strong>，这怎么看都不想是一个有逻辑含义的数据内容，会不会也是一段密文，我们解密试试。</p>
-<p><img src="/2021/10/17/Bugku-web%E7%BB%83%E4%B9%A0-2/game4.png" alt></p>
-<p>经过拆解一一解码后发现，sigh=是由zM+base64+==三部分组成的，之所以知道解码是我们想要的结果，是因为解码出的125恰好与我们的闯关分数相同。所以我们只要把闯关的最值分数编码即可。</p>
-<p><img src="/2021/10/17/Bugku-web%E7%BB%83%E4%B9%A0-2/game5-16347379770091.png" alt></p>
-<h4 id="社工-初步收集">社工-初步收集</h4>
-<p>进入场景之后细细浏览界面，看到这里有个辅助，应该是个工具包，我们先下载压缩到桌面。</p>
-<p><img src="/2021/10/17/Bugku-web%E7%BB%83%E4%B9%A0-2/%E7%A4%BE%E5%B7%A51.png" alt></p>
-<p>第一次打开的时候被系统安全软件视为病毒，所以再一次打开注意先关闭安全软件，然后打开后是这个界面，账号密码不要太当真，随便输入后他会提示<strong>哈哈，小别致你被骗了</strong>，说明这里是用来获取信息的，使用<strong>Wireshark</strong>抓包。</p>
-<p><img src="/2021/10/17/Bugku-web%E7%BB%83%E4%B9%A0-2/%E7%A4%BE%E5%B7%A53.png" alt></p>
-<p>由于第一次用，找了很久才总是找到一些数据，可以看到这里有user，pass以及一个邮箱bugkuku@163.com，那么得到这些数据要用在哪里？</p>
-<p><img src="/2021/10/17/Bugku-web%E7%BB%83%E4%B9%A0-2/ww.png" alt></p>
-<p>此时御剑的扫描也好了，我们一个个打开php文件，发现有个管理登陆。</p>
-<p><img src="/2021/10/17/Bugku-web%E7%BB%83%E4%B9%A0-2/%E7%A4%BE%E5%B7%A52.png" alt></p>
-<p>用我们刚才得到的数据登陆，有的需要先解码。user：YnVna3VrdUAxNjMuY29t解码出来就是邮箱。</p>
-<p>密码：XSLROCPMNWWZQDZL</p>
-<p>所以这边可以考虑用邮箱登陆，毕竟如果用user源码太长就显得很不正常。</p>
-<p>尝试登陆也证明了我们的猜想</p>
-<p><img src="/2021/10/17/Bugku-web%E7%BB%83%E4%B9%A0-2/14.png" alt></p>
-<p>所以我们去邮箱寻找答案。</p>
-<p><img src="/2021/10/17/Bugku-web%E7%BB%83%E4%B9%A0-2/QQ%E5%9B%BE%E7%89%8720211020224233.jpg" alt></p>
-<p>但是我找了半天也没找到可以用的信息，可能是被删掉了。以上类似这些都是别人发的干扰信息。</p>
-<p>那我们可以选择去爆库，然后这里我选择去百度找找看有没有邮件的相关内容，内容主要是和一个mara老弟聊生日的是，时间是2021年2月8日，并且他透露自己的年龄是20，生日是该日期的两天前，那不就是20010206嘛，爆密码也正是这个。</p>
-<p>成功登陆进来后也是如愿找到flag。</p>
-<p><img src="/2021/10/17/Bugku-web%E7%BB%83%E4%B9%A0-2/15.png" alt></p>
-<h4 id="总结">总结</h4>
-<p>相对而言，本次的内容略微复杂一些，需要多绕几个弯子，要沉的住气，多方面寻找答案。</p>
+<h4 id="kali实用命令符">kali实用命令符</h4>
+<ol>
+<li>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wxh0000mm/article/details/85683661">binwalk 分离</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/john_david_/article/details/87273152">foremost 分离</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Amherstieae/article/details/107512398">zsteg  lsp</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c3679f805a0c">steghide 隐写工具</a></p>
+</li>
+<li>
+<p>steganography</p>
+<p>使用方法: java Extract /图片的绝对路径 [-p 密码] [-e 输出文件]</p>
+</li>
+</ol>
+<h5 id="buu-九头蛇">buu_九头蛇</h5>
+<p>开局一张图：</p>
+<p><img src="/2022/02/15/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99-1/123456cry(1).jpg" alt></p>
+<p>使用010打开，通过jpg文件的头尾十六进制，发现图片后面还隐藏着一个压缩包，剪切，到kali中分离。</p>
+<p>其次，binwalk分析也可以看到zip压缩包。</p>
+<p>分离：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">binwalk -e 123456cry.jpg</span><br><span class="line">foremost 123456cry.jpg</span><br></pre></td></tr></table></figure>
+<p>得到一个名为output的文件夹，里面包含题目图片和<code>good-已合并.jpg</code>以及<code>qwe.zip</code>，都是加密文件，加密类型未知，我们可以粘贴后用010打开判断其加密类型，首先我们需要先解压<code>00000038.zip</code>，我们可以发现它属于伪加密，<a target="_blank" rel="noopener" href="https://blog.csdn.net/MikeCoke/article/details/105877451">判断的方法在前面学到过</a></p>
+<p>修改ushort deFlags数值为偶数即可解压缩。</p>
+<p>到这一步，我们还没拿到qwe.zip中flag.txt的密码，所以猜测很有可能隐藏在jpg文件中，借用<code>steghide</code>命令可以发现图片中的隐藏文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">steghide info good-已合并.jpg</span><br><span class="line">steghide extract -sf good-已合并.jpg</span><br></pre></td></tr></table></figure>
+<p>第一条是用来查看该jpg文件包含的隐藏文件的名称，输入第二天命令用来提取文件，需要密码，这里空密码即可。</p>
+<p>如果出现乱码选择GBK，就可以看到一串字符，猜测是flag.txt的密码，打开后就可以看到flag。</p>
+<p><img src="/2022/02/15/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99-1/gbk.png" alt></p>
+<h5 id="buu-刷新过的图片">buu 刷新过的图片</h5>
+<p>首先用010打开,FFD9搜索直接到最末尾,说明不是分离的方向,题目提示我们刷新,所以可能跟热键F5有关.我们尝试搜看看有没有什么是同时和F5与隐写挂钩的,结果真的有,并且介绍的很详细.这道题主要利用到<code>steganography</code>这个命令,简单安装后就可以使用了.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java Extract Misc.jpg</span><br></pre></td></tr></table></figure>
+<p>如果你没有指定输出的文件的名称,一般是为output.txt</p>
+<p><img src="/2022/02/15/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99-1/pk.png" alt></p>
+<p>直接打开发现会出现一对乱码,不是乱码的部分可以看到是flag.txt,所以可能是该文件内还包含着一个txt文件,乱码也是具有一定信息的,从头部的PK(50 4B)猜测可能是.zip压缩包,试试修改文件后缀后打开,发现直接打开会出错,也没有提示要密码,所以用010看一下.</p>
+<p><img src="/2022/02/15/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99-1/%E4%BC%AA%E5%8A%A0%E5%AF%86.png" alt></p>
+<p>加密方式为伪加密.</p>
+<p>将奇数修改为偶数打开即可.</p>
+<h5 id="buu-snake">buu snake</h5>
+<p>snake.jpg用010打开,通过搜索FF D9发现最后还隐藏有一个压缩包.</p>
+<p><img src="/2022/02/15/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99-1/snake1.png" alt></p>
+<p>思路一下子清晰起来,foremost !!</p>
+<p>分离出压缩包后打开.zip,首先cipher打不开,先放到一边,打开key文档,发现一段base64加密过的字符串.</p>
+<p>解码:  What is Nicki Minaj’s favorite song that refers to snakes?</p>
+<p>表示一脸懵逼, 一串英文什么意思? 粘贴到浏览器看看wp….<img src="/2022/02/15/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99-1/snake2.png" alt></p>
+<p>照抄…</p>
+<h5 id="buu-藏藏藏">buu 藏藏藏</h5>
+<p>同样隐藏了一个.zip压缩包.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foremost 藏藏藏.jpg</span><br></pre></td></tr></table></figure>
+<p>移动到桌面打开<code>福利.docx</code>,得到一个二维码,扫一下即可得到flag.</p>
+<h5 id="buu-被偷走的文件">buu 被偷走的文件</h5>
+<p>下载后打开是一个.pcapng文件,使用Wireshark打开,然后慢慢找,先从http开始,追踪数据流…</p>
+<p><img src="/2022/02/15/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99-1/%E6%95%B0%E6%8D%AE.png" alt></p>
+<p>最后追踪FTP发现线索.</p>
+<p>到这里就没什么思路,查看wp知道有两种方式,一种是过滤ftp 的ftp-data,选择原始数据以.zip的形式保存,得到带密码的压缩包,另一种是直接foremost得到压缩包,其目的都是为了得到压缩包.</p>
+<p>使用ARCHPR四位数爆破得到口令.</p>
+<p><img src="/2022/02/15/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99-1/%E5%AF%86%E7%A0%81.png" alt></p>
+<p>flag{6fe99a5d03fb01f833ec3caa80358fa3}</p>
 </section>
     <!-- Tags START -->
     
@@ -264,20 +275,13 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2021/10/15/Bugku-web%E7%BB%83%E4%B9%A0-1/">
+      <a class="nav-left" href="/2021/12/03/upload-labs-Pass04-10/">
         <span class="nav-arrow">← </span>
         
-          Bugku-web练习-1
+          upload-labs-Pass04-10
         
       </a>
     
-    
-      <a class="nav-right" href="/2021/10/19/sqli-labs-Less18-22/">
-        
-          sqli-labs-Less18-22
-        
-        <span class="nav-arrow"> →</span>
-      </a>
     
   </div>
 
@@ -329,7 +333,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%AE%A1%E7%90%86%E5%91%98%E7%B3%BB%E7%BB%9F"><span class="toc-nav-text">管理员系统</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%8F%98%E9%87%8F1"><span class="toc-nav-text">变量1</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#game1"><span class="toc-nav-text">game1</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%A4%BE%E5%B7%A5-%E5%88%9D%E6%AD%A5%E6%94%B6%E9%9B%86"><span class="toc-nav-text">社工-初步收集</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-nav-text">总结</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#kali%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4%E7%AC%A6"><span class="toc-nav-text">kali实用命令符</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#buu-%E4%B9%9D%E5%A4%B4%E8%9B%87"><span class="toc-nav-text">buu_九头蛇</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#buu-%E5%88%B7%E6%96%B0%E8%BF%87%E7%9A%84%E5%9B%BE%E7%89%87"><span class="toc-nav-text">buu 刷新过的图片</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#buu-snake"><span class="toc-nav-text">buu snake</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#buu-%E8%97%8F%E8%97%8F%E8%97%8F"><span class="toc-nav-text">buu 藏藏藏</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#buu-%E8%A2%AB%E5%81%B7%E8%B5%B0%E7%9A%84%E6%96%87%E4%BB%B6"><span class="toc-nav-text">buu 被偷走的文件</span></a></li></ol></li></ol>
     
   </div>
 </aside>
@@ -339,7 +343,7 @@
 
 <script>
   (function () {
-    var url = 'http://example.com/2021/10/17/Bugku-web练习-2/';
+    var url = 'http://example.com/2022/02/15/图片隐写-1/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
