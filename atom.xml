@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-02-23T12:01:15.730Z</updated>
+  <updated>2022-02-24T16:04:25.735Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,12 +17,29 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>文件上传漏洞</title>
+    <link href="http://example.com/2022/02/24/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/"/>
+    <id>http://example.com/2022/02/24/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/</id>
+    <published>2022-02-24T04:48:37.000Z</published>
+    <updated>2022-02-24T16:04:25.735Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;文件上传漏洞是一个相对容易掌握的模块，既是学习也是复习，简单记录下学习过程。&lt;/p&gt;</summary>
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
     <title>图片隐写(3)</title>
     <link href="http://example.com/2022/02/23/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99-3/"/>
     <id>http://example.com/2022/02/23/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99-3/</id>
     <published>2022-02-23T12:01:15.000Z</published>
-    <updated>2022-02-23T12:01:15.730Z</updated>
+    <updated>2022-02-28T14:00:49.822Z</updated>
     
+    
+    <summary type="html">&lt;p&gt;s&lt;/p&gt;</summary>
     
     
     
@@ -293,21 +310,6 @@
     
     
     <summary type="html">&lt;p&gt;业精于勤，荒于嬉。因为学校举办“鲲鹏杯”的校赛，所以暂时停下学习sqli，插入学习Bugku和攻防世界的一些简单题，就属于是临时抱佛脚了，不过也没有其他的选择。&lt;/p&gt;</summary>
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>sqli-labs-Less12~17</title>
-    <link href="http://example.com/2021/10/15/sqli-labs-Less12-17/"/>
-    <id>http://example.com/2021/10/15/sqli-labs-Less12-17/</id>
-    <published>2021-10-14T16:26:19.000Z</published>
-    <updated>2021-10-14T16:30:49.498Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;这期学习的关卡较多，不过类型基本统一，重点在于Less-17的学习，虽然由于版本问题看不到结果（后续如果问题很大会进行更改），但要领还是要掌握的。&lt;/p&gt;</summary>
     
     
     

@@ -10,7 +10,7 @@
   
   <title>
     
-      图片隐写(3) | Hexo
+      文件上传漏洞 | Hexo
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -193,8 +193,8 @@
 </header>
 
     <div id="article-banner">
-  <h2>图片隐写(3)</h2>
-  <p class="post-date">2022-02-23</p>
+  <h2>文件上传漏洞</h2>
+  <p class="post-date">2022-02-24</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>
@@ -202,41 +202,50 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><p>s</p>
+    <section class="markdown-content"><p>文件上传漏洞是一个相对容易掌握的模块，既是学习也是复习，简单记录下学习过程。</p>
 <span id="more"></span>
-<p>buu 一叶障目</p>
-<p>010打开并没有发现隐藏有压缩文件，后剪切到kali发现出现CRC检验错误。</p>
-<p><img src="/2022/02/23/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99-3/%E6%A0%A1%E9%AA%8C.png" alt></p>
-<p>在网上找到了png修复CRC校验错误的脚本。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">#coding=utf-8</span><br><span class="line">import zlib</span><br><span class="line">import struct</span><br><span class="line">#读文件</span><br><span class="line">file = &#x27;1.png&#x27;  #注意，1.png图片要和脚本在同一个文件夹下哦~</span><br><span class="line">fr = open(file,&#x27;rb&#x27;).read()</span><br><span class="line">data = bytearray(fr[12:29])</span><br><span class="line">crc32key = eval(str(fr[29:33]).replace(&#x27;\\x&#x27;,&#x27;&#x27;).replace(&quot;b&#x27;&quot;,&#x27;0x&#x27;).replace(&quot;&#x27;&quot;,&#x27;&#x27;))</span><br><span class="line">#crc32key = 0xCBD6DF8A #补上0x，copy hex value</span><br><span class="line">#data = bytearray(b&#x27;\x49\x48\x44\x52\x00\x00\x01\xF4\x00\x00\x01\xF1\x08\x06\x00\x00\x00&#x27;)  #hex下copy grep hex</span><br><span class="line">n = 4095 #理论上0xffffffff,但考虑到屏幕实际，0x0fff就差不多了</span><br><span class="line">for w in range(n):#高和宽一起爆破</span><br><span class="line">    width = bytearray(struct.pack(&#x27;&gt;i&#x27;, w))#q为8字节，i为4字节，h为2字节</span><br><span class="line">    for h in range(n):</span><br><span class="line">        height = bytearray(struct.pack(&#x27;&gt;i&#x27;, h))</span><br><span class="line">        for x in range(4):</span><br><span class="line">            data[x+4] = width[x]</span><br><span class="line">            data[x+8] = height[x]</span><br><span class="line">            #print(data)</span><br><span class="line">        crc32result = zlib.crc32(data)</span><br><span class="line">        if crc32result == crc32key:</span><br><span class="line">            print(width,height)</span><br><span class="line">            #写文件</span><br><span class="line">            newpic = bytearray(fr)</span><br><span class="line">            for x in range(4):</span><br><span class="line">                newpic[x+16] = width[x]</span><br><span class="line">                newpic[x+20] = height[x]</span><br><span class="line">            fw = open(file+&#x27;.png&#x27;,&#x27;wb&#x27;)#保存副本</span><br><span class="line">            fw.write(newpic)</span><br><span class="line">            fw.close</span><br></pre></td></tr></table></figure>
-<p>就可以在同文件下生成<code>1.png.png</code>图片，图片在被拉高后出现flag。尝试在010修改高度能不能也拿到flag，发现同样也是可以的。</p>
-<h5 id="buu-outguess">buu outguess</h5>
-<p>用老流程走了一遍,并没有发现什么,不过属性有一句社会主义核心价值观.</p>
-<p><img src="/2022/02/23/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99-3/j.png" alt></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">公正民主公正文明公正和谐</span><br></pre></td></tr></table></figure>
-<p>这才知道还有一个<a target="_blank" rel="noopener" href="http://www.hiencode.com/cvencode.html">社会主义核心价值观加密解密</a>.</p>
-<p><img src="/2022/02/23/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99-3/h.png" alt></p>
-<p>所以很可能这就是<code>flag.txt</code>的密码,结果发现并不是,察觉到题目<code>outguess</code>可能是一个提示点.</p>
-<p><strong>outguess使用方法</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">加密:</span><br><span class="line">outguess -k &quot;my secret key&quot; -d hidden.txt demo.jpg out.jpg</span><br><span class="line">加密之后,demo.jpg会覆盖out.jpg,hidden.txt的内容是要隐藏的东西.</span><br><span class="line">解密:</span><br><span class="line">outguess -k &quot;my secret key&quot; -r out.jpg hidden.txt</span><br><span class="line">解密之后,解密内容放在hidden.txt</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">outguess -k &#x27;abc&#x27; -r mmm.jpg flag.txt</span><br></pre></td></tr></table></figure>
-<p><img src="/2022/02/23/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99-3/k.png" alt></p>
-<p>本来认为这是<code>flag.txt</code>的密码,结果看这格式就是flag的格式…</p>
-<h5 id="gakki">gakki</h5>
-<p>题干还是一张图片，<code>foremost</code>得到压缩包，里面有一个加密的<code>flag.txt</code>，暴力破解得到密码<code>8864</code>.</p>
-<p>然后就到了这个题目最有意思的地方。</p>
-<p><img src="/2022/02/23/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99-3/gakki.png" alt></p>
-<p>完全看不懂是什么，也不像是某种加密方式，大量无特征，无规律字符，只能去看看wp，涉及到是记字频统计，补充知识盲区，脚本：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">alphabet = &quot;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&amp;*()_+- =\\&#123;\\&#125;[]&quot;</span><br><span class="line">strings = open(&#x27;./flag.txt&#x27;).read()</span><br><span class="line"></span><br><span class="line">result = &#123;&#125;</span><br><span class="line">for i in alphabet:</span><br><span class="line">	counts = strings.count(i)</span><br><span class="line">	i = &#x27;&#123;0&#125;&#x27;.format(i)</span><br><span class="line">	result[i] = counts</span><br><span class="line"></span><br><span class="line">res = sorted(result.items(),key=lambda item:item[1],reverse=True)</span><br><span class="line">for data in res:</span><br><span class="line">	print(data)</span><br><span class="line"></span><br><span class="line">for i in res:</span><br><span class="line">	flag = str(i[0])</span><br><span class="line">	print(flag[0],end=&quot;&quot;)</span><br></pre></td></tr></table></figure>
-<p>利用大佬的脚本，跑完后就可以得到flag。</p>
-<p><img src="/2022/02/23/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99-3/jiao.png" alt></p>
-<h5 id="fine-me">fine_me</h5>
-<p>这题是跟着wp做的，用到了新命令<code>exiftool</code>,可以理解为一个更全面的查看图片属性的命令。</p>
-<p>[传送门](<a target="_blank" rel="noopener" href="https://www.rmnof.com/article/exiftool-introduction/">ExifTool完全入门指南 (rmnof.com)</a>)</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exiftool attachment.jpg</span><br></pre></td></tr></table></figure>
-<p><img src="/2022/02/23/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99-3/mang.png" alt></p>
-<p>注意到有一段盲文，翻译即可得到flag。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wctf2020&#123;y$0$u_f$1$n$d$_M$e$e$e$e$e&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="极客大挑战2019-Upload">[极客大挑战2019]Upload</h5>
+<p>通过不同的形式上传一句话木马，首先里面不可包含<code>&lt;?</code>选择上传文件内容为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script language=&quot;php&quot;&gt;eval($_POST[&#x27;shell&#x27;]);&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/02/24/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/all.png" alt></p>
+<p>考虑使用黑名单和白名单绕过的方式，利用burpsuite抓包修改。</p>
+<p>会发现常见的黑名单<code>pht</code>,<code>phtm</code>,<code>phtml</code>,<code>phpt</code>,<code>php4</code>,<code>php5</code>,<code>php6</code>，其中部分会回显上面的这句话，部分会说NOT…，然后在尝试白名单，例如添加空子节注入<code>3.php%00.gif</code>，或者使用双扩展<code>3.jpg,php</code>，还有就是大小写绕过：<code>pHp,Php,phP</code>。结果发现都不行，回显最多的就是上面图片那句话。明明文件的后缀名是<code>.jpg</code>，怎么就完全不是图片了呢，那我们尝试用其他的图片后缀名，例如：png、gif等等。</p>
+<p>经过多次尝试，发现gif的文件头是可以的， <code>GIF89a</code>，那这就好办多了。</p>
+<p>发现黑名单绕过的<code>3.phpml</code>以及<code>3.php6</code>和白名单绕过的<code>3.php%00.gif</code>都能够成功上传。我们任意选择一种。</p>
+<p><img src="/2022/02/24/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/phtml.png" alt></p>
+<p>修改文件后缀后，对文件进行访问，进入 /upload下（大佬们提示一般都是 /upload）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://23775f61-a64d-46cd-bdb1-94dfcb0de2ee.node4.buuoj.cn:81/upload/3.phtml</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/02/24/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/g.png" alt></p>
+<p>这时候就可以选择使用蚁剑连接了，在根目录下就可以找到flag了。</p>
+<p><img src="/2022/02/24/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/%E8%9A%81%E5%89%91-16456805928371.png" alt></p>
+<h5 id="ACTF2020新生赛-Upload">[ACTF2020新生赛]Upload</h5>
+<p>打开界面应该还是上传一句话木马，直接用上一题的<code>3.jpg</code>文件，内容同上，发现直接就上传成功了。</p>
+<p><img src="/2022/02/24/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/up.png" alt></p>
+<p>然后这直接用蚁剑连接却发现连接失败，可能还是路径有问题，想想也没这么简单。抓包使用黑名单绕过和修改文件头数据流为<code>GIF89a</code>，也可以直接在原来的一句话木马前添加为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GIF89a&lt;script language=&quot;php&quot;&gt;eval($_POST[&#x27;shell&#x27;]);&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/02/24/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/success.png" alt></p>
+<p>修改后使用蚁剑就可以打开了，并在根目录拿到flag</p>
+<h5 id="MRCTF2020-你传你🐎呢">[MRCTF2020]你传你🐎呢</h5>
+<p>看标题应该也是一道upload的题目。</p>
+<p>还是上传<code>3.jpg</code>，通过短暂的学习明白服务器不会把jpg当作php脚本来解析，这也是我们可以成功上传却连接不了蚁剑的原因，所以我们需要通过黑名单绕过将文件修改为<code>php</code>的形式。</p>
+<p>结果学着之前的方法回显出的页面很明显告诉我们出错了。</p>
+<p><img src="/2022/02/24/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/%E9%9D%A0.png" alt></p>
+<p>不过除了用黑名单绕过，目前已知还可以使用两种辅助文件：1.上传<code>.user.ini</code>文件，此前提是上传目录中已有php文件；2.上传<code>.htaccess</code>文件。</p>
+<p>在这里，我们选择上传.htaccess文件，原因是上传目录上没有php文件。</p>
+<p>其内容为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SetHandler application/x-httpd-php</span><br></pre></td></tr></table></figure>
+<p>这是我之前配置学习upload留下的文件，由于时间久了，应该就是将权限扩大的意思，上传完之后如下。</p>
+<p><img src="/2022/02/24/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/hta.png" alt></p>
+<p>在上传<code>3.jpg</code>，无需黑名单绕过。</p>
+<p><img src="/2022/02/24/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/oo.png" alt></p>
+<p>两者的路径其实是一样的，尝试连接蚁剑，依然是在根目录找到flag。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://8395a697-f04f-4b3a-b758-48d546dcb6c4.node4.buuoj.cn:81/upload/27a08cac71494e2059bedf1ac22032ad/3.jpg</span><br></pre></td></tr></table></figure>
+<h5 id="GXYCTF2019-BabyUpload">[GXYCTF2019]BabyUpload</h5>
+<p>做了几题有点感觉了，这里试着上传了一下，发现后缀名不能有<code>ph</code>，然后联想到黑名单绕过都是有ph的，说明思路不在这里。</p>
+<p>做完后发现这题无需多言，和上一题基本是一样的，还是得先上传<code>.htaccess</code>，然后直接上传jpg就可以了。</p>
+<h4 id="关于文件上传漏洞的技巧链接">关于文件上传漏洞的技巧链接</h4>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_34088838/article/details/94607178">文件上传漏洞绕过技巧</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_30566063/article/details/99558838">文件上传的骚操作</a></p>
 </section>
     <!-- Tags START -->
     
@@ -246,20 +255,13 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2022/02/17/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99-2/">
+      <a class="nav-left" href="/2022/02/23/%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99-3/">
         <span class="nav-arrow">← </span>
         
-          图片隐写(2)
+          图片隐写(3)
         
       </a>
     
-    
-      <a class="nav-right" href="/2022/02/24/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/">
-        
-          文件上传漏洞
-        
-        <span class="nav-arrow"> →</span>
-      </a>
     
   </div>
 
@@ -311,7 +313,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#buu-outguess"><span class="toc-nav-text">buu outguess</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#gakki"><span class="toc-nav-text">gakki</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#fine-me"><span class="toc-nav-text">fine_me</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%982019-Upload"><span class="toc-nav-text">[极客大挑战2019]Upload</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#ACTF2020%E6%96%B0%E7%94%9F%E8%B5%9B-Upload"><span class="toc-nav-text">[ACTF2020新生赛]Upload</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#MRCTF2020-%E4%BD%A0%E4%BC%A0%E4%BD%A0%F0%9F%90%8E%E5%91%A2"><span class="toc-nav-text">[MRCTF2020]你传你🐎呢</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#GXYCTF2019-BabyUpload"><span class="toc-nav-text">[GXYCTF2019]BabyUpload</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%85%B3%E4%BA%8E%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E7%9A%84%E6%8A%80%E5%B7%A7%E9%93%BE%E6%8E%A5"><span class="toc-nav-text">关于文件上传漏洞的技巧链接</span></a>
     
   </div>
 </aside>
@@ -321,7 +323,7 @@
 
 <script>
   (function () {
-    var url = 'http://example.com/2022/02/23/图片隐写-3/';
+    var url = 'http://example.com/2022/02/24/文件上传漏洞/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
