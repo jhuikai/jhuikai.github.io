@@ -17,16 +17,16 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="记录在Hackthebox平台上的渗透学习，主要关于request-baskets ssrf漏洞、Maltrail命令执行漏洞、curl反弹shell。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/Sau/1690802513151.png">
-<meta property="og:image" content="http://example.com/Sau/1690807761627.png">
-<meta property="og:image" content="http://example.com/Sau/1690807934353.png">
-<meta property="og:image" content="http://example.com/Sau/1690808458288.png">
-<meta property="og:image" content="http://example.com/Sau/5889e9e7f4194b38ba4f249c1061172b.png">
+<meta property="og:image" content="http://example.com/.com//1690802513151.png">
+<meta property="og:image" content="http://example.com/.com//1690807761627.png">
+<meta property="og:image" content="http://example.com/.com//1690807934353.png">
+<meta property="og:image" content="http://example.com/.com//1690808458288.png">
+<meta property="og:image" content="http://example.com/.com//5889e9e7f4194b38ba4f249c1061172b.png">
 <meta property="article:published_time" content="2023-08-15T16:27:48.000Z">
 <meta property="article:modified_time" content="2023-08-15T16:35:03.542Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/Sau/1690802513151.png">
+<meta name="twitter:image" content="http://example.com/.com//1690802513151.png">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -275,7 +275,7 @@
 
 <h3 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sV 10.10.11.224</span><br></pre></td></tr></table></figure>
 
-<p><img src="/Sau/1690802513151.png" alt="1690802513151"></p>
+<p><img src="/.com//1690802513151.png" alt="1690802513151"></p>
 <p>发现22、80、55555三个开放的端口，只有55555端口可以访问。</p>
 <p>访问<code>10.10.11.224:55555</code>，发现是一个web服务， 界面显示Request Baskets，版本是1.2.1。查询发现存在<strong>request-baskets服务端请求伪造漏洞（CVE-2023-27163）</strong>。</p>
 <h3 id="request-baskets-ssrf漏洞"><a href="#request-baskets-ssrf漏洞" class="headerlink" title="request-baskets ssrf漏洞"></a>request-baskets ssrf漏洞</h3><p>request baskets服务存在api接口&#x2F;api&#x2F;baskets&#x2F;{name}，&#x2F;baskets&#x2F;{name}，这里的name可以任意，这些接口会接收一个forward_url参数，而这个参数存在SSRF漏洞。<br>向&#x2F;api&#x2F;baskets&#x2F;{name}发送forward_url参数后，需要访问10.10.11.224:55555&#x2F;{name}来触发SSRF漏洞（请求给定的forward_url）。<br>可以实现55555端口访问其他端口内容的效果（如直接访问80端口被拦截，但是通过这个SSRF漏洞，让靶机主机访问80端口，再把内容显示在55555端口。</p>
@@ -288,10 +288,10 @@
 <li>proxy_response设置为true，允许请求的url内容转发给<code>10.10.11.224:55555/aaa</code>。</li>
 </ul>
 <p>得到token：<code>X4UY9t6SKl-YWNI76FIWp5SJV84wUULEXYDWnYdFCl2J</code></p>
-<p><img src="/Sau/1690807761627.png" alt="1690807761627"></p>
-<p><img src="/Sau/1690807934353.png" alt="1690807934353"></p>
+<p><img src="/.com//1690807761627.png" alt="1690807761627"></p>
+<p><img src="/.com//1690807934353.png" alt="1690807934353"></p>
 <p>访问url：<code>http://10.10.11.224:55555/aaa</code></p>
-<p><img src="/Sau/1690808458288.png" alt="1690808458288"></p>
+<p><img src="/.com//1690808458288.png" alt="1690808458288"></p>
 <h3 id="Maltrail命令执行漏洞"><a href="#Maltrail命令执行漏洞" class="headerlink" title="Maltrail命令执行漏洞"></a>Maltrail命令执行漏洞</h3><p>地址：<code>https://huntr.dev/bounties/be3c5204-fbd9-448d-b97c-96a8d2941e87</code></p>
 <p>漏洞描述：<strong>Maltrail &lt;&#x3D; V0.54 在登录过程中容易受到未经身份验证的操作系统命令注入的影响。</strong></p>
 <p>利用方式：</p>
@@ -311,7 +311,7 @@
 <p>监听获得shell：<code>nc -lvvp 12345</code> 12345是shell.sh中的端口</p>
 <p>在&#x2F;home&#x2F;puma下得到flag1。</p>
 <h3 id="权限提升"><a href="#权限提升" class="headerlink" title="权限提升"></a>权限提升</h3><p>先通过python进入全交互界面<code>python3 -c &#39;import pty;pty.spawn(&quot;/bin/bash&quot;)&#39;</code><br>sudo -l查看权限 </p>
-<p><img src="/Sau/5889e9e7f4194b38ba4f249c1061172b.png" alt="在这里插入图片描述"> </p>
+<p><img src="/.com//5889e9e7f4194b38ba4f249c1061172b.png" alt="在这里插入图片描述"> </p>
 <p>提示systemctl可以不输入密码执行，去gtfobins上搜下<code>https://gtfobins.github.io/#tra</code> </p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl</span><br><span class="line">!sh</span><br></pre></td></tr></table></figure>
 
